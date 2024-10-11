@@ -1,7 +1,9 @@
+import Button from "../Button";
 import Container from "../Container";
 import Logo from "./Logo";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
+import { AiOutlineSearch } from "react-icons/ai";
 
 const Navbar = () => {
   return (
@@ -15,8 +17,8 @@ const Navbar = () => {
           </div>
         </Container>
         <Container>
-          <div className="mt-3">Categories</div>
-          {/* Categories */}
+          {/* <div className="mt-3 text-center">Categories</div> */}
+          <Button label="My button" icon={AiOutlineSearch} />
         </Container>
       </div>
     </div>
