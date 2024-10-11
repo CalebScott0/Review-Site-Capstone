@@ -10,6 +10,10 @@ body,
   height: 100%;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
