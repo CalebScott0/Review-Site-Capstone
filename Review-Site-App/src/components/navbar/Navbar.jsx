@@ -10,15 +10,19 @@ const Navbar = () => {
     <div className="fixed z-10 w-full bg-white shadow-sm">
       <div className="border-b py-6">
         <Container>
-          <div className="flex flex-row items-center gap-3 md:gap-0 justify-between">
+          <div className="flex flex-row items-center mb-4">
             <Logo />
             <Search />
             <UserMenu />
           </div>
         </Container>
         <Container>
-          {/* <div className="mt-3 text-center">Categories</div> */}
-          <Button label="My button" icon={AiOutlineSearch} />
+          <Button
+            label="Categories drop down will go here"
+            outline
+            // small
+            icon={AiOutlineSearch}
+          />
         </Container>
       </div>
     </div>
