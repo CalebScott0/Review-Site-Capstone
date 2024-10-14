@@ -10,7 +10,7 @@ const Navbar = () => {
     <div className="fixed z-10 w-full bg-white shadow-sm">
       <div className="border-b py-6">
         <Container>
-          <div className="flex flex-row items-center mb-4">
+          <div className="flex flex-row items-center mb-4 justify-evenly">
             <Logo />
             <Search />
             <UserMenu />
