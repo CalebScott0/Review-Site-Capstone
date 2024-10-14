@@ -37,7 +37,7 @@ const UserMenu = () => {
       </div>
 
       {isOpen && (
-        <div className="absolute z-10 right-0 top-12 max-w-52 w-[40vw] lg:w-[20vw] bg-white shadow-md overflow-hidden rounded-lg border">
+        <div className="absolute z-10 right-0 top-12 w-[20vw] bg-white shadow-md overflow-hidden rounded-lg border">
           <MenuItem label="Write a review" />
           <MenuItem label="Categories" />
           <MenuItem label="For businesses" />

@@ -3,7 +3,6 @@ import Container from "../Container";
 import Logo from "./Logo";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
-import { AiOutlineSearch } from "react-icons/ai";
 
 const Navbar = () => {
   return (
@@ -21,7 +20,6 @@ const Navbar = () => {
             label="Categories drop down will go here"
             outline
             // small
-            icon={AiOutlineSearch}
           />
         </Container>
       </div>
