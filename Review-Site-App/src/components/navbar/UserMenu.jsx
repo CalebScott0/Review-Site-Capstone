@@ -2,16 +2,14 @@ import MenuItem from "./MenuItem";
 import Button from "../Button";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // callback function to toggle open & close - will not change b/c empty dependency array
-  // i.e. not dependent on any states or props so it will be created once and reused on re renders
-  const toggleOpen = useCallback(() => {
+  const toggleOpen = () => {
     setIsOpen((value) => !value);
-  }, []);
+  };
 
   return (
     <div className="relative">
@@ -24,7 +22,7 @@ const UserMenu = () => {
           <Button label="Sign up" />
         </div>
       </div>
-      {/* drop down menu for smaller screens */}
+      {/* drop down menu for medium and smaller screens */}
       <div
         onClick={toggleOpen}
         className="flex cursor-pointer items-center border-neutral-200 border xl:hidden rounded-full p-2 mx-2 transition hover:shadow-md gap-2"

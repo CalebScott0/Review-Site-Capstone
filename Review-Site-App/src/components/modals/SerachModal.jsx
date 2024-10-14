@@ -1,6 +1,7 @@
 import { AiOutlineSearch, AiOutlineClose } from "react-icons/ai";
 
 const SearchModal = ({ onClose }) => {
+  // onClose functions from useSearchModal hooks toggles isOpen to false
   return (
     <div className="fixed z-50 inset-0 w-full h-full overflow-auto bg-neutral-800/70">
       <div className={`translate `}>

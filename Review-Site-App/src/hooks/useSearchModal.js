@@ -4,6 +4,7 @@ const useSearchModal = () => {
   const [isOpen, setIsopen] = useState(false);
 
   // callback function to toggle open & close - will not change as both have empty dependency array
+  // stable reference to functions across renders
   const onOpen = useCallback(() => {
     setIsopen(true);
   }, []);
