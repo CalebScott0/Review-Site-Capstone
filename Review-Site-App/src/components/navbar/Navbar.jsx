@@ -19,6 +19,7 @@ const Navbar = () => {
           <Button
             label="Categories drop down will go here"
             outline
+            disabled
             // small
           />
         </Container>

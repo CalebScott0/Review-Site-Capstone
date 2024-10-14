@@ -7,7 +7,8 @@ import { useCallback, useState } from "react";
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // callback function to toggle open - will not change as no dependency array
+  // callback function to toggle open & close - will not change b/c empty dependency array
+  // i.e. not dependent on any states or props so it will be created once and reused on re renders
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
@@ -15,8 +16,6 @@ const UserMenu = () => {
   return (
     <div className="relative">
       <div className="hidden xl:flex items-center md:gap-2 gap-0">
-        {/* UserMenu OR just login and sign up buttons? (look at yelp and
-      trustpilot)  */}
         <MenuItem label="Write a reivew" />
         <MenuItem label="Categories" />
         <MenuItem label="For businesses" />
@@ -37,7 +36,7 @@ const UserMenu = () => {
       </div>
 
       {isOpen && (
-        <div className="absolute z-10 right-0 top-12 w-[20vw] bg-white shadow-md overflow-hidden rounded-lg border">
+        <div className="absolute z-10 right-0 top-12 w-52 md:w-[25vw] bg-white shadow-md overflow-hidden rounded-lg border">
           <MenuItem label="Write a review" />
           <MenuItem label="Categories" />
           <MenuItem label="For businesses" />
