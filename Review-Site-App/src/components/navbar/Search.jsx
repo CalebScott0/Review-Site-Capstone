@@ -76,7 +76,7 @@ const Search = () => {
     <>
       {/* regular search bar for medium screens and larger */}
       {/* <div className="w-full rounded-lg border shadow-sm transition hover:shadow-md md:ml-10 xl:mr-4 text-nowrap overflow-hidden hidden md:block"> */}
-      <div className="hidden relative md:flex font-semibold text-sm border rounded-md hover:shadow-md">
+      <div className="hidden relative md:flex font-semibold text-sm border-2 rounded-md border-r-0 hover:shadow-md">
         {/* <div className="flex-1 px-6 text-sm font-semibold text-neutral-500 "> */}
         {/* categores/business drop down */}
         <Select
@@ -93,7 +93,7 @@ const Search = () => {
           placeholder="Location"
           onChange={(value) => setLocationParameter(value)}
         />
-        <button className="flex-1 absolute right-0 p-2 bg-amber-500  border-amber-500 border rounded-md rounded-l-none  shadow-md max-w-[50px] ">
+        <button className="flex-1 absolute right-0 bottom-[0.1px] p-2 bg-amber-500  border-amber-500 border rounded-md rounded-l-none  shadow-md max-w-[50px] ">
           <AiOutlineSearch size={24} color="white" />
         </button>
       </div>
