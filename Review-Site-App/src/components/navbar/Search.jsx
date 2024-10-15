@@ -3,6 +3,8 @@ import useSearchModal from "../../hooks/useSearchModal";
 import SearchModal from "../modals/SerachModal";
 import { useState } from "react";
 import Select from "react-select";
+import { customStyles, noOptionsMessage } from "../../styles/reactSelectStyles";
+import useFetch from "../../hooks/useFetch";
 
 const searchOptions = [
   { value: "restaurants", label: "Restaurants" },
@@ -27,58 +29,22 @@ const locationOptions = [
 const Search = () => {
   // hook returns: { isOpen, onClose, onOpen }; onClose and onOpen toggle isOpen state between false and true respectively
   const searchModal = useSearchModal();
+  // hook returns [data] from the fetch call pased to it
+  const [categories, busineses] = Promise.all([
+    useFetch("/category/all_categories"),
+    useFetch("/business//all_businesses"),
+  ]);
+  console.log(categories);
+  console.log(busineses);
 
   const [searchParameter, setSearchParameter] = useState(null);
   const [locationParameter, setLocationParameter] = useState(null);
 
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      backgroundColor: "white",
-      border: "none",
-      minWidth: "200px",
-      width: "100%", // Allow to fill the parent width
-      boxShadow: "none",
-      paddingTop: "4px",
-      paddingBottom: "4px",
-      borderRadius: "0.125rem", //tailwind sm radius
-      cursor: "text",
-      outline: "none",
-      "&:focus": {
-        outline: "none",
-      },
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      display: "none",
-    }),
-    menu: (provided) => ({
-      ...provided,
-      backgroundColor: "white", // Customize the background color of the dropdown menu
-      // borderRadius: "0.5rem", //tailwind round-lg value
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? "#f5f5f5" : "white", // neutral-100 hex value
-      color: "black",
-      cursor: "pointer",
-      "&:active": {
-        backgroundColor: "gray",
-      },
-    }),
-  };
-
-  const noOptionsMessage = () => {
-    return <div className="p-3 text-center">No results found</div>;
-  };
-
   return (
     <>
       {/* regular search bar for medium screens and larger */}
-      {/* <div className="w-full rounded-lg border shadow-sm transition hover:shadow-md md:ml-10 xl:mr-4 text-nowrap overflow-hidden hidden md:block"> */}
       <div className="hidden relative md:flex font-semibold text-sm border-2 rounded-md border-r-0 hover:shadow-md">
-        {/* <div className="flex-1 px-6 text-sm font-semibold text-neutral-500 "> */}
-        {/* categores/business drop down */}
+        {/* categories/businesses drop down */}
         <Select
           options={searchOptions}
           styles={customStyles}
@@ -97,8 +63,6 @@ const Search = () => {
           <AiOutlineSearch size={24} color="white" />
         </button>
       </div>
-      {/* </div> */}
-      {/* </div> */}
       {/* Search button onclick shows a search modal */}
       <div className="md:hidden flex w-full place-content-end ">
         <div
