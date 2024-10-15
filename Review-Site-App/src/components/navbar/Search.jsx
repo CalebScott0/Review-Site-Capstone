@@ -30,13 +30,23 @@ const Search = () => {
   // hook returns: { isOpen, onClose, onOpen }; onClose and onOpen toggle isOpen state between false and true respectively
   const searchModal = useSearchModal();
   // hook returns [data] from the fetch call pased to it
-  const [categories, busineses] = Promise.all([
-    useFetch("/category/all_categories"),
-    useFetch("/business//all_businesses"),
-  ]);
-  console.log(categories);
-  console.log(busineses);
 
+  const {
+    data: categories,
+    isLoading: isCategoriesLoading,
+    error: categoriesError,
+  } = useFetch("/category/list/all_categories");
+  const {
+    data: businesses,
+    isLoading: isBusinessesLoading,
+    error: businessesError,
+  } = useFetch("/business/list/all_businesses");
+
+  // map categories and businesses to match react-select label/value pairing
+  const categoriesData = categories?.categories.map((category) => ({
+    label: category.name,
+    value: category.id,
+  }));
   const [searchParameter, setSearchParameter] = useState(null);
   const [locationParameter, setLocationParameter] = useState(null);
 
@@ -46,7 +56,7 @@ const Search = () => {
       <div className="hidden relative md:flex font-semibold text-sm border-2 rounded-md border-r-0 hover:shadow-md">
         {/* categories/businesses drop down */}
         <Select
-          options={searchOptions}
+          options={categoriesData}
           styles={customStyles}
           placeholder="Things to do..."
           onChange={(value) => setSearchParameter(value)}
