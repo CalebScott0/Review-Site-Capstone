@@ -40,15 +40,20 @@ const Search = () => {
     setError(null);
     try {
       const res = await fetch(
-        `https://api-review-site.onrender.com/api/search?query=${searchParameter}`
+        `http://localhost:8080/api/search?query=${searchParameter}`
       );
+      // const res = await fetch(
+      //   `https://api-review-site.onrender.com/api/search?query=${searchParameter}`
+      // );
       let data = await res.json();
+
+      // CHANGE THIS TO SHOW SOMETHING EXTRA WITH BUSINESSES
       data = [
         ...data.search_results.categories,
         ...data.search_results.businesses,
       ];
       // map returned data to match label value object for react select
-      return data.search_results.map((x) => ({
+      return data.map((x) => ({
         label: x.name,
         value: x.id,
       }));
@@ -64,6 +69,9 @@ const Search = () => {
         `https://api-review-site.onrender.com/api//business/list/locations?query=${searchParameter}`
       );
       const data = await res.json();
+
+      // USE A SET FOR ONLY UNIQUE VALUES? - and clean up capitalization
+
       // map returned data to match label value object for react select
       return data.locations.map(({ city, state }) => ({
         label: `${city}, ${state}`,
