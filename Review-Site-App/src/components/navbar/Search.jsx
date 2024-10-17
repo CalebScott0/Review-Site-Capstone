@@ -30,19 +30,23 @@ const Search = () => {
   const searchModal = useSearchModal();
 
   const [error, setError] = useState(null);
-  const [inputValue, setInputValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [locationValue, setLocationValue] = useState("");
+
   // state to track if menu is open or not for icon
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const fetchSearchResults = async (searchParameter) => {
-    // to avoid fetch on click of input box
-    if (!searchParameter.length) return;
     setError(null);
     try {
       const res = await fetch(
         `https://api-review-site.onrender.com/api/search?query=${searchParameter}`
       );
-      const data = await res.json();
+      let data = await res.json();
+      data = [
+        ...data.search_results.categories,
+        ...data.search_results.businesses,
+      ];
       // map returned data to match label value object for react select
       return data.search_results.map((x) => ({
         label: x.name,
@@ -53,32 +57,55 @@ const Search = () => {
     }
   };
 
+  const fetchLocationResults = async (searchParameter) => {
+    setError(null);
+    try {
+      const res = await fetch(
+        `https://api-review-site.onrender.com/api//business/list/locations?query=${searchParameter}`
+      );
+      const data = await res.json();
+      // map returned data to match label value object for react select
+      return data.locations.map(({ city, state }) => ({
+        label: `${city}, ${state}`,
+        value: `${city}, ${state}`,
+      }));
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   const handleSearchInputChange = (value) => {
     // to avoid clearing input on certain actions
-    setInputValue(value);
+    setSearchValue(value);
   };
-  // const handleSearchInputChange = ({ value, action }) => {
-  //   console.log(value);
-  //   console.log(action);
-  //   // to avoid clearing input on certain actions
-  //   if (action?.action !== "menu-close" || action?.action !== "input-blur") {
-  //     setInputValue(value);
-  //   }
-  // };
+
+  const handleLocationInputChange = (value) => {
+    // to avoid clearing input on certain actions
+    setLocationValue(value);
+  };
 
   // // this will change to a navigate
   // const handleSearchChange = (value) => {
   //   setInputValue(value);
   // };
 
-  const handleMenuOpen = () => {
-    setIsMenuOpen(true);
+  // const handleMenuOpen = () => {
+  //   setIsMenuOpen(true);
+  // };
+
+  const handleSearchMenuClose = () => {
+    setSearchValue(searchValue);
+    // setIsMenuOpen(false);
   };
 
-  const handleMenuClose = () => {
-    setInputValue(inputValue);
-    setIsMenuOpen(false);
+  const handleLocationMenuClose = () => {
+    setLocationValue(searchValue);
+    // setIsMnuOpen(false);
   };
+
+  // const clearSearchInput = () => {
+  //   console.log(selectRef);
+  // };
 
   return (
     <>
@@ -89,33 +116,44 @@ const Search = () => {
         {/* USE ASYNC SELECT with api calls */}
         <div className="flex-1 relative">
           <AsyncSelect
-            onMenuOpen={handleMenuOpen}
-            inputValue={inputValue}
             cacheOptions
-            defaultOptions={searchOptions}
+            // ADD DEFAULT OPTIONS
+            defaultOptions
+            // value displayed in input on change
+            inputValue={searchValue}
+            // Function that returns a promise, which is the set of options to be used once the promise resolves.
             loadOptions={fetchSearchResults}
+            // menuIsOpen={isMenuOpen}
             noOptionsMessage={noOptionsMessage}
-            onMenuClose={handleMenuClose}
             onInputChange={handleSearchInputChange}
-            // onInputChange={(value, action) =>
-            //   handleSearchInputChange({ value, action })
-            // }
+            onMenuClose={handleSearchMenuClose}
+            // onMenuOpen={handleMenuOpen}
             placeholder="Things to do..."
             styles={customStyles}
           />
-          {isMenuOpen && (
-            <AiOutlineClose
-              className="absolute bottom-3 -left-5 hover:bg-neutral-800/10"
-              size={20}
-            />
-          )}
+          {/* {isMenuOpen && (
+            <div
+              onClick={clearSearchInput}
+              className="absolute z-10 p-1.5 bottom-1.5 right-2 cursor-pointer rounded-lg hover:bg-neutral-200"
+            >
+              <AiOutlineClose size={18} />
+            </div>
+          )} */}
         </div>
         <div className="flex-1 relative">
           <AsyncSelect
-            styles={customStyles}
-            options={locationOptions}
+            cacheOptions
+            // ADD DEFAULT OPTIONS
+            defaultOptions
+            // value displayed in input on change
+            inputValue={locationValue}
+            // Function that returns a promise, which is the set of options to be used once the promise resolves.
+            loadOptions={fetchLocationResults}
+            noOptionsMessage={noOptionsMessage}
+            onInputChange={handleLocationInputChange}
+            onMenuClose={handleLocationMenuClose}
             placeholder="Search by city..."
-            // onInputChange={(value) => setLocationParameter(value)}
+            styles={customStyles}
           />
         </div>
         <button className="flex-1 absolute right-0 bottom-0 top-0 p-2 bg-amber-500  border-amber-500 border-2 rounded-md rounded-l-none max-w-[50px] ">
