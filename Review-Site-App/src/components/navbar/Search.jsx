@@ -40,7 +40,7 @@ const Search = () => {
     setError(null);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/search?query=${searchParameter}`
+        `https://api-review-site.onrender.com/api/search?query=${searchParameter}`
       );
       // const res = await fetch(
       //   `https://api-review-site.onrender.com/api/search?query=${searchParameter}`
@@ -66,7 +66,7 @@ const Search = () => {
     setError(null);
     try {
       const res = await fetch(
-        `https://api-review-site.onrender.com/api//business/list/locations?query=${searchParameter}`
+        `https://api-review-site.onrender.com/api/business/list/locations?query=${searchParameter}`
       );
       const data = await res.json();
 
