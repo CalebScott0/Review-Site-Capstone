@@ -1,9 +1,10 @@
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import useSearchModal from "../../hooks/useSearchModal";
-import SearchModal from "../modals/SerachModal";
+import SearchModal from "../modals/SearchModal";
 import { useState } from "react";
 import AsyncSelect from "react-select/async";
 import { customStyles, noOptionsMessage } from "../../styles/reactSelectStyles";
+import toast from "react-hot-toast";
 
 const searchOptions = [
   { value: "restaurants", label: "Restaurants" },
@@ -31,7 +32,7 @@ const Search = () => {
 
   const [error, setError] = useState(null);
   const [searchValue, setSearchValue] = useState("");
-  const [locationValue, setLocationValue] = useState("");
+  const [locationValue, setLocationValue] = useState("Indianapolis, In");
 
   // state to track if menu is open or not for icon
   // const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,9 +43,7 @@ const Search = () => {
       const res = await fetch(
         `https://api-review-site.onrender.com/api/search?query=${searchParameter}`
       );
-      // const res = await fetch(
-      //   `https://api-review-site.onrender.com/api/search?query=${searchParameter}`
-      // );
+
       let data = await res.json();
 
       // CHANGE THIS TO SHOW SOMETHING EXTRA WITH BUSINESSES
@@ -78,7 +77,7 @@ const Search = () => {
         value: `${city}, ${state}`,
       }));
     } catch (error) {
-      setError(error.message);
+      setError(`${error.message}`);
     }
   };
 
@@ -117,6 +116,7 @@ const Search = () => {
 
   return (
     <>
+      {error && toast.error(error)}
       {/* regular search bar for medium screens and larger */}
       <div className="mx-12 hidden w-full max-w-[60vw] relative md:flex font-semibold text-sm border rounded-md border-r-0 hover:shadow-md">
         {/* categories/businesses drop down */}
@@ -179,8 +179,18 @@ const Search = () => {
       {/* full screen search modal for md and smaller screens */}
       {searchModal.isOpen && (
         <SearchModal
+          fetchLocationResults={fetchLocationResults}
+          fetchSearchResults={fetchSearchResults}
+          selectStyles={customStyles}
+          handleSearchInputChange={handleSearchInputChange}
+          handleLocationInputChange={handleLocationInputChange}
+          handleSearchMenuClose={handleSearchMenuClose}
+          handleLocationMenuClose={handleLocationMenuClose}
           onClose={searchModal.onClose}
           isOpen={searchModal.isOpen}
+          noOptionsMessage={noOptionsMessage}
+          searchValue={searchValue}
+          locationValue={locationValue}
         />
       )}
     </>
