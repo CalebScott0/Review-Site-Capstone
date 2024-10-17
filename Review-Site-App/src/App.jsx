@@ -16,6 +16,7 @@ function App() {
       });
     }
     // IF USER GIVES COORDINATES, NAVIGATE TO FIND NEAR ME PAGE!! - you can send data with navigate - read router docs!!
+    // first create default business list load with indianapolis - default return from list/all_businesses endpoint
   }, []);
   return (
     <>
