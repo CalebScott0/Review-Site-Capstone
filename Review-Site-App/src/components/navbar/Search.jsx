@@ -107,7 +107,7 @@ const Search = () => {
   };
 
   const handleLocationMenuClose = () => {
-    setLocationValue(searchValue);
+    setLocationValue(locationValue);
     // setIsMnuOpen(false);
   };
 
@@ -118,14 +118,13 @@ const Search = () => {
   return (
     <>
       {/* regular search bar for medium screens and larger */}
-      <div className="ml-12 mr-6 hidden w-full max-w-[60vw] relative md:flex font-semibold text-sm border rounded-md border-r-0 hover:shadow-md">
+      <div className="mx-12 hidden w-full max-w-[60vw] relative md:flex font-semibold text-sm border rounded-md border-r-0 hover:shadow-md">
         {/* categories/businesses drop down */}
 
         {/* USE ASYNC SELECT with api calls */}
         <div className="flex-1 relative">
           <AsyncSelect
             cacheOptions
-            // ADD DEFAULT OPTIONS
             defaultOptions
             // value displayed in input on change
             inputValue={searchValue}
@@ -164,7 +163,7 @@ const Search = () => {
             styles={customStyles}
           />
         </div>
-        <button className="flex-1 absolute right-0 bottom-0 top-0 p-2 bg-amber-500  border-amber-500 border-2 rounded-md rounded-l-none max-w-[50px] ">
+        <button className="flex-1 absolute -right-10 bottom-0 top-0 px-2 bg-amber-500  border-amber-500 border-2 -my-[1px] rounded-md rounded-l-none max-w-[50px] ">
           <AiOutlineSearch size={24} color="white" />
         </button>
       </div>

@@ -4,8 +4,8 @@ export const customStyles = {
     backgroundColor: "white",
     border: "none",
     boxShadow: "none",
-    paddingTop: "5px",
-    paddingBottom: "5px",
+    paddingTop: "6px",
+    paddingBottom: "6px",
     borderRadius: "0.125rem", //tailwind sm radius
     cursor: "text",
     outline: "none",

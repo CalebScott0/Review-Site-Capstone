@@ -2,15 +2,15 @@ import MenuItem from "./MenuItem";
 import Button from "../Button";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const menuOptions = [
-  { label: "Find near me" },
-  { label: "Write a review" },
-  { label: "Categories" },
-  { label: "For businesses" },
-  { label: "Login" },
-  { label: "Sign up" },
+  { label: "Find near me", onClick: () => {} },
+  { label: "Write a review", onClick: () => {} },
+  { label: "Categories", onClick: () => {} },
+  { label: "For businesses", onClick: () => {} },
+  { label: "Login", onClick: () => {} },
+  { label: "Sign up", onClick: () => {} },
 ];
 
 const mainMenuOptions = menuOptions.slice(0, 4);
@@ -23,6 +23,11 @@ const UserMenu = () => {
   const toggleOpen = () => {
     setIsOpen((value) => !value);
   };
+
+  // grab user location if available
+  useEffect(() => {
+    console.log(sessionStorage.getItem("userCoordinates"));
+  });
 
   return (
     <div className="relative">
