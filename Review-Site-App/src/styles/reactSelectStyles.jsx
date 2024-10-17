@@ -3,11 +3,9 @@ export const customStyles = {
     ...provided,
     backgroundColor: "white",
     border: "none",
-    minWidth: "200px",
-    width: "100%", // Allow to fill the parent width
     boxShadow: "none",
-    paddingTop: "4px",
-    paddingBottom: "4px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
     borderRadius: "0.125rem", //tailwind sm radius
     cursor: "text",
     outline: "none",

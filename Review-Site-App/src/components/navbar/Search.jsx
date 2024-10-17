@@ -1,10 +1,9 @@
-import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import useSearchModal from "../../hooks/useSearchModal";
 import SearchModal from "../modals/SerachModal";
 import { useState } from "react";
-import Select from "react-select";
+import AsyncSelect from "react-select/async";
 import { customStyles, noOptionsMessage } from "../../styles/reactSelectStyles";
-import useFetch from "../../hooks/useFetch";
 
 const searchOptions = [
   { value: "restaurants", label: "Restaurants" },
@@ -29,47 +28,97 @@ const locationOptions = [
 const Search = () => {
   // hook returns: { isOpen, onClose, onOpen }; onClose and onOpen toggle isOpen state between false and true respectively
   const searchModal = useSearchModal();
-  // hook returns [data] from the fetch call pased to it
 
-  const {
-    data: categories,
-    isLoading: isCategoriesLoading,
-    error: categoriesError,
-  } = useFetch("/category/list/all_categories");
-  const {
-    data: businesses,
-    isLoading: isBusinessesLoading,
-    error: businessesError,
-  } = useFetch("/business/list/all_businesses");
+  const [error, setError] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+  // state to track if menu is open or not for icon
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // map categories and businesses to match react-select label/value pairing
-  const categoriesData = categories?.categories.map((category) => ({
-    label: category.name,
-    value: category.id,
-  }));
-  const [searchParameter, setSearchParameter] = useState(null);
-  const [locationParameter, setLocationParameter] = useState(null);
+  const fetchSearchResults = async (searchParameter) => {
+    // to avoid fetch on click of input box
+    if (!searchParameter.length) return;
+    setError(null);
+    try {
+      const res = await fetch(
+        `https://api-review-site.onrender.com/api/search?query=${searchParameter}`
+      );
+      const data = await res.json();
+      // map returned data to match label value object for react select
+      return data.search_results.map((x) => ({
+        label: x.name,
+        value: x.id,
+      }));
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleSearchInputChange = (value) => {
+    // to avoid clearing input on certain actions
+    setInputValue(value);
+  };
+  // const handleSearchInputChange = ({ value, action }) => {
+  //   console.log(value);
+  //   console.log(action);
+  //   // to avoid clearing input on certain actions
+  //   if (action?.action !== "menu-close" || action?.action !== "input-blur") {
+  //     setInputValue(value);
+  //   }
+  // };
+
+  // // this will change to a navigate
+  // const handleSearchChange = (value) => {
+  //   setInputValue(value);
+  // };
+
+  const handleMenuOpen = () => {
+    setIsMenuOpen(true);
+  };
+
+  const handleMenuClose = () => {
+    setInputValue(inputValue);
+    setIsMenuOpen(false);
+  };
 
   return (
     <>
       {/* regular search bar for medium screens and larger */}
-      <div className="hidden relative md:flex font-semibold text-sm border-2 rounded-md border-r-0 hover:shadow-md">
+      <div className="ml-12 mr-6 hidden w-full max-w-[60vw] relative md:flex font-semibold text-sm border rounded-md border-r-0 hover:shadow-md">
         {/* categories/businesses drop down */}
-        <Select
-          options={categoriesData}
-          styles={customStyles}
-          placeholder="Things to do..."
-          onChange={(value) => setSearchParameter(value)}
-          // closeMenuOnScroll
-          noOptionsMessage={noOptionsMessage}
-        />
-        <Select
-          styles={customStyles}
-          options={locationOptions}
-          placeholder="Location"
-          onChange={(value) => setLocationParameter(value)}
-        />
-        <button className="flex-1 absolute right-0 bottom-[0.1px] p-2 bg-amber-500  border-amber-500 border rounded-md rounded-l-none  shadow-md max-w-[50px] ">
+
+        {/* USE ASYNC SELECT with api calls */}
+        <div className="flex-1 relative">
+          <AsyncSelect
+            onMenuOpen={handleMenuOpen}
+            inputValue={inputValue}
+            cacheOptions
+            defaultOptions={searchOptions}
+            loadOptions={fetchSearchResults}
+            noOptionsMessage={noOptionsMessage}
+            onMenuClose={handleMenuClose}
+            onInputChange={handleSearchInputChange}
+            // onInputChange={(value, action) =>
+            //   handleSearchInputChange({ value, action })
+            // }
+            placeholder="Things to do..."
+            styles={customStyles}
+          />
+          {isMenuOpen && (
+            <AiOutlineClose
+              className="absolute bottom-3 -left-5 hover:bg-neutral-800/10"
+              size={20}
+            />
+          )}
+        </div>
+        <div className="flex-1 relative">
+          <AsyncSelect
+            styles={customStyles}
+            options={locationOptions}
+            placeholder="Search by city..."
+            // onInputChange={(value) => setLocationParameter(value)}
+          />
+        </div>
+        <button className="flex-1 absolute right-0 bottom-0 top-0 p-2 bg-amber-500  border-amber-500 border-2 rounded-md rounded-l-none max-w-[50px] ">
           <AiOutlineSearch size={24} color="white" />
         </button>
       </div>

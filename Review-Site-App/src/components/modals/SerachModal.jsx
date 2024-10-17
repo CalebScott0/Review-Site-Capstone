@@ -12,7 +12,7 @@ const SearchModal = ({ onClose }) => {
               Things to do...
             </div>
             <div className="flex-1 border-l px-2 md:px-6 text-sm font-semibold text-neutral-500">
-              Location Search
+              Search by city...
             </div>
             <AiOutlineClose
               className="cursor-pointer rounded-full hover:scale-105"
