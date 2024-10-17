@@ -15,6 +15,7 @@ function App() {
         );
       });
     }
+    // IF USER GIVES COORDINATES, NAVIGATE TO FIND NEAR ME PAGE!! - you can send data with navigate - read router docs!!
   }, []);
   return (
     <>
