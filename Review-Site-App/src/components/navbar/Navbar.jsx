@@ -16,12 +16,14 @@ const Navbar = () => {
           </div>
         </Container>
         <Container>
-          <Button
-            label="Categories drop down will go here"
-            outline
-            disabled
-            // small
-          />
+          <div className="mt-6">
+            <Button
+              label="Categories drop down will go here"
+              outline
+              disabled
+              small
+            />
+          </div>
         </Container>
       </div>
     </div>

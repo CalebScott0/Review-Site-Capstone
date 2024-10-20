@@ -2,12 +2,13 @@ import MenuItem from "./MenuItem";
 import Button from "../Button";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useCallback, useEffect, useRef, useState } from "react";
+// import toast from "react-hot-toast";
 
 const menuOptions = [
   {
-    label: "Find near me",
+    label:
+      "Find near me - (change this to be inside of the location drop down menu)",
     onClick: () => {
       requestLocation();
     },
@@ -20,11 +21,11 @@ const menuOptions = [
 ];
 
 const requestLocation = () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(setPosition, handleLocationError);
-  } else {
-    toast.error("Browser does not support location services");
-  }
+  // if (navigator.geolocation) {
+  //   navigator.geolocation.getCurrentPosition(setPosition, handleLocationError);
+  // } else {
+  //   toast.error("Browser does not support location services");
+  // }
 };
 
 // const setPosition
@@ -42,10 +43,35 @@ const authMenuOptions = menuOptions.slice(4);
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
 
-  const toggleOpen = () => {
+  const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
-  };
+  }, []);
+
+  // use effect to add event listener on component mount and remove when unmounted
+  useEffect(() => {
+    // close menu on click outside - set event type explicitly to mouse event
+    const handleClick = (e) => {
+      // event.target is the dom element that was clicked on "mousedown"
+      // contains will be true for any element that is a child of the drop down ref div
+      //  false for elements that are not a child of the drop down rev div
+      if (menuRef.current && !menuRef.current.contains(e.target)) toggleOpen();
+    };
+
+    const handleEscape = (e) => {
+      // if key press is escape, close menu ONLY IF MENU IS OPEN
+      if (e.key === "Escape" && isOpen) toggleOpen();
+    };
+
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleEscape);
+    // clean up on unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [toggleOpen, isOpen]);
 
   // grab user location if available
   // useEffect(() => {
@@ -73,7 +99,10 @@ const UserMenu = () => {
       </div>
 
       {isOpen && (
-        <div className="absolute z-10 right-0 top-12 w-52 md:w-[25vw] bg-white shadow-md overflow-hidden rounded-lg border">
+        <div
+          ref={menuRef}
+          className="absolute z-10 right-0 top-12 w-52 md:w-[25vw] bg-white shadow-md overflow-hidden rounded-lg border"
+        >
           {mainMenuOptions.map((item, idx) => (
             <MenuItem label={item.label} handleClick={item.onClick} key={idx} />
           ))}

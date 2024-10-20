@@ -4,83 +4,77 @@ import SearchModal from "../modals/SearchModal";
 import { useState } from "react";
 import AsyncSelect from "react-select/async";
 import { customStyles, noOptionsMessage } from "../../styles/reactSelectStyles";
-import toast from "react-hot-toast";
-
-const searchOptions = [
-  { value: "restaurants", label: "Restaurants" },
-  { value: "coffee", label: "Coffee" },
-  { value: "bars", label: "Bars" },
-  { value: "hotels", label: "Hotels" },
-  { value: "parks", label: "Parks" },
-  { value: "starbucks", label: "Starbucks" },
-  { value: "joes-pizza", label: "Joe's Pizza" },
-  { value: "hilton-hotel", label: "Hilton Hotel" },
-  { value: "central-park", label: "Central Park" },
-];
-
-const locationOptions = [
-  { label: "New York", value: "new-york" },
-  { label: "San Francisco", value: "san-francisco" },
-  { label: "Los Angeles", value: "los-angeles" },
-  { label: "Chicago", value: "chicago" },
-  { label: "Houston", value: "houston" },
-];
+import { toast } from "react-hot-toast";
 
 const Search = () => {
   // hook returns: { isOpen, onClose, onOpen }; onClose and onOpen toggle isOpen state between false and true respectively
   const searchModal = useSearchModal();
+  // const [searchMenuIsOpen, setSearchMenuIsOpen] = useState(false);
 
-  const [error, setError] = useState(null);
+  // input values for server side filter search
   const [searchValue, setSearchValue] = useState("");
   const [locationValue, setLocationValue] = useState("Indianapolis, In");
+  // selected values
+  const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
+
+  // default value for inputs on load after click on menu
+  const [defaultSearch, setdefaultSearch] = useState([]);
+  const [defaultLocations, setdefaultLocations] = useState([]);
+  // state to track first time user interacts with location menu to clear default
+  const [hasInteractedWithLocation, setHasInteractedWithLocation] =
+    useState(false);
 
   // state to track if menu is open or not for icon
   // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const fetchSearchResults = async (searchParameter) => {
-    setError(null);
+    // setError(null);
     try {
       const res = await fetch(
-        `https://api-review-site.onrender.com/api/search?query=${searchParameter}`
+        `https://api-review-site.onrender.com/api/search/businesses_and_categories?query=${searchParameter}`
       );
-
+      if (res.status !== 200 && res.status !== 400) {
+        toast.error("Unable to fetch search results");
+      }
+      // error on 404 response, 400 could just mean no search results - which will be handled by
+      // no Options Message
       let data = await res.json();
-
       // CHANGE THIS TO SHOW SOMETHING EXTRA WITH BUSINESSES
       data = [
         ...data.search_results.categories,
         ...data.search_results.businesses,
       ];
       // map returned data to match label value object for react select
+
       return data.map((x) => ({
         label: x.name,
         value: x.id,
       }));
-    } catch (error) {
-      setError(error.message);
+    } catch (e) {
+      // react select NoOptions message to handle results errors
     }
   };
 
   const fetchLocationResults = async (searchParameter) => {
-    setError(null);
+    // setError(null);
     try {
       const res = await fetch(
-        `https://api-review-site.onrender.com/api/business/list/locations?query=${searchParameter}`
+        `https://api-review-site.onrender.com/api/search//locations?location=${searchParameter}`
       );
       const data = await res.json();
-
       // USE A SET FOR ONLY UNIQUE VALUES? - and clean up capitalization
-
       // map returned data to match label value object for react select
       return data.locations.map(({ city, state }) => ({
         label: `${city}, ${state}`,
         value: `${city}, ${state}`,
       }));
-    } catch (error) {
-      setError(`${error.message}`);
+    } catch (e) {
+      // react select NoOptions message to handle results errors
     }
   };
 
+  // functions to handle input change
   const handleSearchInputChange = (value) => {
     // to avoid clearing input on certain actions
     setSearchValue(value);
@@ -88,41 +82,61 @@ const Search = () => {
 
   const handleLocationInputChange = (value) => {
     // to avoid clearing input on certain actions
+    // once interacted, will not call base render for defaults
+    setHasInteractedWithLocation(true);
     setLocationValue(value);
   };
 
-  // // this will change to a navigate
-  // const handleSearchChange = (value) => {
-  //   setInputValue(value);
-  // };
+  // functions to handle on selection change
+  // THIS WILL TURN INTO A NAVIGATE FUNCTION
+  const handleSearchChange = (value) => {
+    // setSearchMenuIsOpen(false);
+    // clear any input value on select
 
-  // const handleMenuOpen = () => {
-  //   setIsMenuOpen(true);
-  // };
+    setSelectedSearchTerm(value ? value.label : "");
+  };
 
-  const handleSearchMenuClose = () => {
-    setSearchValue(searchValue);
-    // setIsMenuOpen(false);
+  const handleLocationChange = async (value) => {
+    // if (!selectedSearchTerm) setSearchMenuIsOpen(true);
+    // ELSE NAVIGATE
+
+    setSelectedLocation(value ? value.label : "");
+    // change default shown after selection
+    setdefaultLocations(await fetchLocationResults(value.label));
+  };
+
+  const handleLocationMenuOpen = async () => {
+    // clear default location on menu open first interaction
+    // fetch default top 5 results for location
+    if (!hasInteractedWithLocation) {
+      setLocationValue("");
+      setdefaultLocations(await fetchLocationResults(""));
+    }
+  };
+
+  const handleSearchMenuOpen = async () => {
+    // fetch default top 5 results for categories
+    // if (!selectedSearchTerm) setdefaultSearch(await fetchSearchResults(""));
+    // else setdefaultSearch(await fetchSearchResults(selectedSearchTerm));
   };
 
   const handleLocationMenuClose = () => {
-    setLocationValue(locationValue);
-    // setIsMnuOpen(false);
+    if (locationValue && !selectedLocation) {
+      setLocationValue(locationValue);
+    }
   };
-
-  // const clearSearchInput = () => {
-  //   console.log(selectRef);
-  // };
 
   return (
     <>
-      {error && toast.error(error)}
       {/* regular search bar for medium screens and larger */}
       <div className="mx-12 hidden w-full max-w-[60vw] relative md:flex font-semibold text-sm border rounded-md border-r-0 hover:shadow-md">
         {/* categories/businesses drop down */}
 
         {/* USE ASYNC SELECT with api calls */}
-        <div className="flex-1 relative">
+        <div
+          className="flex-1 relative"
+          // onClick={() => setSearchMenuIsOpen(!searchMenuIsOpen)}
+        >
           <AsyncSelect
             cacheOptions
             defaultOptions
@@ -130,11 +144,12 @@ const Search = () => {
             inputValue={searchValue}
             // Function that returns a promise, which is the set of options to be used once the promise resolves.
             loadOptions={fetchSearchResults}
-            // menuIsOpen={isMenuOpen}
             noOptionsMessage={noOptionsMessage}
+            // set on select
+            onChange={handleSearchChange}
+            // set on input change
             onInputChange={handleSearchInputChange}
-            onMenuClose={handleSearchMenuClose}
-            // onMenuOpen={handleMenuOpen}
+            onMenuOpen={handleSearchMenuOpen}
             placeholder="Things to do..."
             styles={customStyles}
           />
@@ -150,20 +165,25 @@ const Search = () => {
         <div className="flex-1 relative">
           <AsyncSelect
             cacheOptions
-            // ADD DEFAULT OPTIONS
-            defaultOptions
+            // closeMenuOnSelect={false}
+            defaultOptions={defaultLocations}
             // value displayed in input on change
             inputValue={locationValue}
             // Function that returns a promise, which is the set of options to be used once the promise resolves.
             loadOptions={fetchLocationResults}
             noOptionsMessage={noOptionsMessage}
+            // set on select
+            onChange={handleLocationChange}
+            // set on change
             onInputChange={handleLocationInputChange}
             onMenuClose={handleLocationMenuClose}
+            // fetches options on menu open for first render
+            onMenuOpen={handleLocationMenuOpen}
             placeholder="Search by city..."
             styles={customStyles}
           />
         </div>
-        <button className="flex-1 absolute -right-10 bottom-0 top-0 px-2 bg-amber-500  border-amber-500 border-2 -my-[1px] rounded-md rounded-l-none max-w-[50px] ">
+        <button className="absolute -right-10 bottom-0 top-0 px-2 bg-amber-500  border-amber-500 border-2 -my-[1px] rounded-r-md max-w-[50px] ">
           <AiOutlineSearch size={24} color="white" />
         </button>
       </div>
@@ -184,8 +204,8 @@ const Search = () => {
           selectStyles={customStyles}
           handleSearchInputChange={handleSearchInputChange}
           handleLocationInputChange={handleLocationInputChange}
-          handleSearchMenuClose={handleSearchMenuClose}
-          handleLocationMenuClose={handleLocationMenuClose}
+          // handleSearchMenuClose={handleSearchMenuClose}
+          // handleLocationMenuClose={handleLocationMenuClose}
           onClose={searchModal.onClose}
           isOpen={searchModal.isOpen}
           noOptionsMessage={noOptionsMessage}

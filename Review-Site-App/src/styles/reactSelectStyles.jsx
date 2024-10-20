@@ -1,11 +1,14 @@
 export const customStyles = {
-  control: (provided) => ({
+  control: (provided, state) => ({
     ...provided,
     backgroundColor: "white",
     border: "none",
+    // boxShadow: state.isFocused ? "0 0 0 2px rgba(59, 140, 246, 0.5)" : "none", // Tailwind ring-blue-500 effect
     boxShadow: "none",
     paddingTop: "6px",
     paddingBottom: "6px",
+    paddingRight: window.innerWidth < 768 ? "42px" : "",
+    paddingLeft: window.innerWidth < 768 ? "30px" : "",
     borderRadius: "0.125rem", //tailwind sm radius
     cursor: "text",
     outline: "none",
