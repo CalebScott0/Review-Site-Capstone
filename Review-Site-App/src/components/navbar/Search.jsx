@@ -5,8 +5,10 @@ import { useState } from "react";
 import AsyncSelect from "react-select/async";
 import { customStyles, noOptionsMessage } from "../../styles/reactSelectStyles";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Search = () => {
+  const navigate = useNavigate();
   // hook returns: { isOpen, onClose, onOpen }; onClose and onOpen toggle isOpen state between false and true respectively
   const searchModal = useSearchModal();
   // const [searchMenuIsOpen, setSearchMenuIsOpen] = useState(false);
@@ -15,11 +17,13 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const [locationValue, setLocationValue] = useState("Indianapolis, In");
   // selected values
+  // value of search term will be category id
   const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
+  // selected location will be used on navigate, with location value indianapolis as a default
   const [selectedLocation, setSelectedLocation] = useState("");
 
   // default value for inputs on load after click on menu
-  const [defaultSearch, setdefaultSearch] = useState([]);
+  // const [defaultSearch, setdefaultSearch] = useState([]);
   const [defaultLocations, setdefaultLocations] = useState([]);
   // state to track first time user interacts with location menu to clear default
   const [hasInteractedWithLocation, setHasInteractedWithLocation] =
@@ -32,7 +36,8 @@ const Search = () => {
     // setError(null);
     try {
       const res = await fetch(
-        `https://api-review-site.onrender.com/api/search/businesses_and_categories?query=${searchParameter}`
+        `http://localhost:8080/api/search/businesses_and_categories?query=${searchParameter}`
+        // `https://api-review-site.onrender.com/api/search/businesses_and_categories?query=${searchParameter}`
       );
       if (res.status !== 200 && res.status !== 400) {
         toast.error("Unable to fetch search results");
@@ -40,18 +45,20 @@ const Search = () => {
       // error on 404 response, 400 could just mean no search results - which will be handled by
       // no Options Message
       let data = await res.json();
+      console.log(data);
       // CHANGE THIS TO SHOW SOMETHING EXTRA WITH BUSINESSES
       data = [
         ...data.search_results.categories,
         ...data.search_results.businesses,
       ];
       // map returned data to match label value object for react select
-
-      return data.map((x) => ({
-        label: x.name,
-        value: x.id,
+      return data.map((item) => ({
+        label: item.name,
+        value: item.id,
+        type: item.type,
       }));
     } catch (e) {
+      console.log(e);
       // react select NoOptions message to handle results errors
     }
   };
@@ -60,7 +67,8 @@ const Search = () => {
     // setError(null);
     try {
       const res = await fetch(
-        `https://api-review-site.onrender.com/api/search//locations?location=${searchParameter}`
+        `http://localhost:8080/api/search//locations?location=${searchParameter}`
+        // `https://api-review-site.onrender.com/api/search//locations?location=${searchParameter}`
       );
       const data = await res.json();
       // USE A SET FOR ONLY UNIQUE VALUES? - and clean up capitalization
@@ -70,8 +78,32 @@ const Search = () => {
         value: `${city}, ${state}`,
       }));
     } catch (e) {
+      console.log(e);
       // react select NoOptions message to handle results errors
     }
+  };
+
+  const handleSearchClick = () => {
+    if (!selectedSearchTerm) {
+      toast.error("Please enter a search term for things to do", {
+        duration: 2000,
+        className: "mt-16",
+      });
+      return;
+    }
+    // if search term is a category - show listings by distance from location
+    if (selectedSearchTerm.type === "category") {
+      console.log("category_id: ", selectedSearchTerm.value);
+    }
+    // if serach term is a business - navigate to business page
+    else if (selectedSearchTerm.type === "business") {
+      console.log("business_id: ", selectedSearchTerm.value);
+    }
+    // use selected location or default of location value as backup
+    selectedLocation
+      ? console.log(selectedLocation)
+      : console.log(locationValue);
+    navigate("/search");
   };
 
   // functions to handle input change
@@ -93,7 +125,7 @@ const Search = () => {
     // setSearchMenuIsOpen(false);
     // clear any input value on select
 
-    setSelectedSearchTerm(value ? value.label : "");
+    setSelectedSearchTerm(value ? value : "");
   };
 
   const handleLocationChange = async (value) => {
@@ -114,11 +146,11 @@ const Search = () => {
     }
   };
 
-  const handleSearchMenuOpen = async () => {
-    // fetch default top 5 results for categories
-    // if (!selectedSearchTerm) setdefaultSearch(await fetchSearchResults(""));
-    // else setdefaultSearch(await fetchSearchResults(selectedSearchTerm));
-  };
+  // const handleSearchMenuOpen = async () => {
+  //   // fetch default top 5 results for categories
+  //   // if (!selectedSearchTerm) setdefaultSearch(await fetchSearchResults(""));
+  //   // else setdefaultSearch(await fetchSearchResults(selectedSearchTerm));
+  // };
 
   const handleLocationMenuClose = () => {
     if (locationValue && !selectedLocation) {
@@ -149,7 +181,7 @@ const Search = () => {
             onChange={handleSearchChange}
             // set on input change
             onInputChange={handleSearchInputChange}
-            onMenuOpen={handleSearchMenuOpen}
+            // onMenuOpen={handleSearchMenuOpen}
             placeholder="Things to do..."
             styles={customStyles}
           />
@@ -183,7 +215,10 @@ const Search = () => {
             styles={customStyles}
           />
         </div>
-        <button className="absolute -right-10 bottom-0 top-0 px-2 bg-amber-500  border-amber-500 border-2 -my-[1px] rounded-r-md max-w-[50px] ">
+        <button
+          onClick={handleSearchClick}
+          className="absolute -right-10 bottom-0 top-0 px-2 bg-amber-500  border-amber-500 border-2 -my-[1px] rounded-r-md max-w-[50px] "
+        >
           <AiOutlineSearch size={24} color="white" />
         </button>
       </div>
