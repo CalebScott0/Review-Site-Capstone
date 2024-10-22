@@ -36,8 +36,8 @@ const Search = () => {
     // setError(null);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/search/businesses_and_categories?query=${searchParameter}`
-        // `https://api-review-site.onrender.com/api/search/businesses_and_categories?query=${searchParameter}`
+        // `http://localhost:8080/api/search/businesses_and_categories?query=${searchParameter}`
+        `https://api-review-site.onrender.com/api/search/businesses_and_categories?query=${searchParameter}`
       );
       if (res.status !== 200 && res.status !== 400) {
         toast.error("Unable to fetch search results");
@@ -45,7 +45,6 @@ const Search = () => {
       // error on 404 response, 400 could just mean no search results - which will be handled by
       // no Options Message
       let data = await res.json();
-      console.log(data);
       // CHANGE THIS TO SHOW SOMETHING EXTRA WITH BUSINESSES
       data = [
         ...data.search_results.categories,
@@ -67,8 +66,8 @@ const Search = () => {
     // setError(null);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/search//locations?location=${searchParameter}`
-        // `https://api-review-site.onrender.com/api/search//locations?location=${searchParameter}`
+        // `http://localhost:8080/api/search//locations?location=${searchParameter}`
+        `https://api-review-site.onrender.com/api/search//locations?location=${searchParameter}`
       );
       const data = await res.json();
       // USE A SET FOR ONLY UNIQUE VALUES? - and clean up capitalization
@@ -91,19 +90,29 @@ const Search = () => {
       });
       return;
     }
+    // use selected location or default of location value as backup
+    const location = selectedLocation ? selectedLocation : locationValue;
+    // slice out comma before passing to searchParams
+    const sliceIndex = location.indexOf(",");
+    const city = location.slice(0, sliceIndex).trim();
+    const state = location.slice(sliceIndex + 1).trim();
+
     // if search term is a category - show listings by distance from location
     if (selectedSearchTerm.type === "category") {
-      console.log("category_id: ", selectedSearchTerm.value);
+      navigate(
+        `/search?find_desc=${selectedSearchTerm.label}&find_loc=${city}${" "}${state}`,
+        {
+          // pass category id in location state
+          state: {
+            categoryId: selectedSearchTerm.value,
+          },
+        }
+      );
     }
-    // if serach term is a business - navigate to business page
+    // if search term is a business - navigate to business page
     else if (selectedSearchTerm.type === "business") {
       console.log("business_id: ", selectedSearchTerm.value);
     }
-    // use selected location or default of location value as backup
-    selectedLocation
-      ? console.log(selectedLocation)
-      : console.log(locationValue);
-    navigate("/search");
   };
 
   // functions to handle input change
@@ -161,7 +170,7 @@ const Search = () => {
   return (
     <>
       {/* regular search bar for medium screens and larger */}
-      <div className="mx-12 hidden w-full max-w-[60vw] relative md:flex font-semibold text-sm border rounded-md border-r-0 hover:shadow-md">
+      <div className="xl:mx-24 mx-12 hidden w-full max-w-[60vw] relative md:flex font-semibold text-sm border rounded-md border-r-0 shadow-md">
         {/* categories/businesses drop down */}
 
         {/* USE ASYNC SELECT with api calls */}
@@ -217,7 +226,7 @@ const Search = () => {
         </div>
         <button
           onClick={handleSearchClick}
-          className="absolute -right-10 bottom-0 top-0 px-2 bg-amber-500  border-amber-500 border-2 -my-[1px] rounded-r-md max-w-[50px] "
+          className="shadow-sm absolute -right-10 bottom-0 top-0 px-3 bg-amber-500  border-amber-500 border-2 -my-[1px] rounded-r-md max-w-[50px] "
         >
           <AiOutlineSearch size={24} color="white" />
         </button>

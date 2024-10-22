@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-const base_url = "http://localhost:8080/api";
-// const base_url = "https://api-review-site.onrender.com/api";
+// const base_url = "http://localhost:8080/api";
+const base_url = "https://api-review-site.onrender.com/api";
 
 const useFetch = (endpoint) => {
   const [data, setData] = useState(null);
