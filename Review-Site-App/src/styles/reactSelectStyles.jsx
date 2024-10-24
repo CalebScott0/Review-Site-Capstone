@@ -3,18 +3,15 @@ export const customStyles = {
     ...provided,
     backgroundColor: "white",
     border: "none",
-    // boxShadow: state.isFocused ? "0 0 0 2px rgba(59, 140, 246, 0.5)" : "none", // Tailwind ring-blue-500 effect
-    boxShadow: "none",
+    outline: state.isFocused ? "2px solid rgba(107, 114, 128, 0.5)" : "none", // Gray ring on focus
+    outlineOffset: "2px", // Adds space between the element and the ring
     paddingTop: "6px",
     paddingBottom: "6px",
+    boxShadow: "none",
     paddingRight: window.innerWidth < 768 ? "42px" : "",
     paddingLeft: window.innerWidth < 768 ? "30px" : "",
     borderRadius: "0.125rem", //tailwind sm radius
     cursor: "text",
-    outline: "none",
-    "&:focus": {
-      outline: "none",
-    },
   }),
   dropdownIndicator: (provided) => ({
     ...provided,

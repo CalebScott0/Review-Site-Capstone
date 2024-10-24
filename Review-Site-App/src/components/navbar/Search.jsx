@@ -6,7 +6,6 @@ import AsyncSelect from "react-select/async";
 import { customStyles, noOptionsMessage } from "../../styles/reactSelectStyles";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
 const Search = () => {
   const navigate = useNavigate();
   // hook returns: { isOpen, onClose, onOpen }; onClose and onOpen toggle isOpen state between false and true respectively
@@ -226,7 +225,7 @@ const Search = () => {
         </div>
         <button
           onClick={handleSearchClick}
-          className="shadow-sm absolute -right-10 bottom-0 top-0 px-3 bg-amber-500  border-amber-500 border-2 -my-[1px] rounded-r-md max-w-[50px] "
+          className=" focus:outline-none focus:ring-2 focus:ring-gray-500/50 focus:ring-offset-2 focus:rounded-md focus:ring-offset-white transition active:scale-95 hover:opacity-80 shadow-sm absolute -right-12 bottom-0 top-0 px-3 bg-amber-500  border-amber-500 border-2 -my-[1px] rounded-r-md max-w-[50px] "
         >
           <AiOutlineSearch size={24} color="white" />
         </button>

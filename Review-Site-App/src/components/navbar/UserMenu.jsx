@@ -43,7 +43,11 @@ const authMenuOptions = menuOptions.slice(4);
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  // ref to dropdown div for event listeners when open
   const menuRef = useRef(null);
+  // ref to user menu button toggle to stop handleClickOutside from firing on menu click when open
+  // this caused handleClickOutside to fire -> and then toggleOpen to fire
+  const userButtonRef = useRef(null);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
@@ -52,11 +56,18 @@ const UserMenu = () => {
   // use effect to add event listener on component mount and remove when unmounted
   useEffect(() => {
     // close menu on click outside - set event type explicitly to mouse event
-    const handleClick = (e) => {
+    const handleClickOutside = (e) => {
       // event.target is the dom element that was clicked on "mousedown"
       // contains will be true for any element that is a child of the drop down ref div
       //  false for elements that are not a child of the drop down rev div
-      if (menuRef.current && !menuRef.current.contains(e.target)) toggleOpen();
+      // and false if current is not the user menu button
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target) &&
+        userButtonRef.current &&
+        !userButtonRef.current.contains(e.target)
+      )
+        toggleOpen();
     };
 
     const handleEscape = (e) => {
@@ -64,11 +75,11 @@ const UserMenu = () => {
       if (e.key === "Escape" && isOpen) toggleOpen();
     };
 
-    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleEscape);
     // clean up on unmount
     return () => {
-      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleEscape);
     };
   }, [toggleOpen, isOpen]);
@@ -91,8 +102,12 @@ const UserMenu = () => {
       </div>
       {/* drop down menu for medium and smaller screens */}
       <div
-        onClick={toggleOpen}
-        className="flex cursor-pointer items-center border-neutral-200 border xl:hidden rounded-full p-2 mx-2 transition hover:shadow-md gap-2"
+        ref={userButtonRef}
+        onClick={(e) => {
+          e.stopPropagation(); // prevent click event from bubbling up to dom - interferes with event listeners
+          toggleOpen();
+        }}
+        className="active:scale-95 flex cursor-pointer items-center border-neutral-200 border xl:hidden rounded-full p-2 mx-2 transition hover:shadow-md gap-2"
       >
         <AiOutlineMenu />
         <Avatar />

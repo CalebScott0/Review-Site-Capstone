@@ -1,8 +1,8 @@
 import { useSearchParams, useLocation } from "react-router-dom";
 import Container from "../components/Container";
 import { useCallback, useEffect, useState } from "react";
-import useFetch from "../hooks/useFetch";
 import { useGetListingsQuery } from "../redux/api";
+import ListingsCard from "../components/listings/ListingsCard";
 
 const ListingsPage = () => {
   // const [data, setData] = useState(null);
@@ -13,6 +13,7 @@ const ListingsPage = () => {
   const [currentLocation, setCurrentLocation] = useState("");
   const [currentState, setCurrentState] = useState("");
   const [currentCity, setCurrentCity] = useState("");
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const location = useLocation();
@@ -28,22 +29,23 @@ const ListingsPage = () => {
     setCurrentLocation(`${city}, ${state}`);
     setCurrentCity(city);
     setCurrentState(state);
-    //   setIsLoading(true);
-    //   setError(null);
-    //   (async () => {
-    //     try {
-    //       const res = await fetch(
-    //         `https://api-review-site.onrender.com/api/businesses/categories/${categoryId}?city=${city}&state=${state}&limit=10&offset=0`
-    //       );
-    //       const data = await res.json();
 
-    //       setData(data);
-    //     } catch (error) {
-    //       setError(error.message);
-    //     } finally {
-    //       setIsLoading(false);
-    //     }
-    //   })();
+    // setIsLoading(true);
+    // setError(null);
+    // (async () => {
+    //   try {
+    //     const res = await fetch(
+    //       `https://api-review-site.onrender.com/api/businesses/categories/${categoryId}?city=${city}&state=${state}&limit=10&offset=0`
+    //     );
+    //     const data = await res.json();
+
+    //     setData(data);
+    //   } catch (error) {
+    //     setError(error.message);
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
+    // })();
     // }, [searchParams, categoryId]);
   }, [searchParams]);
   const { data, error, isLoading } = useGetListingsQuery({
@@ -56,9 +58,14 @@ const ListingsPage = () => {
     <div className="pt-40">
       <Container>
         {data && (
-          <div className="text-2xl tracking-wide leading-10 ml-6  ">
-            Header - move to own component folder - results for {header} in{" "}
-            {currentLocation} {data.businesses[0].name}
+          <div>
+            <div className="text-2xl tracking-wide leading-10 ml-6  ">
+              {/* HAVE THIS TAKE {CHILDREN} */}
+              Header - move to own component folder - results for {
+                header
+              } in {currentLocation} {data.businesses[0].name}
+            </div>
+            <ListingsCard businesses={data} />
           </div>
         )}
       </Container>
