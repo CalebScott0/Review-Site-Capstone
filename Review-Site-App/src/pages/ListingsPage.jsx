@@ -2,7 +2,7 @@ import { useSearchParams, useLocation } from "react-router-dom";
 import Container from "../components/Container";
 import { useCallback, useEffect, useState } from "react";
 import { useGetListingsQuery } from "../redux/api";
-import ListingsCard from "../components/listings/ListingsCard";
+import ListingsCard from "../components/cards/ListingsCard";
 
 const ListingsPage = () => {
   // const [data, setData] = useState(null);
@@ -54,10 +54,12 @@ const ListingsPage = () => {
     state: currentState,
   });
 
-  return (
-    <div className="pt-40">
-      <Container>
-        {data && (
+  // isLoading &&
+
+  if (data)
+    return (
+      <div className="pt-40">
+        <Container>
           <div>
             <div className="text-2xl tracking-wide leading-10 ml-6  ">
               {/* HAVE THIS TAKE {CHILDREN} */}
@@ -65,12 +67,18 @@ const ListingsPage = () => {
                 header
               } in {currentLocation} {data.businesses[0].name}
             </div>
-            <ListingsCard businesses={data} />
+            {data.businesses.map((business, idx) => (
+              <ListingsCard
+                className="cursor-pointer"
+                key={business.id}
+                business={business}
+                idx={idx + 1}
+              />
+            ))}
           </div>
-        )}
-      </Container>
-    </div>
-  );
+        </Container>
+      </div>
+    );
 };
 
 export default ListingsPage;
