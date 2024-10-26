@@ -1,7 +1,7 @@
 import { useSearchParams, useLocation } from "react-router-dom";
 import Container from "../components/Container";
 import { useCallback, useEffect, useState } from "react";
-import { useGetListingsQuery } from "../redux/api";
+import { useGetListingsQuery } from "../redux/businessesApi";
 import ListingsCard from "../components/cards/ListingsCard";
 
 const ListingsPage = () => {
@@ -48,17 +48,18 @@ const ListingsPage = () => {
     // })();
     // }, [searchParams, categoryId]);
   }, [searchParams]);
-  const { data, error, isLoading } = useGetListingsQuery({
+  const { data, error, isLoading, isFetching } = useGetListingsQuery({
     categoryId,
     city: currentCity,
     state: currentState,
   });
 
-  // isLoading &&
+  if (isLoading || isFetching)
+    return <div className="text-center pt-72 text-2xl">Loading Gang!</div>;
 
   if (data)
     return (
-      <div className="pt-40">
+      <div className="xl:pt-72 pt-44">
         <Container>
           <div>
             <div className="text-2xl tracking-wide leading-10 ml-6  ">
@@ -69,7 +70,6 @@ const ListingsPage = () => {
             </div>
             {data.businesses.map((business, idx) => (
               <ListingsCard
-                className="cursor-pointer"
                 key={business.id}
                 business={business}
                 idx={idx + 1}
