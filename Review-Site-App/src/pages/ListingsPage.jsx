@@ -9,7 +9,6 @@ const ListingsPage = () => {
   // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState(null);
 
-  const [isPhotosLoading, setIsPhotosLoading] = useState(false);
   const [header, setHeader] = useState("");
   const [currentLocation, setCurrentLocation] = useState("");
   const [currentState, setCurrentState] = useState("");
@@ -72,7 +71,6 @@ const ListingsPage = () => {
             <div className="lg:mx-52 mx-32">
               {data.businesses.map((business, idx) => (
                 <ListingsCard
-                  setIsPhotosLoading={setIsPhotosLoading}
                   key={business.id}
                   business={business}
                   idx={idx + 1}

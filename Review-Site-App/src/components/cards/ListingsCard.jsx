@@ -5,16 +5,13 @@ import ReactStars from "react-stars";
 import ListingsCarousel from "../carousels/ListingsCarousel";
 import { FaRegComment } from "react-icons/fa";
 
-const ListingsCard = ({ business, idx, setIsPhotosLoading }) => {
+const ListingsCard = ({ business, idx }) => {
   return (
     <Card
       // grid first column carousel auto and remaining content 1fr for full remaining space
       className={`border-b hover:border hover:shadow-md cursor-pointer grid grid-cols-[auto_1fr] gap-4`}
     >
-      <ListingsCarousel
-        setIsPhotosLoading={setIsPhotosLoading}
-        businessId={business.id}
-      />
+      <ListingsCarousel businessId={business.id} />
       <div>
         <CardHeader>
           {idx}. {business.name}
