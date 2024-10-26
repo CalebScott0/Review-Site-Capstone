@@ -5,13 +5,16 @@ import ReactStars from "react-stars";
 import ListingsCarousel from "../carousels/ListingsCarousel";
 import { FaRegComment } from "react-icons/fa";
 
-const ListingsCard = ({ business, idx }) => {
+const ListingsCard = ({ business, idx, setIsPhotosLoading }) => {
   return (
     <Card
       // grid first column carousel auto and remaining content 1fr for full remaining space
       className={`border-b hover:border hover:shadow-md cursor-pointer grid grid-cols-[auto_1fr] gap-4`}
     >
-      <ListingsCarousel businessId={business.id} />
+      <ListingsCarousel
+        setIsPhotosLoading={setIsPhotosLoading}
+        businessId={business.id}
+      />
       <div>
         <CardHeader>
           {idx}. {business.name}
@@ -41,7 +44,7 @@ const ListingsCard = ({ business, idx }) => {
             ))}
           </div>
           <FaRegComment className="absolute transform translate-y-[22px] -scale-x-100 " />
-          <q className="line-clamp-3 leading-6 pt-5 pl-6 pr-24 overflow-hidden text-sm">
+          <q className="line-clamp-2 leading-6 pt-5 pl-6 pr-12 overflow-hidden text-sm">
             {business.recent_review.review_text}
           </q>
         </CardContent>

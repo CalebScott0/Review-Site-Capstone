@@ -22,7 +22,7 @@ const ListingsCarousel = ({ businessId }) => {
     emblaApi && emblaApi.scrollNext();
   }, [emblaApi]);
 
-  if (data)
+  if (data) {
     return (
       <div className="relative w-40 lg:w-52">
         {/* carousel viewport */}
@@ -60,5 +60,6 @@ const ListingsCarousel = ({ businessId }) => {
         </button>
       </div>
     );
+  }
 };
 export default ListingsCarousel;
