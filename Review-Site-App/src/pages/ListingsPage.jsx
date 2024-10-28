@@ -1,8 +1,10 @@
 import { useSearchParams, useLocation } from "react-router-dom";
 import Container from "../components/Container";
-import { useCallback, useEffect, useState } from "react";
-import { useGetListingsQuery } from "../redux/businessesApi";
+import { useEffect, useState } from "react";
+import { useGetListingsQuery } from "../services/businessesApi";
 import ListingsCard from "../components/cards/ListingsCard";
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import { DotLoader } from "react-spinners";
 
 const ListingsPage = () => {
   // const [data, setData] = useState(null);
@@ -10,7 +12,6 @@ const ListingsPage = () => {
   // const [error, setError] = useState(null);
 
   const [header, setHeader] = useState("");
-  const [currentLocation, setCurrentLocation] = useState("");
   const [currentState, setCurrentState] = useState("");
   const [currentCity, setCurrentCity] = useState("");
 
@@ -23,13 +24,13 @@ const ListingsPage = () => {
     // get category type from search param - for header
     setHeader(searchParams.get("find_desc"));
     // get location from search param formatted as "city" + " " + "state".
-    const paramLocation = searchParams.get("find_loc").slice(0);
-    const city = paramLocation.slice(0, paramLocation.indexOf(" "));
-    const state = paramLocation.slice(paramLocation.indexOf(" ") + 1).trim();
-    setCurrentLocation(`${city}, ${state}`);
+    const paramLocation = searchParams.get("find_loc");
+    // city will be last two characters of param
+    const city = paramLocation.slice(-2);
+    // -3 to grab beginning of string and slice until the space before city
+    const state = paramLocation.slice(0, paramLocation.length - 3);
     setCurrentCity(city);
     setCurrentState(state);
-
     // setIsLoading(true);
     // setError(null);
     // (async () => {
@@ -48,14 +49,37 @@ const ListingsPage = () => {
     // })();
     // }, [searchParams, categoryId]);
   }, [searchParams]);
-  const { data, error, isLoading, isFetching } = useGetListingsQuery({
-    categoryId,
-    city: currentCity,
-    state: currentState,
-  });
 
-  if (isLoading || isFetching)
+  // const { data, error, isLoading, isFetching } = useGetListingsQuery({
+  //   categoryId,
+  //   city: currentCity,
+  //   state: currentState,
+  //   limit: 10,
+  // });
+  const dataLabel = "businesses";
+  const {
+    items: data,
+    error,
+    isLoading,
+    lastItemRef,
+    isFetchingNextPage,
+  } = useInfiniteScroll(
+    useGetListingsQuery,
+    {
+      categoryId,
+      city: currentCity,
+      state: currentState,
+      limit: 10,
+    },
+    dataLabel
+  );
+  if (isLoading)
     return <div className="text-center pt-72 text-2xl">Loading Gang!</div>;
+
+  if (error) {
+    console.error("Error fetching listings:", error);
+    return <div>Error: {error.message}</div>;
+  }
 
   if (data)
     return (
@@ -66,16 +90,25 @@ const ListingsPage = () => {
               {/* HAVE THIS TAKE {CHILDREN} */}
               Header - move to own component folder - results for {
                 header
-              } in {currentLocation} {data.businesses[0].name}
+              } in {currentCity},{currentState}
+              {/* {data.businesses[0].name} */}
             </div>
             <div className="lg:mx-52 mx-32">
-              {data.businesses.map((business, idx) => (
-                <ListingsCard
+              {data.map((business, idx) => (
+                <div
                   key={business.id}
-                  business={business}
-                  idx={idx + 1}
-                />
+                  ref={idx === data.length - 1 ? lastItemRef : null}
+                  className="pb-8"
+                  // check if at end of currently fetched businesses list
+                >
+                  <ListingsCard business={business} idx={idx + 1} />
+                </div>
               ))}
+              {isFetchingNextPage && (
+                <div className="py-8 flex justify-center">
+                  <DotLoader size={30} color="#cccccc" />
+                </div>
+              )}
             </div>
           </div>
         </Container>

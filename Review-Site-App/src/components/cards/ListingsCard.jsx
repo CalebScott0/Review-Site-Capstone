@@ -51,11 +51,6 @@ const ListingsCard = ({ business, idx }) => {
   );
 };
 
-export default ListingsCard;
+ListingsCard.displayName = "ListingsCard";
 
-{
-  /* EXCEPT FOR CAROUSEL, DONT PASS DATA TO THESE HEADERS, HAVE THEM TAKE {CHILDREN} WITH base text styling and dimensions! (w-full)  */
-}
-{
-  /* <CardFooter></CardFooter> */
-}
+export default ListingsCard;

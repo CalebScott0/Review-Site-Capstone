@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api",
-    // baseUrl: "https://api-review-site.onrender.com/api",
+    // baseUrl: "http://localhost:8080/api",
+    baseUrl: "https://api-review-site.onrender.com/api",
   }),
   endpoints: () => ({}),
   // tagTypes: ["businesses"],

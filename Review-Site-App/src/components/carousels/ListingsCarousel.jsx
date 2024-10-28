@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { useGetPhotosQuery } from "../../redux/businessesApi";
+import { useGetPhotosQuery } from "../../services/businessesApi";
 import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 
 const ListingsCarousel = ({ businessId }) => {
@@ -21,6 +21,8 @@ const ListingsCarousel = ({ businessId }) => {
   const scrollNext = useCallback(() => {
     emblaApi && emblaApi.scrollNext();
   }, [emblaApi]);
+
+  if (isLoading) return <div>We loading pictures gang</div>;
 
   if (data) {
     return (
