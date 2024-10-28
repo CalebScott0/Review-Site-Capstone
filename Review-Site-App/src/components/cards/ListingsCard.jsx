@@ -5,8 +5,27 @@ import Badge from "../Badge";
 import ReactStars from "react-stars";
 import ListingsCarousel from "../carousels/ListingsCarousel";
 import { FaRegComment } from "react-icons/fa";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
-const ListingsCard = ({ business, idx }) => {
+const ListingsCard = ({ business, idx, searchParams }) => {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = useCallback(
+    ({ id, categoryName }) => {
+      // grab location search param from url
+      const locationParam = searchParams.get("find_loc");
+      // navigate with category name and id in state passed from badge click
+      navigate(`/search?find_desc=${categoryName}&find_loc=${locationParam}`, {
+        // pass category id in location state
+        state: {
+          categoryId: id,
+        },
+      });
+    },
+    [searchParams, navigate]
+  );
+
   return (
     <Card
       // grid first column carousel auto and remaining content 1fr for full remaining space
@@ -15,11 +34,9 @@ const ListingsCard = ({ business, idx }) => {
       <ListingsCarousel businessId={business.id} />
       <div>
         <CardHeader>
-          <h2>
-            {idx}
-            {". "}
-            {business.name}
-          </h2>
+          {idx}
+          {". "}
+          {business.name}
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2 px-2 -mt-2">
@@ -38,8 +55,20 @@ const ListingsCard = ({ business, idx }) => {
             {`${business.distance_from_location} mi.`}
           </Badge>
           <div className="flex gap-2 max-w-sm mt-1">
-            {business.categories.slice(0, 3).map((category) => (
-              <Badge key={category.idx}>{category.name}</Badge>
+            {/* slice off back for better variety */}
+            {business.categories.slice(-3).map((category) => (
+              // {business.categories.slice(0, 3).map((category) => (
+              <Badge
+                onClick={() =>
+                  handleCategoryClick({
+                    id: category.id,
+                    categoryName: category.name,
+                  })
+                }
+                key={category.idx}
+              >
+                {category.name}
+              </Badge>
             ))}
           </div>
           <FaRegComment className="absolute transform translate-y-[22px] -scale-x-100 " />

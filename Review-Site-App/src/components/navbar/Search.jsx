@@ -100,8 +100,9 @@ const Search = () => {
 
     // if search term is a category - show listings by distance from location
     if (selectedSearchTerm.type === "category") {
+      // encode URIComponent to account for spaces
       navigate(
-        `/search?find_desc=${selectedSearchTerm.label}&find_loc=${city}${" "}${state}`,
+        `/search?find_desc=${encodeURIComponent(selectedSearchTerm.label)}&find_loc=${encodeURIComponent(`${city} ${state}`)})`,
         {
           // pass category id in location state
           state: {

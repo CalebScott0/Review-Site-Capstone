@@ -5,6 +5,16 @@ const businessesApi = api.injectEndpoints({
     getListings: builder.query({
       query: ({ categoryId, city, state, page, limit = 10 }) =>
         `businesses/categories/${categoryId}?city=${city}&state=${state}&limit=${limit}&offset=${page * limit}`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.businesses.map(({ id }) => ({
+                type: "Businesses",
+                id,
+              })),
+              { type: "Businesses", id: "LIST" },
+            ]
+          : [{ type: "Businesses", id: "LIST" }],
     }),
     getPhotos: builder.query({
       query: (id) => `businesses/${id}/photos`,

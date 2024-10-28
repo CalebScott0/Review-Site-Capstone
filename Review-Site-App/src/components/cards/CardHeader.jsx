@@ -1,8 +1,8 @@
 const CardHeader = ({ children, className }) => {
   return (
-    <div className={`font-bold text-xl tracking-wide p-2 ${className}`}>
+    <h2 className={`font-bold text-xl tracking-wide p-2 ${className}`}>
       {children}
-    </div>
+    </h2>
   );
 };
 export default CardHeader;

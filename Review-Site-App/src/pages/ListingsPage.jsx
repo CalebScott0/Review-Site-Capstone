@@ -15,7 +15,7 @@ const ListingsPage = () => {
   const [currentState, setCurrentState] = useState("");
   const [currentCity, setCurrentCity] = useState("");
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const location = useLocation();
   // category Id from location state
@@ -100,7 +100,11 @@ const ListingsPage = () => {
                   ref={idx === businesses.length - 1 ? lastItemRef : null}
                   className="pb-8"
                 >
-                  <ListingsCard business={business} idx={idx + 1} />
+                  <ListingsCard
+                    business={business}
+                    idx={idx + 1}
+                    searchParams={searchParams}
+                  />
                 </div>
               ))}
               {isFetchingNextPage && (

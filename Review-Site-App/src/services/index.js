@@ -7,6 +7,6 @@ export const api = createApi({
     // baseUrl: "http://localhost:8080/api",
     baseUrl: "https://api-review-site.onrender.com/api",
   }),
+  tagTypes: ["Businesses"],
   endpoints: () => ({}),
-  // tagTypes: ["businesses"],
 });
