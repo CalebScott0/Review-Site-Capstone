@@ -1,6 +1,7 @@
 import Card from "./Card";
 import CardHeader from "./CardHeader";
 import CardContent from "./CardContent";
+import Badge from "../Badge";
 import ReactStars from "react-stars";
 import ListingsCarousel from "../carousels/ListingsCarousel";
 import { FaRegComment } from "react-icons/fa";
@@ -14,13 +15,16 @@ const ListingsCard = ({ business, idx }) => {
       <ListingsCarousel businessId={business.id} />
       <div>
         <CardHeader>
-          {idx}. {business.name}
+          <h2>
+            {idx}
+            {". "}
+            {business.name}
+          </h2>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-2 px-2">
+          <div className="flex items-center gap-2 px-2 -mt-2">
             <ReactStars
               count={5}
-              size={24}
               edit={false}
               value={business.average_stars}
               color2="#ff007f"
@@ -30,14 +34,12 @@ const ListingsCard = ({ business, idx }) => {
             </span>
             ({business.review_count}) <span className="-ml-1">reviews</span>
           </div>
-          <div className="flex gap-2 max-w-sm">
+          <Badge disabled outline round>
+            {`${business.distance_from_location} mi.`}
+          </Badge>
+          <div className="flex gap-2 max-w-sm mt-1">
             {business.categories.slice(0, 3).map((category) => (
-              <div
-                className="bg-neutral-300 bg-opacity-80 text-sm rounded-md px-2 py-0.5 hover:bg-opacity-50 active:scale-95"
-                key={category.idx}
-              >
-                {category.name}
-              </div>
+              <Badge key={category.idx}>{category.name}</Badge>
             ))}
           </div>
           <FaRegComment className="absolute transform translate-y-[22px] -scale-x-100 " />

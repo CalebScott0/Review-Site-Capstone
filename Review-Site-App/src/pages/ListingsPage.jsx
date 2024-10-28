@@ -58,7 +58,7 @@ const ListingsPage = () => {
   // });
   const dataLabel = "businesses";
   const {
-    items: data,
+    items: businesses,
     error,
     isLoading,
     lastItemRef,
@@ -76,30 +76,29 @@ const ListingsPage = () => {
   if (isLoading)
     return <div className="text-center pt-72 text-2xl">Loading Gang!</div>;
 
-  if (error) {
-    console.error("Error fetching listings:", error);
-    return <div>Error: {error.message}</div>;
-  }
+  // if (error) {
+  //   console.error("Error fetching listings:", error);
+  //   return <div>Error: {error.message}</div>;
+  // }
 
-  if (data)
+  if (businesses)
     return (
       <div className="xl:pt-72 pt-44">
         <Container>
           <div>
-            <div className="text-2xl tracking-wide leading-10 ml-6  ">
+            <h1 className="text-2xl tracking-wide leading-10 ml-6  ">
               {/* HAVE THIS TAKE {CHILDREN} */}
               Header - move to own component folder - results for {
                 header
-              } in {currentCity},{currentState}
-              {/* {data.businesses[0].name} */}
-            </div>
+              } in {currentCity}, {currentState}
+            </h1>
             <div className="lg:mx-52 mx-32">
-              {data.map((business, idx) => (
+              {businesses.map((business, idx) => (
                 <div
                   key={business.id}
-                  ref={idx === data.length - 1 ? lastItemRef : null}
+                  // check if at end of currently fetched businesses list to apply lastItemRef for infiniteScroll
+                  ref={idx === businesses.length - 1 ? lastItemRef : null}
                   className="pb-8"
-                  // check if at end of currently fetched businesses list
                 >
                   <ListingsCard business={business} idx={idx + 1} />
                 </div>

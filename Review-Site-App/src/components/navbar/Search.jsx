@@ -76,17 +76,19 @@ const Search = () => {
         value: `${city}, ${state}`,
       }));
     } catch (e) {
-      console.log(e);
       // react select NoOptions message to handle results errors
     }
   };
 
   const handleSearchClick = () => {
-    if (!selectedSearchTerm) {
-      toast.error("Please enter a search term for things to do", {
-        duration: 2000,
-        className: "mt-16",
-      });
+    if (!selectedSearchTerm || !selectedLocation) {
+      toast.error(
+        `Please select ${selectedLocation ? "something to do" : "a location"}`,
+        {
+          duration: 2000,
+          className: "mt-16",
+        }
+      );
       return;
     }
     // use selected location or default of location value as backup
