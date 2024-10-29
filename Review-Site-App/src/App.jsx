@@ -1,7 +1,11 @@
 import Navbar from "./components/navbar/Navbar";
+
 import { Toaster } from "react-hot-toast";
+
 import { Route, Routes } from "react-router-dom";
+
 import ListingsPage from "./pages/ListingsPage";
+
 import HomePage from "./pages/HomePage";
 
 function App() {

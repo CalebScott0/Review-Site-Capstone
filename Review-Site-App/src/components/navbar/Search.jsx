@@ -1,29 +1,45 @@
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
+
 import useSearchModal from "../../hooks/useSearchModal";
+
 import SearchModal from "../modals/SearchModal";
+
 import { useState } from "react";
+
 import AsyncSelect from "react-select/async";
+
 import { customStyles, noOptionsMessage } from "../../styles/reactSelectStyles";
+
 import { toast } from "react-hot-toast";
+
 import { useNavigate } from "react-router-dom";
+
 const Search = () => {
   const navigate = useNavigate();
-  // hook returns: { isOpen, onClose, onOpen }; onClose and onOpen toggle isOpen state between false and true respectively
+
+  // hook returns: { isOpen, onClose, onOpen };
+  //  onClose and onOpen toggle isOpen state between false and true respectively
   const searchModal = useSearchModal();
+
   // const [searchMenuIsOpen, setSearchMenuIsOpen] = useState(false);
 
   // input values for server side filter search
   const [searchValue, setSearchValue] = useState("");
+
   const [locationValue, setLocationValue] = useState("Indianapolis, In");
+
   // selected values
   // value of search term will be category id
   const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
+
   // selected location will be used on navigate, with location value indianapolis as a default
   const [selectedLocation, setSelectedLocation] = useState("");
 
   // default value for inputs on load after click on menu
   // const [defaultSearch, setdefaultSearch] = useState([]);
+
   const [defaultLocations, setdefaultLocations] = useState([]);
+
   // state to track first time user interacts with location menu to clear default
   const [hasInteractedWithLocation, setHasInteractedWithLocation] =
     useState(false);
@@ -33,22 +49,26 @@ const Search = () => {
 
   const fetchSearchResults = async (searchParameter) => {
     // setError(null);
+
     try {
       const res = await fetch(
         // `http://localhost:8080/api/search/businesses_and_categories?query=${searchParameter}`
         `https://api-review-site.onrender.com/api/search/businesses_and_categories?query=${searchParameter}`
       );
+
       if (res.status !== 200 && res.status !== 400) {
         toast.error("Unable to fetch search results");
       }
       // error on 404 response, 400 could just mean no search results - which will be handled by
       // no Options Message
       let data = await res.json();
+
       // CHANGE THIS TO SHOW SOMETHING EXTRA WITH BUSINESSES
       data = [
         ...data.search_results.categories,
         ...data.search_results.businesses,
       ];
+
       // map returned data to match label value object for react select
       return data.map((item) => ({
         label: item.name,
@@ -57,18 +77,22 @@ const Search = () => {
       }));
     } catch (e) {
       console.log(e);
+
       // react select NoOptions message to handle results errors
     }
   };
 
   const fetchLocationResults = async (searchParameter) => {
     // setError(null);
+
     try {
       const res = await fetch(
         // `http://localhost:8080/api/search//locations?location=${searchParameter}`
         `https://api-review-site.onrender.com/api/search//locations?location=${searchParameter}`
       );
+
       const data = await res.json();
+
       // USE A SET FOR ONLY UNIQUE VALUES? - and clean up capitalization
       // map returned data to match label value object for react select
       return data.locations.map(({ city, state }) => ({
@@ -89,20 +113,24 @@ const Search = () => {
           className: "mt-16",
         }
       );
+
       return;
     }
     // use selected location or default of location value as backup
     const location = selectedLocation ? selectedLocation : locationValue;
+
     // slice out comma before passing to searchParams
     const sliceIndex = location.indexOf(",");
+
     const city = location.slice(0, sliceIndex).trim();
+
     const state = location.slice(sliceIndex + 1).trim();
 
     // if search term is a category - show listings by distance from location
     if (selectedSearchTerm.type === "category") {
       // encode URIComponent to account for spaces
       navigate(
-        `/search?find_desc=${encodeURIComponent(selectedSearchTerm.label)}&find_loc=${encodeURIComponent(`${city} ${state}`)})`,
+        `/search?find_desc=${encodeURIComponent(selectedSearchTerm.label)}&find_loc=${encodeURIComponent(`${city} ${state}`)}`,
         {
           // pass category id in location state
           state: {
@@ -127,6 +155,7 @@ const Search = () => {
     // to avoid clearing input on certain actions
     // once interacted, will not call base render for defaults
     setHasInteractedWithLocation(true);
+
     setLocationValue(value);
   };
 
@@ -134,6 +163,7 @@ const Search = () => {
   // THIS WILL TURN INTO A NAVIGATE FUNCTION
   const handleSearchChange = (value) => {
     // setSearchMenuIsOpen(false);
+
     // clear any input value on select
 
     setSelectedSearchTerm(value ? value : "");
@@ -141,9 +171,11 @@ const Search = () => {
 
   const handleLocationChange = async (value) => {
     // if (!selectedSearchTerm) setSearchMenuIsOpen(true);
+
     // ELSE NAVIGATE
 
     setSelectedLocation(value ? value.label : "");
+
     // change default shown after selection
     setdefaultLocations(await fetchLocationResults(value.label));
   };
@@ -153,6 +185,7 @@ const Search = () => {
     // fetch default top 5 results for location
     if (!hasInteractedWithLocation) {
       setLocationValue("");
+
       setdefaultLocations(await fetchLocationResults(""));
     }
   };
@@ -160,7 +193,9 @@ const Search = () => {
   // const handleSearchMenuOpen = async () => {
   //   // fetch default top 5 results for categories
   //   // if (!selectedSearchTerm) setdefaultSearch(await fetchSearchResults(""));
+
   //   // else setdefaultSearch(await fetchSearchResults(selectedSearchTerm));
+
   // };
 
   const handleLocationMenuClose = () => {

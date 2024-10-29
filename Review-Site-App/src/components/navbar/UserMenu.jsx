@@ -1,8 +1,13 @@
 import MenuItem from "./MenuItem";
+
 import Button from "../Button";
+
 import { AiOutlineMenu } from "react-icons/ai";
+
 import Avatar from "../Avatar";
+
 import { useCallback, useEffect, useRef, useState } from "react";
+
 // import toast from "react-hot-toast";
 
 const menuOptions = [
@@ -43,8 +48,10 @@ const authMenuOptions = menuOptions.slice(4);
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+
   // ref to dropdown div for event listeners when open
   const menuRef = useRef(null);
+
   // ref to user menu button toggle to stop handleClickOutside from firing on menu click when open
   // this caused handleClickOutside to fire -> and then toggleOpen to fire
   const userButtonRef = useRef(null);
@@ -76,10 +83,13 @@ const UserMenu = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+
     document.addEventListener("keydown", handleEscape);
+
     // clean up on unmount
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+
       document.removeEventListener("keydown", handleEscape);
     };
   }, [toggleOpen, isOpen]);
@@ -87,6 +97,7 @@ const UserMenu = () => {
   // grab user location if available
   // useEffect(() => {
   // console.log(sessionStorage.getItem("userCoordinates"));
+
   // });
 
   return (
@@ -104,7 +115,8 @@ const UserMenu = () => {
       <div
         ref={userButtonRef}
         onClick={(e) => {
-          e.stopPropagation(); // prevent click event from bubbling up to dom - interferes with event listeners
+          e.stopPropagation();
+          // prevent click event from bubbling up to dom - interferes with event listeners
           toggleOpen();
         }}
         className="active:scale-95 flex cursor-pointer items-center border-neutral-200 border xl:hidden rounded-full p-2 mx-2 transition hover:shadow-md gap-2"
