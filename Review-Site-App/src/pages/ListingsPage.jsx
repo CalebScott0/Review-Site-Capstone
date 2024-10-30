@@ -268,7 +268,6 @@ const ListingsPage = () => {
                   key={business.id}
                   // check if at end of currently fetched businesses list to apply lastItemRef for infiniteScroll
                   ref={idx === businessesToMap.length - 1 ? lastItemRef : null}
-                  className="w-full"
                 >
                   <ListingsCard
                     onClick={handleCardClick}
