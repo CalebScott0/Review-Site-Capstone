@@ -4,7 +4,7 @@ import CardContent from "./CardContent";
 import Badge from "../Badge";
 import ReactStars from "react-stars";
 import ListingsCarousel from "../carousels/ListingsCarousel";
-import { FaRegComment } from "react-icons/fa";
+import { FaRegComment, FaRegStar } from "react-icons/fa";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -39,12 +39,15 @@ const ListingsCard = ({ business, idx, searchParams }) => {
           {business.name}
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-2 px-2 -mt-2">
+          <div className="flex items-center gap-2 px-2 -mt-2 mb-2">
             <ReactStars
               count={5}
               edit={false}
               value={business.average_stars}
               color2="#ff007f"
+              size={25}
+              // char={<FaRegStar />}
+              half={true}
             />
             <span className="font-bold text-black">
               {business.average_stars}
@@ -54,7 +57,7 @@ const ListingsCard = ({ business, idx, searchParams }) => {
           <Badge disabled outline round>
             {`${business.distance_from_location} mi.`}
           </Badge>
-          <div className="flex gap-2 max-w-sm mt-1">
+          <div className="flex gap-2 max-w-sm mt-2 ml-0.5">
             {/* slice off back for better variety */}
             {business.categories.slice(-3).map((category) => (
               // {business.categories.slice(0, 3).map((category) => (
@@ -71,6 +74,7 @@ const ListingsCard = ({ business, idx, searchParams }) => {
               </Badge>
             ))}
           </div>
+          <div className="pt-2">{business.is_open}</div>
           <FaRegComment className="absolute transform translate-y-[22px] -scale-x-100 " />
           <q className="line-clamp-2 leading-6 pt-5 pl-6 pr-12 overflow-hidden text-sm">
             {business.recent_review.review_text}
