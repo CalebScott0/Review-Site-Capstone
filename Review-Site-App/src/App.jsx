@@ -8,6 +8,8 @@ import ListingsPage from "./pages/ListingsPage";
 
 import HomePage from "./pages/HomePage";
 
+import SingleBusiness from "./pages/SingleBusiness";
+
 function App() {
   return (
     <>
@@ -16,6 +18,7 @@ function App() {
         {/* //MAKE ONE /search route with serach parameters like yelp!! */}
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<ListingsPage />} />
+        <Route path="/business/:business_name" element={<SingleBusiness />} />
       </Routes>
       <Toaster />
     </>

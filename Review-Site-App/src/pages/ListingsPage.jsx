@@ -217,13 +217,13 @@ const ListingsPage = () => {
                 header
               } in {currentCity}, {currentState}
             </h1>
-            <div className="lg:mx-52 mx-32">
+            <div className="xl:mx-52 lg:mx-24 mx-10">
               {businessesToMap.map((business, idx) => (
                 <div
                   key={business.id}
                   // check if at end of currently fetched businesses list to apply lastItemRef for infiniteScroll
                   ref={idx === businessesToMap.length - 1 ? lastItemRef : null}
-                  className=""
+                  className="w-full"
                 >
                   <ListingsCard
                     business={business}
