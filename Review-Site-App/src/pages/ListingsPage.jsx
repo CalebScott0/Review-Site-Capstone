@@ -10,6 +10,8 @@ import { useGetListingsQuery } from "../services/businessesApi";
 
 import ListingsCard from "../components/cards/ListingsCard";
 
+import ListingsMap from "../components/ListingsMap";
+
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
 import { DotLoader } from "react-spinners";
@@ -247,16 +249,17 @@ const ListingsPage = () => {
       };
     });
     return (
-      <div className="pt-44">
-        <Container>
+      <Container>
+        <div className="pt-44 flex">
           <div>
-            <h1 className="text-2xl tracking-wide leading-10 ml-6  ">
+            <h1 className="text-2xl tracking-wide leading-10 ml-6">
               {/* HAVE THIS TAKE {CHILDREN} */}
               Header - move to own component folder - results for {
                 header
               } in {currentCity}, {currentState}
             </h1>
-            <div className="xl:mx-52 lg:mx-24 mx-10 pb-12">
+            <div>
+              {/* <div className=" lg:mx-24 mx-10 pb-12"> */}
               {businessesToMap.map((business, idx) => (
                 <div
                   onClick={() =>
@@ -285,8 +288,11 @@ const ListingsPage = () => {
               )}
             </div>
           </div>
-        </Container>
-      </div>
+          <div className="min-w-[500px] max-h-[400px]">
+            <ListingsMap />
+          </div>
+        </div>
+      </Container>
     );
   }
 };
