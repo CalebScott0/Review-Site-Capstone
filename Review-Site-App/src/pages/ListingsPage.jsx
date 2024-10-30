@@ -2,7 +2,9 @@ import { useSearchParams, useLocation } from "react-router-dom";
 
 import Container from "../components/Container";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 import { useGetListingsQuery } from "../services/businessesApi";
 
@@ -27,10 +29,12 @@ const ListingsPage = () => {
 
   const [searchParams] = useSearchParams();
 
-  const location = useLocation();
+  const { state } = useLocation();
+
+  const navigate = useNavigate();
 
   // category Id from location state
-  const { categoryId } = location.state;
+  const { categoryId } = state;
 
   useEffect(() => {
     // get category type from search param - for header
@@ -82,6 +86,23 @@ const ListingsPage = () => {
   //   limit: 10,
   // });
 
+  const handleCardClick = useCallback(
+    ({ businessId, businessName }) => {
+      // stop function if no business id or name
+      if (!businessId || !businessName) return;
+
+      // reformat name to be enhance url with dashes instead of spaces
+      const splitName = businessName.split(" ");
+      const joinNameWithDashes = splitName.join("-");
+      // navigate to single business page passing id in state
+      navigate(`/business/${joinNameWithDashes}`, {
+        state: {
+          businessId,
+        },
+      });
+    },
+    [navigate]
+  );
   const dataLabel = "businesses";
 
   const {
@@ -99,6 +120,24 @@ const ListingsPage = () => {
       limit: 10,
     },
     dataLabel
+  );
+
+  // navigate to new cateogry on category badge  click
+  const handleCategoryClick = useCallback(
+    ({ id, categoryName }) => {
+      // stop function if no id or categoryName
+      if (!id || !categoryName) return;
+      // grab location search param from url
+      const locationParam = searchParams.get("find_loc");
+      // navigate with category name and id in state passed from badge click
+      navigate(`/search?find_desc=${categoryName}&find_loc=${locationParam}`, {
+        // pass category id in location state
+        state: {
+          categoryId: id,
+        },
+      });
+    },
+    [searchParams, navigate]
   );
 
   const daysOfWeekMap = new Map();
@@ -208,7 +247,7 @@ const ListingsPage = () => {
       };
     });
     return (
-      <div className="xl:pt-72 pt-44">
+      <div className="pt-44">
         <Container>
           <div>
             <h1 className="text-2xl tracking-wide leading-10 ml-6  ">
@@ -217,18 +256,26 @@ const ListingsPage = () => {
                 header
               } in {currentCity}, {currentState}
             </h1>
-            <div className="xl:mx-52 lg:mx-24 mx-10">
+            <div className="xl:mx-52 lg:mx-24 mx-10 pb-12">
               {businessesToMap.map((business, idx) => (
                 <div
+                  onClick={() =>
+                    handleCardClick({
+                      businessId: business.id,
+                      businessName: business.name,
+                    })
+                  }
                   key={business.id}
                   // check if at end of currently fetched businesses list to apply lastItemRef for infiniteScroll
                   ref={idx === businessesToMap.length - 1 ? lastItemRef : null}
                   className="w-full"
                 >
                   <ListingsCard
+                    onClick={handleCardClick}
                     business={business}
                     idx={idx + 1}
                     searchParams={searchParams}
+                    onCategoryClick={handleCategoryClick}
                   />
                 </div>
               ))}

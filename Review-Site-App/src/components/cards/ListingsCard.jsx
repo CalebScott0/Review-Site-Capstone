@@ -4,30 +4,12 @@ import CardContent from "./CardContent";
 import Badge from "../Badge";
 import ReactStars from "react-stars";
 import ListingsCarousel from "../carousels/ListingsCarousel";
-import { FaRegComment, FaRegStar } from "react-icons/fa";
-import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { FaRegComment } from "react-icons/fa";
 
-const ListingsCard = ({ business, idx, searchParams }) => {
-  const navigate = useNavigate();
-
-  const handleCategoryClick = useCallback(
-    ({ id, categoryName }) => {
-      // grab location search param from url
-      const locationParam = searchParams.get("find_loc");
-      // navigate with category name and id in state passed from badge click
-      navigate(`/search?find_desc=${categoryName}&find_loc=${locationParam}`, {
-        // pass category id in location state
-        state: {
-          categoryId: id,
-        },
-      });
-    },
-    [searchParams, navigate]
-  );
-
+const ListingsCard = ({ business, idx, onClick, onCategoryClick }) => {
   return (
     <Card
+      onClick={onClick}
       // grid first column carousel auto and remaining content 1fr for full remaining space
       className={`border-b hover:border hover:shadow-md cursor-pointer sm:grid sm:grid-cols-[auto_1fr] gap-4`}
     >
@@ -69,12 +51,14 @@ const ListingsCard = ({ business, idx, searchParams }) => {
             {business.categories.slice(-3).map((category) => (
               // {business.categories.slice(0, 3).map((category) => (
               <Badge
-                onClick={() =>
-                  handleCategoryClick({
+                onClick={(e) => {
+                  // prevent click event from bubbling up to card
+                  e.stopPropagation();
+                  onCategoryClick({
                     id: category.id,
                     categoryName: category.name,
-                  })
-                }
+                  });
+                }}
                 key={category.idx}
               >
                 {category.name}

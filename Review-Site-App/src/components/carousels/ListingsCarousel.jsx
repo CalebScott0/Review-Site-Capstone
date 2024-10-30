@@ -17,13 +17,23 @@ const ListingsCarousel = ({ businessId }) => {
   });
 
   // carousel scroll functions
-  const scrollPrev = useCallback(() => {
-    emblaApi && emblaApi.scrollPrev();
-  }, [emblaApi]);
+  const scrollPrev = useCallback(
+    (e) => {
+      // prevent click from bubbling up to card
+      e.stopPropagation();
+      emblaApi && emblaApi.scrollPrev();
+    },
+    [emblaApi]
+  );
 
-  const scrollNext = useCallback(() => {
-    emblaApi && emblaApi.scrollNext();
-  }, [emblaApi]);
+  const scrollNext = useCallback(
+    (e) => {
+      // prevent click from bubbling up to card
+      e.stopPropagation();
+      emblaApi && emblaApi.scrollNext();
+    },
+    [emblaApi]
+  );
 
   if (isLoading) return <div>We loading pictures gang</div>;
 

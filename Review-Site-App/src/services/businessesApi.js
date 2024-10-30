@@ -1,7 +1,11 @@
-import { api } from ".";
+import { api } from "./index";
 
 const businessesApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    getSingleBusiness: builder.query({
+      query: (businessId) => `businesses/${businessId}`,
+      providesTags: (result, error, id) => [{ type: "Businesses", id }],
+    }),
     getListings: builder.query({
       query: ({ categoryId, city, state, page, limit = 10 }) =>
         `businesses/categories/${categoryId}?city=${city}&state=${state}&limit=${limit}&offset=${page * limit}`,
@@ -22,4 +26,8 @@ const businessesApi = api.injectEndpoints({
   }),
 });
 
-export const { useGetListingsQuery, useGetPhotosQuery } = businessesApi;
+export const {
+  useGetListingsQuery,
+  useGetPhotosQuery,
+  useGetSingleBusinessQuery,
+} = businessesApi;

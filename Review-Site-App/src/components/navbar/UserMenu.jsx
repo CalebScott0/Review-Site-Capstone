@@ -12,8 +12,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const menuOptions = [
   {
-    label:
-      "Find near me - (change this to be inside of the location drop down menu)",
+    label: "Find near me",
     onClick: () => {
       requestLocation();
     },
