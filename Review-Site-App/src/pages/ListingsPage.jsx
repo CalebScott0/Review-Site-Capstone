@@ -124,7 +124,6 @@ const ListingsPage = () => {
     },
     dataLabel
   );
-  locationCoordinates && console.log(locationCoordinates);
   // navigate to new cateogry on category badge  click
   const handleCategoryClick = useCallback(
     ({ id, categoryName }) => {
