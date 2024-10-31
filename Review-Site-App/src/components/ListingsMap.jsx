@@ -4,22 +4,27 @@ import maplibregl from "maplibre-gl";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
-const ListingsMap = () => {
+const ListingsMap = ({ center }) => {
+  console.log(center);
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const API_KEY = "pk.ac3170d97cf356772172e8528a0bdbeb";
-  useEffect(() => {
-    if (map.current) return; // stops map from initializing more than once
 
+  //   HIDE THIS SOMEWHERE
+  const API_KEY = "pk.ac3170d97cf356772172e8528a0bdbeb";
+
+  useEffect(() => {
+    // create a new map - (will be a canvas element in browser)
     map.current = new maplibregl.Map({
+      // pass map container ref as container for map
       container: mapContainer.current,
       style: `https://tiles.locationiq.com/v3/streets/vector.json?key=${API_KEY}`,
-      center: [0, 0],
-      zoom: 14,
+      // center as longitude, latitude passed from endpoint return for location search
+      center: [center?.longitude, center?.latitude],
+      zoom: 10, //default zoom value
     });
-  }, []);
+  }, [center]);
 
-  return <div ref={mapContainer} className="fixed w-full h-4/6"></div>;
+  return <div ref={mapContainer} className="fixed w-4/12 h-4/6"></div>;
 };
 
 export default ListingsMap;

@@ -11,6 +11,8 @@ const useInfiniteScroll = (
 
   const [items, setItems] = useState([]);
 
+  const [locationCoordinates, setLocationCoordinates] = useState(null);
+
   const observer = useRef();
 
   //   fetch from rtk query using passed in hook
@@ -19,7 +21,6 @@ const useInfiniteScroll = (
     ...queryArgs,
     page,
   });
-
   // clear list on new search
   useEffect(() => {
     setPage(0);
@@ -30,6 +31,10 @@ const useInfiniteScroll = (
   }, [queryArgs.categoryId, queryArgs.city, queryArgs.state]);
 
   useEffect(() => {
+    if (data?.search_location_coordinates) {
+      // specific handling for endpoint that returns search location coordinates as well as list of businesses
+      setLocationCoordinates(data.search_location_coordinates);
+    }
     if (data) {
       setItems((prevItems) => [...prevItems, ...data[`${dataLabel}`]]);
 
@@ -61,6 +66,7 @@ const useInfiniteScroll = (
 
   return {
     items,
+    locationCoordinates,
     error,
     isLoading,
     lastItemRef,

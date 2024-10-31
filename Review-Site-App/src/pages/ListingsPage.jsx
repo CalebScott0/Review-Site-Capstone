@@ -109,6 +109,7 @@ const ListingsPage = () => {
 
   const {
     items: businesses,
+    locationCoordinates,
     error,
     isLoading,
     lastItemRef,
@@ -123,7 +124,7 @@ const ListingsPage = () => {
     },
     dataLabel
   );
-
+  locationCoordinates && console.log(locationCoordinates);
   // navigate to new cateogry on category badge  click
   const handleCategoryClick = useCallback(
     ({ id, categoryName }) => {
@@ -238,9 +239,6 @@ const ListingsPage = () => {
 
   // }
   if (businesses) {
-    // for (let bus of businesses) {
-    // console.log(checkIsOpen(businesses[0]?.hours));
-    // }
     const businessesToMap = businesses.map((bus) => {
       return {
         ...bus,
@@ -258,7 +256,7 @@ const ListingsPage = () => {
                 header
               } in {currentCity}, {currentState}
             </h1>
-            <div>
+            <div className="mx-4">
               {/* <div className=" lg:mx-24 mx-10 pb-12"> */}
               {businessesToMap.map((business, idx) => (
                 <div
@@ -288,9 +286,11 @@ const ListingsPage = () => {
               )}
             </div>
           </div>
-          <div className="min-w-[500px] max-h-[400px]">
-            <ListingsMap />
-          </div>
+          {locationCoordinates && (
+            <div className="min-w-[500px] max-h-[400px] hidden md:block relative">
+              <ListingsMap center={locationCoordinates} />
+            </div>
+          )}
         </div>
       </Container>
     );
