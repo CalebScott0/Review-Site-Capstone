@@ -11,7 +11,7 @@ const useInfiniteScroll = (
 
   const [items, setItems] = useState([]);
 
-  const [locationCoordinates, setLocationCoordinates] = useState(null);
+  // const [locationCoordinates, setLocationCoordinates] = useState(null);
 
   const observer = useRef();
 
@@ -30,18 +30,18 @@ const useInfiniteScroll = (
     setItems([]);
   }, [queryArgs.categoryId, queryArgs.city, queryArgs.state]);
 
-  useEffect(() => {
-    if (data?.search_location_coordinates) {
-      // specific handling for endpoint that returns search location coordinates as well as list of businesses
-      setLocationCoordinates(data.search_location_coordinates);
-    }
-    if (data) {
-      setItems((prevItems) => [...prevItems, ...data[`${dataLabel}`]]);
+  // useEffect(() => {
+  //   if (data?.search_location_coordinates) {
+  //     // specific handling for endpoint that returns search location coordinates as well as list of businesses
+  //     setLocationCoordinates(data.search_location_coordinates);
+  //   }
+  //   if (data) {
+  //     setItems((prevItems) => [...prevItems, ...data[`${dataLabel}`]]);
 
-      // check if current length of fetched data is less than limit passed in query args
-      if (data[`${dataLabel}`]?.length < queryArgs.limit) setHasNextPage(false);
-    }
-  }, [data, dataLabel, queryArgs.limit]);
+  //     // check if current length of fetched data is less than limit passed in query args
+  //     if (data[`${dataLabel}`]?.length < queryArgs.limit) setHasNextPage(false);
+  //   }
+  // }, [data, dataLabel, queryArgs.limit]);
 
   //   create last Item ref
   const lastItemRef = useCallback(

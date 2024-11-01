@@ -62,7 +62,7 @@ const ListingsPage = () => {
 
   const {
     items: businesses,
-    locationCoordinates,
+    // locationCoordinates,
     error,
     isLoading,
     lastItemRef,
@@ -243,13 +243,13 @@ const ListingsPage = () => {
                         businessName: business.name,
                       })
                     }
-                    // data id for businessRefs target
+                    // data ids for businessRefs target
                     data-business-id={business.id}
                     data-business-lon={business.longitude}
                     data-business-lat={business.latitude}
-                    // add businessRefs with callback to all element for map
+                    // add businessRefs with callback to all elements for map
                     ref={(el) => {
-                      businessRefs.current[business.id] = el; // store business refs
+                      businessRefs.current[business.id] = el; // store business refs in current array
                     }}
                   >
                     <ListingsCard
@@ -273,10 +273,11 @@ const ListingsPage = () => {
               )}
             </div>
           </div>
-          {locationCoordinates && (
+          {/* {locationCoordinates && ( */}
+          {visibleBusinesses && (
             <div className="min-w-[500px] max-h-[400px] hidden md:block relative">
               <ListingsMap
-                center={locationCoordinates}
+                // center={locationCoordinates}
                 businessMarkers={visibleBusinesses}
               />
             </div>

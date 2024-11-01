@@ -5,6 +5,7 @@ const useVisibleBusinesses = (businesses) => {
   const [visibleBusinesses, setVisibleBusinesses] = useState([]);
 
   const businessRefs = useRef({});
+
   const handleIntersection = useCallback(
     (entries) => {
       // Create a Set for the current visible businesses
@@ -12,10 +13,12 @@ const useVisibleBusinesses = (businesses) => {
 
       // // Loop through each entry to check if it's intersecting
       entries.forEach((entry) => {
+        // grab the 3 data ids from entry div
+        const { businessId, businessLon, businessLat } = entry.target.dataset;
         const business = {
-          id: entry.target.dataset.businessId,
-          longitude: entry.target.dataset.businessLon,
-          latitude: entry.target.dataset.businessLat,
+          id: businessId,
+          longitude: businessLon,
+          latitude: businessLat,
         };
 
         if (entry.isIntersecting) {
@@ -24,10 +27,9 @@ const useVisibleBusinesses = (businesses) => {
         } else {
           // Remove the business if it's not in view
           currentVisible.delete(business);
-          console.log(currentVisible.size);
         }
       });
-
+      // set state with an array from current set
       setVisibleBusinesses(Array.from(currentVisible));
 
       // check which entries are intersecting
@@ -55,11 +57,13 @@ const useVisibleBusinesses = (businesses) => {
     // clear businessList if businesses changes - otherwise list will constantly grow on new listings
     setVisibleBusinesses([]);
 
+    // new intersection observer with handleIntersection callback, will observe multiple business elements
     const io = new IntersectionObserver(handleIntersection, {
       root: null, //If the root is null, then the bounds of the actual document viewport are used.
       rootMargin: "0px",
       threshold: 0.1, //the observer will trigger when 10% or more of the element is in view
     });
+
     // observe each business element
     businesses.forEach((el) => {
       const ref = businessRefs.current[el.id];

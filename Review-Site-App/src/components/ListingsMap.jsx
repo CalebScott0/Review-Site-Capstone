@@ -4,7 +4,8 @@ import maplibregl from "maplibre-gl";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
-const ListingsMap = ({ center, businessMarkers }) => {
+const ListingsMap = ({ businessMarkers }) => {
+  // const ListingsMap = ({ center, businessMarkers }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   //   HIDE THIS SOMEWHERE
@@ -13,7 +14,7 @@ const ListingsMap = ({ center, businessMarkers }) => {
   console.log(businessMarkers);
 
   useEffect(() => {
-    if (!center || !businessMarkers[0]) return;
+    if (!businessMarkers[0]) return;
     // set new center on change to new location
     if (map.current) {
       map.current.setCenter([
@@ -44,7 +45,8 @@ const ListingsMap = ({ center, businessMarkers }) => {
     });
 
     // remove nav controls on dismount
-  }, [center, businessMarkers]);
+  }, [businessMarkers]);
+  // }, [center, businessMarkers]);
 
   return <div ref={mapContainer} className="fixed w-4/12 h-4/6"></div>;
 };
