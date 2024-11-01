@@ -14,6 +14,8 @@ import ListingsMap from "../components/ListingsMap";
 
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
+import useVisibleBusinesses from "../hooks/useVisibleBusinesses";
+
 import { DotLoader } from "react-spinners";
 
 const ListingsPage = () => {
@@ -54,57 +56,8 @@ const ListingsPage = () => {
     setCurrentCity(city);
 
     setCurrentState(state);
-
-    // setIsLoading(true);
-
-    // setError(null);
-
-    // (async () => {
-    //   try {
-    //     const res = await fetch(
-    //       `https://api-review-site.onrender.com/api/businesses/categories/${categoryId}?city=${city}&state=${state}&limit=10&offset=0`
-    //     );
-
-    //     const data = await res.json();
-
-    //     setData(data);
-
-    //   } catch (error) {
-    //     setError(error.message);
-
-    //   } finally {
-    //     setIsLoading(false);
-
-    //   }
-    // })();
-
-    // }, [searchParams, categoryId]);
   }, [searchParams]);
 
-  // const { data, error, isLoading, isFetching } = useGetListingsQuery({
-  //   categoryId,
-  //   city: currentCity,
-  //   state: currentState,
-  //   limit: 10,
-  // });
-
-  const handleCardClick = useCallback(
-    ({ businessId, businessName }) => {
-      // stop function if no business id or name
-      if (!businessId || !businessName) return;
-
-      // reformat name to be enhance url with dashes instead of spaces
-      const splitName = businessName.split(" ");
-      const joinNameWithDashes = splitName.join("-");
-      // navigate to single business page passing id in state
-      navigate(`/business/${joinNameWithDashes}`, {
-        state: {
-          businessId,
-        },
-      });
-    },
-    [navigate]
-  );
   const dataLabel = "businesses";
 
   const {
@@ -124,6 +77,28 @@ const ListingsPage = () => {
     },
     dataLabel
   );
+
+  // business ref to be passed to each business element, and visibleBusinesses to be displayed as markers on map
+  const { visibleBusinesses, businessRefs } = useVisibleBusinesses(businesses);
+
+  const handleCardClick = useCallback(
+    ({ businessId, businessName }) => {
+      // stop function if no business id or name
+      if (!businessId || !businessName) return;
+
+      // reformat name to be enhance url with dashes instead of spaces
+      const splitName = businessName.split(" ");
+      const joinNameWithDashes = splitName.join("-");
+      // navigate to single business page passing id in state
+      navigate(`/business/${joinNameWithDashes}`, {
+        state: {
+          businessId,
+        },
+      });
+    },
+    [navigate]
+  );
+
   // navigate to new cateogry on category badge  click
   const handleCategoryClick = useCallback(
     ({ id, categoryName }) => {
@@ -238,7 +213,9 @@ const ListingsPage = () => {
 
   // }
   if (businesses) {
-    const businessesToMap = businesses.map((bus) => {
+    // **!!
+    // change this to something more efficient!!
+    const businessesData = businesses.map((bus) => {
       return {
         ...bus,
         // reassign value of is_open to current status
@@ -257,25 +234,36 @@ const ListingsPage = () => {
             </h1>
             <div className="mx-4">
               {/* <div className=" lg:mx-24 mx-10 pb-12"> */}
-              {businessesToMap.map((business, idx) => (
-                <div
-                  onClick={() =>
-                    handleCardClick({
-                      businessId: business.id,
-                      businessName: business.name,
-                    })
-                  }
-                  key={business.id}
-                  // check if at end of currently fetched businesses list to apply lastItemRef for infiniteScroll
-                  ref={idx === businessesToMap.length - 1 ? lastItemRef : null}
-                >
-                  <ListingsCard
-                    onClick={handleCardClick}
-                    business={business}
-                    idx={idx + 1}
-                    searchParams={searchParams}
-                    onCategoryClick={handleCategoryClick}
-                  />
+              {businessesData.map((business, idx) => (
+                <div key={business.id}>
+                  <div
+                    onClick={() =>
+                      handleCardClick({
+                        businessId: business.id,
+                        businessName: business.name,
+                      })
+                    }
+                    // data id for businessRefs target
+                    data-business-id={business.id}
+                    data-business-lon={business.longitude}
+                    data-business-lat={business.latitude}
+                    // add businessRefs with callback to all element for map
+                    ref={(el) => {
+                      businessRefs.current[business.id] = el; // store business refs
+                    }}
+                  >
+                    <ListingsCard
+                      onClick={handleCardClick}
+                      business={business}
+                      idx={idx + 1}
+                      searchParams={searchParams}
+                      onCategoryClick={handleCategoryClick}
+                    />
+                  </div>
+                  {/* ref for infinite scroll - assigned to last item in current businessesData list*/}
+                  <div
+                    ref={idx === businessesData.length - 1 ? lastItemRef : null}
+                  ></div>
                 </div>
               ))}
               {isFetchingNextPage && (
@@ -287,7 +275,10 @@ const ListingsPage = () => {
           </div>
           {locationCoordinates && (
             <div className="min-w-[500px] max-h-[400px] hidden md:block relative">
-              <ListingsMap center={locationCoordinates} />
+              <ListingsMap
+                center={locationCoordinates}
+                businessMarkers={visibleBusinesses}
+              />
             </div>
           )}
         </div>
