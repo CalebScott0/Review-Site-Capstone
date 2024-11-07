@@ -5,7 +5,7 @@ import Search from "./Search";
 import UserMenu from "./UserMenu";
 import { useLocation } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ handleCategoryClick, handleBusinessClick }) => {
   const { pathname } = useLocation();
   return (
     // fixed on list page, not fixed on single business page
@@ -16,7 +16,10 @@ const Navbar = () => {
         <Container>
           <div className="flex flex-row items-center mb-4 justify-between mx-2">
             <Logo />
-            <Search />
+            <Search
+              handleBusinessClick={handleBusinessClick}
+              handleCategoryClick={handleCategoryClick}
+            />
             <UserMenu />
           </div>
         </Container>

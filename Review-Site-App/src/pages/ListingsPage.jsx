@@ -1,217 +1,66 @@
-import { useSearchParams, useLocation } from "react-router-dom";
-
 import Container from "../components/Container";
 
-import { useCallback, useEffect, useState } from "react";
-
-import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 
 import { useGetListingsQuery } from "../services/businessesApi";
 
 import ListingsCard from "../components/cards/ListingsCard";
 
-import ListingsMap from "../components/ListingsMap";
+import ListingsMap from "../components/map/ListingsMap";
 
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import usePaginatedFetch from "../hooks/usePaginatedFetch";
 
-import useVisibleBusinesses from "../hooks/useVisibleBusinesses";
+import checkIsOpen from "../utils/CheckIsOpen";
 
 import { DotLoader } from "react-spinners";
 
-const ListingsPage = () => {
-  // const [data, setData] = useState(null);
-
-  // const [isLoading, setIsLoading] = useState(false);
-
-  // const [error, setError] = useState(null);
-
-  const [header, setHeader] = useState("");
-
-  const [currentState, setCurrentState] = useState("");
-
-  const [currentCity, setCurrentCity] = useState("");
-
-  const [searchParams] = useSearchParams();
-
-  const { state } = useLocation();
-
-  const navigate = useNavigate();
-
-  // category Id from location state
-  const { categoryId } = state;
-
-  useEffect(() => {
-    // get category type from search param - for header
-    setHeader(searchParams.get("find_desc"));
-
-    // get location from search param formatted as "city" + " " + "state".
-    const paramLocation = searchParams.get("find_loc");
-
-    // city will be last two characters of param
-    const city = paramLocation.slice(-2);
-
-    // -3 to grab beginning of string and slice until the space before city
-    const state = paramLocation.slice(0, paramLocation.length - 3);
-
-    setCurrentCity(city);
-
-    setCurrentState(state);
-  }, [searchParams]);
-
+const ListingsPage = ({
+  currentCity,
+  currentState,
+  categoryId,
+  category,
+  handleBusinessClick,
+  handleCategoryClick,
+}) => {
   const dataLabel = "businesses";
+
+  const limit = 10;
 
   const {
     items: businesses,
-    // locationCoordinates,
     error,
     isLoading,
-    lastItemRef,
+    handlePageChange, //function to change pages
     isFetchingNextPage,
-  } = useInfiniteScroll(
+    currentPage,
+    totalPages,
+    // hasNextPage,
+  } = usePaginatedFetch(
     useGetListingsQuery,
     {
       categoryId,
       city: currentCity,
       state: currentState,
-      limit: 10,
+      limit,
     },
     dataLabel
   );
+  console.log(totalPages);
 
-  // business ref to be passed to each business element, and visibleBusinesses to be displayed as markers on map
-  const { visibleBusinesses, businessRefs } = useVisibleBusinesses(businesses);
-
-  const handleCardClick = useCallback(
-    ({ businessId, businessName }) => {
-      // stop function if no business id or name
-      if (!businessId || !businessName) return;
-
-      // reformat name to be enhance url with dashes instead of spaces
-      const splitName = businessName.split(" ");
-      const joinNameWithDashes = splitName.join("-");
-      // navigate to single business page passing id in state
-      navigate(`/business/${joinNameWithDashes}`, {
-        state: {
-          businessId,
-        },
-      });
-    },
-    [navigate]
-  );
-
-  // navigate to new cateogry on category badge  click
-  const handleCategoryClick = useCallback(
-    ({ id, categoryName }) => {
-      // stop function if no id or categoryName
-      if (!id || !categoryName) return;
-      // grab location search param from url
-      const locationParam = searchParams.get("find_loc");
-      // navigate with category name and id in state passed from badge click
-      navigate(`/search?find_desc=${categoryName}&find_loc=${locationParam}`, {
-        // pass category id in location state
-        state: {
-          categoryId: id,
-        },
-      });
-    },
-    [searchParams, navigate]
-  );
-
-  const daysOfWeekMap = new Map();
-
-  const daysOfWeekArray = [
-    "SUNDAY",
-    "MONDAY",
-    "TUESDAY",
-    "WEDNESDAY",
-    "THURSDAY",
-    "FRIDAY",
-    "SATURDAY",
-  ];
-
-  // create map of days of week and corresponding values 0-6 for Sunday - Saturday
-  daysOfWeekArray.map((val, idx) => daysOfWeekMap.set(idx, val));
-
-  // MOVE THIS TO SEPARATE FOLDER?
-  const checkIsOpen = (hoursArray) => {
-    // grab current day string from map
-    const currentDate = new Date();
-    const currentDay = daysOfWeekMap.get(currentDate.getDay());
-
-    // find record for a businesses' hours for the current day
-    const todaysHours = hoursArray?.find(
-      (item) => item.day_of_week === currentDay
-    );
-    // if business has no hours for particular day, assume them to be closed
-    if (!todaysHours)
-      return <p className="text-sm text-rose-600 font-bold">Closed Today</p>;
-
-    // convert today's hours to a date object for business
-    const closingHour = new Date(todaysHours.close_time);
-
-    const openingHour = new Date(todaysHours.open_time);
-
-    // convert dates passed in and current date to total time in seconds (hours * seconds in an hour + minutes *... etc)
-    const currTimeInSeconds =
-      currentDate.getHours() * Math.pow(60, 2) +
-      currentDate.getMinutes() * 60 +
-      currentDate.getSeconds();
-
-    const closingTimeInSeconds =
-      closingHour.getHours() * Math.pow(60, 2) + closingHour.getMinutes() * 60;
-
-    const openingTimeInSeconds =
-      openingHour.getHours() * Math.pow(60, 2) + openingHour.getMinutes() * 60;
-
-    if (
-      closingTimeInSeconds > currTimeInSeconds &&
-      openingTimeInSeconds < currTimeInSeconds
-    ) {
-      return (
-        <p className="text-sm">
-          <span className="font-bold text-emerald-600">Open</span> until{" "}
-          {closingHour.toLocaleTimeString([], {
-            hour: "numeric",
-            minute: "2-digit",
-          })}
-        </p>
-      );
-    }
-    // Return for else will reference opening hour of next day
-    else {
-      const tomorrow = daysOfWeekMap.get(currentDate.getDay() + 1);
-      // find tomorrows hours for business
-      // ADD HANDLING IF NO HOURS FOR TOMOROW
-      const tomorrowHours = hoursArray?.find(
-        (item) => item.day_of_week === tomorrow
-      );
-
-      const tomorrowOpeningHour = new Date(
-        tomorrowHours.open_time
-      ).toLocaleTimeString([], {
-        // return hours and minutes
-        hour: "numeric",
-        minute: "2-digit",
-      });
-
-      return (
-        <p className="text-sm">
-          <span className="text-rose-600 font-bold">Closed </span>
-          until {tomorrowOpeningHour} tomorrow
-        </p>
-      );
-    }
+  // function to get listings insxdex for business, accounts for current page
+  const listingsIndex = (idx, currPage) => {
+    return idx + 1 + (currPage - 1) * limit;
   };
 
   if (isLoading)
     return <div className="text-center pt-72 text-2xl">Loading Gang!</div>;
 
-  // if (error) {
-  //   console.error("Error fetching listings:", error);
+  if (error) {
+    console.error("Error fetching listings:", error);
 
-  //   return <div>Error: {error.message}</div>;
+    return <div>Error: {error.message}</div>;
+  }
 
-  // }
   if (businesses) {
     // **!!
     // change this to something more efficient!!
@@ -224,64 +73,75 @@ const ListingsPage = () => {
     });
     return (
       <Container>
-        <div className="pt-44 flex">
-          <div>
-            <h1 className="text-2xl tracking-wide leading-10 ml-6">
-              {/* HAVE THIS TAKE {CHILDREN} */}
-              Header - move to own component folder - results for {
-                header
-              } in {currentCity}, {currentState}
-            </h1>
-            <div className="mx-4">
-              {/* <div className=" lg:mx-24 mx-10 pb-12"> */}
-              {businessesData.map((business, idx) => (
-                <div key={business.id}>
-                  <div
-                    onClick={() =>
-                      handleCardClick({
-                        businessId: business.id,
-                        businessName: business.name,
-                      })
-                    }
-                    // data ids for businessRefs target
-                    data-business-id={business.id}
-                    data-business-lon={business.longitude}
-                    data-business-lat={business.latitude}
-                    // add businessRefs with callback to all elements for map
-                    ref={(el) => {
-                      businessRefs.current[business.id] = el; // store business refs in current array
-                    }}
-                  >
-                    <ListingsCard
-                      onClick={handleCardClick}
-                      business={business}
-                      idx={idx + 1}
-                      searchParams={searchParams}
-                      onCategoryClick={handleCategoryClick}
-                    />
+        {!isFetchingNextPage && (
+          <div className="pt-44 flex">
+            <div>
+              <h1 className="text-2xl tracking-wide leading-10 ml-6">
+                {/* HAVE THIS TAKE {CHILDREN} */}
+                Header - move to own component folder - results for {
+                  category
+                }{" "}
+                in {currentCity}, {currentState}
+              </h1>
+              <div className="mx-4">
+                {/* <div className=" lg:mx-24 mx-10 pb-12"> */}
+                {businessesData.map((business, idx) => (
+                  <div key={business.id}>
+                    <div
+                      onClick={() =>
+                        handleBusinessClick({
+                          businessId: business.id,
+                          businessName: business.name,
+                        })
+                      }
+                    >
+                      <ListingsCard
+                        onClick={handleBusinessClick}
+                        business={business}
+                        // listingsIndex accounts for current page (adds 10 for each page after 1)
+                        listingsIndex={listingsIndex(idx, currentPage)}
+                        onCategoryClick={handleCategoryClick}
+                        currentCity={currentCity}
+                        currentState={currentState}
+                      />
+                    </div>
                   </div>
-                  {/* ref for infinite scroll - assigned to last item in current businessesData list*/}
-                  <div
-                    ref={idx === businessesData.length - 1 ? lastItemRef : null}
-                  ></div>
-                </div>
-              ))}
-              {isFetchingNextPage && (
-                <div className="py-8 flex justify-center">
-                  <DotLoader size={30} color="#cccccc" />
-                </div>
-              )}
+                ))}
+              </div>
             </div>
-          </div>
-          {/* {locationCoordinates && ( */}
-          {visibleBusinesses && (
+            {/* {locationCoordinates && ( */}
+            {/* {visibleBusinesses && ( */}
             <div className="min-w-[500px] max-h-[400px] hidden md:block relative">
               <ListingsMap
                 // center={locationCoordinates}
-                businessMarkers={visibleBusinesses}
+                businessMarkers={businesses}
+                currentPage={currentPage}
+                limit={limit}
               />
             </div>
-          )}
+            {/* )} */}
+          </div>
+        )}
+        {isFetchingNextPage && (
+          <div className="py-8 pt-44 flex justify-center">
+            <DotLoader size={30} color="#cccccc" />
+          </div>
+        )}
+        <div className="pb-24 flex gap-2">
+          <Button
+            outline
+            onClick={() => {
+              handlePageChange(1);
+            }}
+            label={"Page backski"}
+          ></Button>
+          <Button
+            outline
+            onClick={() => {
+              handlePageChange(2);
+            }}
+            label={"Page forward"}
+          ></Button>
         </div>
       </Container>
     );

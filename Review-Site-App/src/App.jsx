@@ -10,14 +10,37 @@ import HomePage from "./pages/HomePage";
 
 import SingleBusiness from "./pages/SingleBusiness";
 
+import useSearchState from "./hooks/useSearchState";
+
+import useNavigation from "./hooks/useNavigation";
+
 function App() {
+  // hooks for searchState and navigation to a new category or to single business
+  const { category, categoryId, currentCity, currentState } = useSearchState();
+  const { handleBusinessClick, handleCategoryClick } = useNavigation();
+
   return (
     <>
-      <Navbar />
+      <Navbar
+        handleBusinessClick={handleBusinessClick}
+        handleCategoryClick={handleCategoryClick}
+      />
       <Routes>
         {/* //MAKE ONE /search route with serach parameters like yelp!! */}
         <Route path="/" element={<HomePage />} />
-        <Route path="/search" element={<ListingsPage />} />
+        <Route
+          path="/search"
+          element={
+            <ListingsPage
+              currentCity={currentCity}
+              currentState={currentState}
+              categoryId={categoryId}
+              category={category}
+              handleBusinessClick={handleBusinessClick}
+              handleCategoryClick={handleCategoryClick}
+            />
+          }
+        />
         <Route path="/business/:business_name" element={<SingleBusiness />} />
       </Routes>
       <Toaster />

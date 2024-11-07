@@ -4,6 +4,8 @@ import useSearchModal from "../../hooks/useSearchModal";
 
 import SearchModal from "../modals/SearchModal";
 
+import BusinessSearchLabel from "./BusinessSearchLabel";
+
 import { useState } from "react";
 
 import AsyncSelect from "react-select/async";
@@ -12,10 +14,10 @@ import { customStyles, noOptionsMessage } from "../../styles/reactSelectStyles";
 
 import { toast } from "react-hot-toast";
 
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
-const Search = () => {
-  const navigate = useNavigate();
+const Search = ({ handleCategoryClick, handleBusinessClick }) => {
+  // const navigate = useNavigate();
 
   // hook returns: { isOpen, onClose, onOpen };
   //  onClose and onOpen toggle isOpen state between false and true respectively
@@ -62,19 +64,27 @@ const Search = () => {
       // error on 404 response, 400 could just mean no search results - which will be handled by
       // no Options Message
       let data = await res.json();
+      // console.log(data);
 
       // CHANGE THIS TO SHOW SOMETHING EXTRA WITH BUSINESSES
       data = [
         ...data.search_results.categories,
         ...data.search_results.businesses,
       ];
-
       // map returned data to match label value object for react select
-      return data.map((item) => ({
-        label: item.name,
+      // businesses will have a city / state or an indicator of multiple options
+      const menuItems = data.map((item) => ({
+        label:
+          item.type === "business" ? (
+            <BusinessSearchLabel business={item} />
+          ) : (
+            item.name
+          ),
         value: item.id,
         type: item.type,
       }));
+
+      return menuItems;
     } catch (e) {
       console.log(e);
 
@@ -105,43 +115,37 @@ const Search = () => {
   };
 
   const handleSearchClick = () => {
-    if (!selectedSearchTerm || !selectedLocation) {
-      toast.error(
-        `Please select ${selectedLocation ? "something to do" : "a location"}`,
-        {
-          duration: 2000,
-          className: "mt-16",
-        }
-      );
+    // only handle category search here, business clicks will be handled on component
+    if (selectedSearchTerm?.type === "category") {
+      // use selected location or default of location value as backup
+      const location = selectedLocation ? selectedLocation : locationValue;
 
-      return;
-    }
-    // use selected location or default of location value as backup
-    const location = selectedLocation ? selectedLocation : locationValue;
+      // slice out comma before passing to searchParams
+      const sliceIndex = location.indexOf(",");
 
-    // slice out comma before passing to searchParams
-    const sliceIndex = location.indexOf(",");
+      const city = location.slice(0, sliceIndex).trim();
 
-    const city = location.slice(0, sliceIndex).trim();
+      if (!selectedSearchTerm || !selectedLocation) {
+        toast.error(
+          `Please select ${selectedLocation ? "something to do" : "a location"}`,
+          {
+            duration: 2000,
+            className: "mt-16",
+          }
+        );
 
-    const state = location.slice(sliceIndex + 1).trim();
+        return;
+      }
 
-    // if search term is a category - show listings by distance from location
-    if (selectedSearchTerm.type === "category") {
-      // encode URIComponent to account for spaces
-      navigate(
-        `/search?find_desc=${encodeURIComponent(selectedSearchTerm.label)}&find_loc=${encodeURIComponent(`${city} ${state}`)}`,
-        {
-          // pass category id in location state
-          state: {
-            categoryId: selectedSearchTerm.value,
-          },
-        }
-      );
-    }
-    // if search term is a business - navigate to business page
-    else if (selectedSearchTerm.type === "business") {
-      console.log("business_id: ", selectedSearchTerm.value);
+      const state = location.slice(sliceIndex + 1).trim();
+
+      // if search term is a category - show listings by distance from location
+      handleCategoryClick({
+        categoryId: selectedSearchTerm.value,
+        categoryName: selectedSearchTerm.label,
+        city,
+        state,
+      });
     }
   };
 
@@ -160,20 +164,18 @@ const Search = () => {
   };
 
   // functions to handle on selection change
-  // THIS WILL TURN INTO A NAVIGATE FUNCTION
   const handleSearchChange = (value) => {
-    // setSearchMenuIsOpen(false);
-
-    // clear any input value on select
-
-    setSelectedSearchTerm(value ? value : "");
+    // if label selected is a business, navigate to page and set name as search term
+    if (value.type === "business") {
+      handleBusinessClick({
+        businessId: value.label.props?.business.id,
+        businessName: value.label.props?.business.name,
+      });
+      // value.label = value.label.props?.business.name;
+    }
   };
 
   const handleLocationChange = async (value) => {
-    // if (!selectedSearchTerm) setSearchMenuIsOpen(true);
-
-    // ELSE NAVIGATE
-
     setSelectedLocation(value ? value.label : "");
 
     // change default shown after selection
@@ -190,20 +192,6 @@ const Search = () => {
     }
   };
 
-  // const handleSearchMenuOpen = async () => {
-  //   // fetch default top 5 results for categories
-  //   // if (!selectedSearchTerm) setdefaultSearch(await fetchSearchResults(""));
-
-  //   // else setdefaultSearch(await fetchSearchResults(selectedSearchTerm));
-
-  // };
-
-  const handleLocationMenuClose = () => {
-    if (locationValue && !selectedLocation) {
-      setLocationValue(locationValue);
-    }
-  };
-
   return (
     <>
       {/* regular search bar for medium screens and larger */}
@@ -211,10 +199,7 @@ const Search = () => {
         {/* categories/businesses drop down */}
 
         {/* USE ASYNC SELECT with api calls */}
-        <div
-          className="flex-1 relative"
-          // onClick={() => setSearchMenuIsOpen(!searchMenuIsOpen)}
-        >
+        <div className="flex-1 relative">
           <AsyncSelect
             cacheOptions
             defaultOptions
@@ -224,10 +209,12 @@ const Search = () => {
             loadOptions={fetchSearchResults}
             noOptionsMessage={noOptionsMessage}
             // set on select
-            onChange={handleSearchChange}
+            // onChange={handleSearchChange}
+            onChange={(value) => {
+              handleSearchChange(value); // Set the state
+            }}
             // set on input change
             onInputChange={handleSearchInputChange}
-            // onMenuOpen={handleSearchMenuOpen}
             placeholder="Things to do..."
             styles={customStyles}
           />
@@ -243,7 +230,6 @@ const Search = () => {
         <div className="flex-1 relative">
           <AsyncSelect
             cacheOptions
-            // closeMenuOnSelect={false}
             defaultOptions={defaultLocations}
             // value displayed in input on change
             inputValue={locationValue}
@@ -254,7 +240,6 @@ const Search = () => {
             onChange={handleLocationChange}
             // set on change
             onInputChange={handleLocationInputChange}
-            onMenuClose={handleLocationMenuClose}
             // fetches options on menu open for first render
             onMenuOpen={handleLocationMenuOpen}
             placeholder="Search by city..."

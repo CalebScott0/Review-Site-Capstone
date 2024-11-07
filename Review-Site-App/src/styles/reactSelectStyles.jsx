@@ -12,6 +12,7 @@ export const customStyles = {
     paddingLeft: window.innerWidth < 768 ? "30px" : "",
     borderRadius: "0.125rem", //tailwind sm radius
     cursor: "text",
+    width: "100%", // Ensures the control spans the full width of its container
   }),
   dropdownIndicator: (provided) => ({
     ...provided,
@@ -20,6 +21,9 @@ export const customStyles = {
   menu: (provided) => ({
     ...provided,
     backgroundColor: "white", // Customize the background color of the dropdown menu
+    width: "100%", // Makes the menu width the same as the control's width
+    minWidth: "300px", // You can set a minimum width for the dropdown
+    maxWidth: "400px", // You can also set a max width if you want it constrained
     // borderRadius: "0.5rem", //tailwind round-lg value
   }),
   option: (provided, state) => ({

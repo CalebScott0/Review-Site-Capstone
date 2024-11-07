@@ -6,7 +6,14 @@ import ReactStars from "react-stars";
 import ListingsCarousel from "../carousels/ListingsCarousel";
 import { FaRegComment } from "react-icons/fa";
 
-const ListingsCard = ({ business, idx, onClick, onCategoryClick }) => {
+const ListingsCard = ({
+  business,
+  listingsIndex,
+  onClick,
+  onCategoryClick,
+  currentCity,
+  currentState,
+}) => {
   return (
     <Card
       onClick={onClick}
@@ -16,10 +23,11 @@ const ListingsCard = ({ business, idx, onClick, onCategoryClick }) => {
       <div className="justify-self-center">
         {/* <div className="justify-self-center mt-10 md:mt-0"> */}
         <ListingsCarousel businessId={business.id} />
+        {/* </div> */}
       </div>
       <div>
         <CardHeader className="text-center sm:text-start">
-          {idx}
+          {listingsIndex}
           {". "}
           {business.name}
         </CardHeader>
@@ -55,11 +63,13 @@ const ListingsCard = ({ business, idx, onClick, onCategoryClick }) => {
                   // prevent click event from bubbling up to card
                   e.stopPropagation();
                   onCategoryClick({
-                    id: category.id,
+                    categoryId: category.id,
                     categoryName: category.name,
+                    city: currentCity,
+                    state: currentState,
                   });
                 }}
-                key={category.idx}
+                key={category.id}
               >
                 {category.name}
               </Badge>

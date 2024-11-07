@@ -7,9 +7,7 @@ import { useGetPhotosQuery } from "../../services/businessesApi";
 import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 
 const ListingsCarousel = ({ businessId }) => {
-  const id = businessId;
-
-  const { data, error, isLoading } = useGetPhotosQuery(id);
+  const { data, error, isLoading } = useGetPhotosQuery({ businessId });
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
