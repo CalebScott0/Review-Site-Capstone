@@ -17,6 +17,9 @@ const usePaginatedFetch = (
     ...queryArgs,
     page,
   });
+
+  const totalPages = data?.pages ?? 0;
+
   // clear list on new search - query args will change
   useEffect(() => {
     // reset to page 1
@@ -44,6 +47,33 @@ const usePaginatedFetch = (
     }
   };
 
+  // Pagination range logic
+  const getPaginationRange = () => {
+    const maxVisiblePages = 9;
+
+    // If total pages are fewer than max visible pages, show all
+    if (totalPages <= maxVisiblePages) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    // Calculate range for current page
+    let startPage;
+    // let endPage;
+
+    if (page < 6) {
+      startPage = 1;
+      // endPage = maxVisiblePages;
+    } else if (page + 4 >= totalPages) {
+      startPage = totalPages - maxVisiblePages + 1;
+      // endPage = totalPages;
+    } else {
+      startPage = page - 4;
+      // endPage = page + 4;
+    }
+
+    return Array.from({ length: maxVisiblePages }, (_, i) => startPage + i);
+  };
+
   return {
     items,
     error,
@@ -52,6 +82,7 @@ const usePaginatedFetch = (
     isFetchingNextPage: isFetching,
     currentPage: page,
     totalPages: data?.pages,
+    paginationRange: getPaginationRange(),
   };
 };
 

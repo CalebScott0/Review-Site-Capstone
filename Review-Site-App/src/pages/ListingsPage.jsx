@@ -34,6 +34,7 @@ const ListingsPage = ({
     isFetchingNextPage,
     currentPage,
     totalPages,
+    paginationRange,
     // hasNextPage,
   } = usePaginatedFetch(
     useGetListingsQuery,
@@ -45,6 +46,7 @@ const ListingsPage = ({
     },
     dataLabel
   );
+  console.log(paginationRange);
 
   // function to get listings insxdex for business, accounts for current page
   const listingsIndex = (idx, currPage) => {
@@ -73,52 +75,66 @@ const ListingsPage = ({
     return (
       <Container>
         {!isFetchingNextPage && (
-          <div className="pt-44 flex">
-            <div>
-              <h1 className="text-2xl tracking-wide leading-10 ml-6">
-                {/* HAVE THIS TAKE {CHILDREN} */}
-                Header - move to own component folder - results for {
-                  category
-                }{" "}
-                in {currentCity}, {currentState}
-              </h1>
-              <div className="mx-4">
-                {/* <div className=" lg:mx-24 mx-10 pb-12"> */}
-                {businessesData.map((business, idx) => (
-                  <div key={business.id}>
-                    <div
-                      onClick={() =>
-                        handleBusinessClick({
-                          businessId: business.id,
-                          businessName: business.name,
-                        })
-                      }
-                    >
-                      <ListingsCard
-                        onClick={handleBusinessClick}
-                        business={business}
-                        // listingsIndex accounts for current page (adds 10 for each page after 1)
-                        listingsIndex={listingsIndex(idx, currentPage)}
-                        onCategoryClick={handleCategoryClick}
-                        currentCity={currentCity}
-                        currentState={currentState}
-                      />
+          <div>
+            <div className="pt-44 flex">
+              <div>
+                <h1 className="text-2xl tracking-wide leading-10 ml-6">
+                  {/* HAVE THIS TAKE {CHILDREN} */}
+                  Header - move to own component folder - results for {
+                    category
+                  }{" "}
+                  in {currentCity}, {currentState}
+                </h1>
+                <div className="mx-4">
+                  {/* <div className=" lg:mx-24 mx-10 pb-12"> */}
+                  {businessesData.map((business, idx) => (
+                    <div key={business.id}>
+                      <div
+                        onClick={() =>
+                          handleBusinessClick({
+                            businessId: business.id,
+                            businessName: business.name,
+                          })
+                        }
+                      >
+                        <ListingsCard
+                          onClick={handleBusinessClick}
+                          business={business}
+                          // listingsIndex accounts for current page (adds 10 for each page after 1)
+                          listingsIndex={listingsIndex(idx, currentPage)}
+                          onCategoryClick={handleCategoryClick}
+                          currentCity={currentCity}
+                          currentState={currentState}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <div className="pb-24 flex gap-2 m-4">
+                  <Button
+                    outline
+                    onClick={() => {
+                      handlePageChange(1);
+                    }}
+                    label={totalPages}
+                  ></Button>
+                  <Button
+                    outline
+                    onClick={() => {
+                      handlePageChange(2);
+                    }}
+                    label={"Page forward"}
+                  ></Button>
+                </div>
+              </div>
+              <div className="min-w-[500px] max-h-[400px] hidden md:block relative">
+                <ListingsMap
+                  businessMarkers={businesses}
+                  currentPage={currentPage}
+                  limit={limit}
+                />
               </div>
             </div>
-            {/* {locationCoordinates && ( */}
-            {/* {visibleBusinesses && ( */}
-            <div className="min-w-[500px] max-h-[400px] hidden md:block relative">
-              <ListingsMap
-                // center={locationCoordinates}
-                businessMarkers={businesses}
-                currentPage={currentPage}
-                limit={limit}
-              />
-            </div>
-            {/* )} */}
           </div>
         )}
         {isFetchingNextPage && (
@@ -126,22 +142,6 @@ const ListingsPage = ({
             <DotLoader size={30} color="#cccccc" />
           </div>
         )}
-        <div className="pb-24 flex gap-2">
-          <Button
-            outline
-            onClick={() => {
-              handlePageChange(1);
-            }}
-            label={"Page backski"}
-          ></Button>
-          <Button
-            outline
-            onClick={() => {
-              handlePageChange(2);
-            }}
-            label={"Page forward"}
-          ></Button>
-        </div>
       </Container>
     );
   }

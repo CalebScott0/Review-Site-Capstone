@@ -97,8 +97,8 @@ const Search = ({ handleCategoryClick, handleBusinessClick }) => {
 
     try {
       const res = await fetch(
-        // `http://localhost:8080/api/search//locations?location=${searchParameter}`
-        `https://api-review-site.onrender.com/api/search//locations?location=${searchParameter}`
+        // `http://localhost:8080/api/search/locations?location=${searchParameter}`
+        `https://api-review-site.onrender.com/api/search/locations?location=${searchParameter}`
       );
 
       const data = await res.json();
@@ -116,6 +116,7 @@ const Search = ({ handleCategoryClick, handleBusinessClick }) => {
 
   const handleSearchClick = () => {
     // only handle category search here, business clicks will be handled on component
+    console.log();
     if (selectedSearchTerm?.type === "category") {
       // use selected location or default of location value as backup
       const location = selectedLocation ? selectedLocation : locationValue;
@@ -171,7 +172,8 @@ const Search = ({ handleCategoryClick, handleBusinessClick }) => {
         businessId: value.label.props?.business.id,
         businessName: value.label.props?.business.name,
       });
-      // value.label = value.label.props?.business.name;
+    } else {
+      setSelectedSearchTerm(value);
     }
   };
 
