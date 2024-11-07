@@ -22,23 +22,26 @@ const usePaginatedFetch = (
     // reset to page 1
     setPage(1);
 
-    // setHasNextPage(true);
-
     setItems([]);
   }, [queryArgs.categoryId, queryArgs.city, queryArgs.state]);
 
   useEffect(() => {
     if (data) {
+      // set items with passed in data label
       setItems(data[`${dataLabel}`]);
-      // check if current length of fetched data is less than limit passed in query args
-      // if (data[`${dataLabel}`]?.length < queryArgs.limit) setHasNextPage(false);
-      // else setHasNextPage(true);
+
+      // Sync hook page state with backend response in case they differ
+      if (data.page !== page) {
+        setPage(data.page);
+      }
     }
-  }, [data, dataLabel, queryArgs.limit]);
+  }, [data, dataLabel, page]);
 
   const handlePageChange = (newPage) => {
     // if new page is requested and data has a next page
-    setPage(newPage);
+    if (newPage !== page && newPage > 0 && newPage <= data?.pages) {
+      setPage(newPage);
+    }
   };
 
   return {
@@ -49,7 +52,6 @@ const usePaginatedFetch = (
     isFetchingNextPage: isFetching,
     currentPage: page,
     totalPages: data?.pages,
-    // hasNextPage,
   };
 };
 

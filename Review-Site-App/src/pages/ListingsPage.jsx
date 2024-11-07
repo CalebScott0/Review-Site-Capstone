@@ -45,7 +45,6 @@ const ListingsPage = ({
     },
     dataLabel
   );
-  console.log(totalPages);
 
   // function to get listings insxdex for business, accounts for current page
   const listingsIndex = (idx, currPage) => {
