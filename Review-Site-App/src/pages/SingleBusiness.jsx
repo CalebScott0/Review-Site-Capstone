@@ -3,6 +3,7 @@ import {
   useGetSingleBusinessQuery,
   useGetPhotosQuery,
 } from "../services/businessesApi";
+import SingleBusinessCarousel from "../components/carousels/SingleBusinessCarousel";
 
 const SingleBusiness = () => {
   const { state } = useLocation();
@@ -10,19 +11,28 @@ const SingleBusiness = () => {
   const { businessId } = state;
 
   const {
-    data: business,
+    data: singleBusiness,
     error: businessError,
     isLoading: isBusinessLoading,
-  } = useGetSingleBusinessQuery(businessId);
+  } = useGetSingleBusinessQuery({ businessId });
+  console.log(singleBusiness?.business);
   const {
-    data: photo,
+    data: businessImages,
     error: photosError,
     isLoading: isPhotosLoading,
-  } = useGetPhotosQuery(businessId);
+  } = useGetPhotosQuery({ businessId });
 
-  return (
-    <div className="pt-44">Lets look at a business gang {businessId} </div>
-  );
+  if (singleBusiness) {
+    return (
+      <div className="relative">
+        <SingleBusinessCarousel photos={businessImages?.photos} />
+        {/* <div className="absolute top-0 left-0 z-5 w-full h-full bg-black/40"></div> */}
+        <div className="z-10 text-shadow font-[poppins] font-bold text-5xl absolute bottom-[30%] left-[7%]">
+          {singleBusiness?.business?.name}
+        </div>
+      </div>
+    );
+  }
 };
 
 export default SingleBusiness;

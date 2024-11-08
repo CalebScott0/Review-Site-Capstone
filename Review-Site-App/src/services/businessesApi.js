@@ -3,7 +3,7 @@ import { api } from "./index";
 const businessesApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getSingleBusiness: builder.query({
-      query: (businessId) => `businesses/${businessId}`,
+      query: ({ businessId }) => `businesses/${businessId}`,
       providesTags: (result, error, id) => [{ type: "Businesses", id }],
     }),
     getListings: builder.query({

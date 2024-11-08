@@ -108,7 +108,7 @@ const ListingsPage = ({
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 mx-10 xl:mx-24">
+                <div className="mt-4 mx-10 md:mx-6 xl:mx-24">
                   <PaginationMenu
                     totalPages={totalPages}
                     currentPage={currentPage}
