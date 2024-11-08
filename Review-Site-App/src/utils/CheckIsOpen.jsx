@@ -58,7 +58,7 @@ const checkIsOpen = (hoursArray) => {
       </p>
     );
   }
-  // Return for else will reference opening hour of next day
+  // Return for else will reference opening hour of next open day
   else {
     const tomorrow = daysOfWeekMap.get(currentDate.getDay() + 1);
     // find tomorrows hours for business
@@ -67,18 +67,18 @@ const checkIsOpen = (hoursArray) => {
       (item) => item.day_of_week === tomorrow
     );
 
-    const tomorrowOpeningHour = new Date(
-      tomorrowHours.open_time
-    ).toLocaleTimeString([], {
-      // return hours and minutes
-      hour: "numeric",
-      minute: "2-digit",
-    });
+    // const tomorrowOpeningHour = new Date(
+    //   tomorrowHours?.open_time
+    // ).toLocaleTimeString([], {
+    //   // return hours and minutes
+    //   hour: "numeric",
+    //   minute: "2-digit",
+    // });
 
     return (
       <p className="text-sm">
-        <span className="text-rose-600 font-bold">Closed </span>
-        until {tomorrowOpeningHour} tomorrow
+        <span className="text-rose-600 font-bold">Closed today</span>
+        {/* until {tomorrowOpeningHour} tomorrow */}
       </p>
     );
   }

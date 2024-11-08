@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom";
 
 import maplibregl from "maplibre-gl";
 
 import "maplibre-gl/dist/maplibre-gl.css";
-import MapMarker from "./MapMarker";
 
 const ListingsMap = ({ businessMarkers, currentPage, limit }) => {
   // const ListingsMap = ({ center, businessMarkers }) => {
@@ -66,7 +64,9 @@ const ListingsMap = ({ businessMarkers, currentPage, limit }) => {
     };
   }, [businessMarkers]);
 
-  return <div ref={mapContainer} className="fixed w-4/12 h-4/6"></div>;
+  return (
+    <div ref={mapContainer} className="w-[320px] h-[80%] right-2 fixed"></div>
+  );
 };
 
 export default ListingsMap;

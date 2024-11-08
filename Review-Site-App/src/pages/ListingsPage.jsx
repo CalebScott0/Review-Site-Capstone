@@ -1,6 +1,6 @@
 import Container from "../components/Container";
 
-import Button from "../components/Button";
+import PaginationMenu from "../components/PaginationMenu";
 
 import { useGetListingsQuery } from "../services/businessesApi";
 
@@ -35,7 +35,6 @@ const ListingsPage = ({
     currentPage,
     totalPages,
     paginationRange,
-    // hasNextPage,
   } = usePaginatedFetch(
     useGetListingsQuery,
     {
@@ -46,7 +45,6 @@ const ListingsPage = ({
     },
     dataLabel
   );
-  console.log(paginationRange);
 
   // function to get listings insxdex for business, accounts for current page
   const listingsIndex = (idx, currPage) => {
@@ -76,7 +74,7 @@ const ListingsPage = ({
       <Container>
         {!isFetchingNextPage && (
           <div>
-            <div className="pt-44 flex">
+            <div className="pt-44 flex pb-24">
               <div>
                 <h1 className="text-2xl tracking-wide leading-10 ml-6">
                   {/* HAVE THIS TAKE {CHILDREN} */}
@@ -110,24 +108,16 @@ const ListingsPage = ({
                     </div>
                   ))}
                 </div>
-                <div className="pb-24 flex gap-2 m-4">
-                  <Button
-                    outline
-                    onClick={() => {
-                      handlePageChange(1);
-                    }}
-                    label={totalPages}
-                  ></Button>
-                  <Button
-                    outline
-                    onClick={() => {
-                      handlePageChange(2);
-                    }}
-                    label={"Page forward"}
-                  ></Button>
+                <div className="mt-4 mx-10 xl:mx-24">
+                  <PaginationMenu
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    handlePageChange={handlePageChange}
+                    paginationRange={paginationRange}
+                  />
                 </div>
               </div>
-              <div className="min-w-[500px] max-h-[400px] hidden md:block relative">
+              <div className="min-w-[320px] -mt-6 hidden md:block relative">
                 <ListingsMap
                   businessMarkers={businesses}
                   currentPage={currentPage}

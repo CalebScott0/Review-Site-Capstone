@@ -3,7 +3,8 @@ const Button = ({ label, onClick, disabled, outline, small, icon: Icon }) => {
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`focus:outline-none focus:ring-2 focus:ring-gray-500/50 focus:ring-offset-2 focus:ring-offset-white active:scale-95  w-full min-w-24 h-auto relative transition rounded-lg hover:opacity-80 px-4 disabled:cursor-not-allowed disabled:opacity-70
+      className={`focus:outline-none focus:ring-2 focus:ring-gray-500/50 focus:ring-offset-2 focus:ring-offset-white w-full min-w-24 h-auto relative transition rounded-lg hover:opacity-80 px-4 disabled:cursor-not-allowed disabled:opacity-70
+        ${disabled ? "" : "active:scale-95"}
         ${outline ? "bg-white" : "bg-amber-500"}
         ${outline ? "hover:bg-neutral-100" : ""}
         ${outline ? "border-black" : "border-amber-500"}

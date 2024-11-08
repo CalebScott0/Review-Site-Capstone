@@ -37,8 +37,8 @@ const ListingsCarousel = ({ businessId }) => {
 
   if (data) {
     return (
-      <div className="relative w-44 sm:w-52">
-        {/* <div className="relative w-40 sm:w-52"> */}
+      <div className="relative w-44">
+        {/* <div className="relative w-40"> */}
         {/* carousel viewport */}
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
@@ -47,8 +47,8 @@ const ListingsCarousel = ({ businessId }) => {
                 <img
                   src={photo.signed_url}
                   alt={photo.label}
-                  className="object-cover w-full h-44 sm:h-52"
-                  // className="object-cover w-full h-40 sm:h-52"
+                  className="object-cover w-full h-44"
+                  // className="object-cover w-full h-40"
                 />
               </div>
             ))}

@@ -32,8 +32,8 @@ const ListingsCard = ({
           {business.name}
         </CardHeader>
         <CardContent>
-          <div className="sm:flex items-center gap-2 sm:px-2 -mt-2 mb-2 text-center">
-            <div className="flex justify-center items-center gap-2">
+          <div className="sm:flex flex-wrap items-center gap-2 sm:px-2 -mt-2 mb-2 text-center">
+            <div className="flex flex-wrap justify-center items-center gap-2">
               <ReactStars
                 className="justify-self-center"
                 count={5}

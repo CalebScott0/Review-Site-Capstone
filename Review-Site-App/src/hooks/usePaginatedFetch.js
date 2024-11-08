@@ -18,8 +18,6 @@ const usePaginatedFetch = (
     page,
   });
 
-  const totalPages = data?.pages ?? 0;
-
   // clear list on new search - query args will change
   useEffect(() => {
     // reset to page 1
@@ -38,7 +36,9 @@ const usePaginatedFetch = (
         setPage(data.page);
       }
     }
-  }, [data, dataLabel, page]);
+    // no page dependency - interfering with click on pagination menu
+    // page update caused timing mismatch with async loading of data
+  }, [data, dataLabel]);
 
   const handlePageChange = (newPage) => {
     // if new page is requested and data has a next page
@@ -50,6 +50,7 @@ const usePaginatedFetch = (
   // Pagination range logic
   const getPaginationRange = () => {
     const maxVisiblePages = 9;
+    const totalPages = data?.pages ?? 0;
 
     // If total pages are fewer than max visible pages, show all
     if (totalPages <= maxVisiblePages) {
@@ -71,7 +72,7 @@ const usePaginatedFetch = (
       // endPage = page + 4;
     }
 
-    return Array.from({ length: maxVisiblePages }, (_, i) => startPage + i);
+    return Array.from({ length: maxVisiblePages }, (_, idx) => startPage + idx);
   };
 
   return {
