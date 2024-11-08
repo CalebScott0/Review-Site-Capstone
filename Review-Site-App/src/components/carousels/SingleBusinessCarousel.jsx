@@ -11,8 +11,8 @@ const SingleBusinessCarousel = ({ photos }) => {
 
     return (
       <div className="carousel relative">
-        {repeatedPhotos?.map((photo) => (
-          <div key={photo.id} className="carousel-item">
+        {repeatedPhotos?.map((photo, idx) => (
+          <div key={idx} className="carousel-item">
             <img
               className="w-full h-full object-cover"
               alt={photo.label}

@@ -77,7 +77,7 @@ const checkIsOpen = (hoursArray) => {
 
     return (
       <p className="text-sm">
-        <span className="text-rose-600 font-bold">Closed today</span>
+        <span className="text-rose-600 font-bold">Closed</span>
         {/* until {tomorrowOpeningHour} tomorrow */}
       </p>
     );

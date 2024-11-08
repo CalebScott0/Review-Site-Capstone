@@ -72,7 +72,11 @@ const ListingsPage = ({
     });
     return (
       <Container>
-        {!isFetchingNextPage && (
+        {isFetchingNextPage ? (
+          <div className="py-8 pt-44 flex justify-center">
+            <DotLoader size={30} color="#cccccc" />
+          </div>
+        ) : (
           <div>
             <div className="pt-44 flex pb-24">
               <div>
@@ -125,11 +129,6 @@ const ListingsPage = ({
                 />
               </div>
             </div>
-          </div>
-        )}
-        {isFetchingNextPage && (
-          <div className="py-8 pt-44 flex justify-center">
-            <DotLoader size={30} color="#cccccc" />
           </div>
         )}
       </Container>
