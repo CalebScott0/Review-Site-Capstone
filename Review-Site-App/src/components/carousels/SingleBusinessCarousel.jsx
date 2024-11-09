@@ -9,6 +9,8 @@ const SingleBusinessCarousel = ({ photos }) => {
       i = i + 1 === photos?.length ? 0 : i + 1;
     }
 
+    // ADD NEXT AND PREV BUTTONS ?
+
     return (
       <div className="carousel relative">
         {repeatedPhotos?.map((photo, idx) => (

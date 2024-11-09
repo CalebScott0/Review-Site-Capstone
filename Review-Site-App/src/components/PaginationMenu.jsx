@@ -9,13 +9,17 @@ const PaginationMenu = ({
 }) => {
   return (
     <div className="flex-wrap flex lg:flex-nowrap">
-      <div
-        onClick={() => handlePageChange(currentPage - 1)}
-        className="hidden lg:block self-center mb-[13px] lg:mb-0 cursor-pointer"
-      >
-        <FiChevronLeft className="active:scale-95" size={30} color="#737373" />
-      </div>
       <div className="join mb-4 lg:mb-0 mr-2">
+        <div
+          onClick={() => handlePageChange(currentPage - 1)}
+          className="join-item self-center cursor-pointer"
+        >
+          <FiChevronLeft
+            className="active:scale-95"
+            size={30}
+            color="#737373"
+          />
+        </div>
         {paginationRange.map((val, idx) => (
           <button
             key={idx}
@@ -27,7 +31,7 @@ const PaginationMenu = ({
         ))}
         <div
           onClick={() => handlePageChange(currentPage + 1)}
-          className="hidden lg:block self-center cursor-pointer"
+          className="join-item self-center cursor-pointer"
         >
           <FiChevronRight
             className="active:scale-95"
@@ -36,23 +40,23 @@ const PaginationMenu = ({
           />
         </div>
       </div>
-      <div className=" flex">
-        <div className="lg:hidden">
+      {/* <div className=" flex"> */}
+      {/* <div className="lg:hidden">
           <Button
             outline
             disabled={currentPage === 1}
             onClick={() => handlePageChange(currentPage - 1)}
             label="Previous Page"
-          ></Button>
-        </div>
-        <div className="w-40 mx-3 sm:mx-6">
-          <Button
-            disabled={currentPage === totalPages}
-            onClick={() => handlePageChange(currentPage + 1)}
-            label="Next Page"
-          ></Button>
-        </div>
+          ></Button> */}
+      {/* </div> */}
+      <div className="w-40 mx-3 sm:mx-6">
+        <Button
+          disabled={currentPage === totalPages}
+          onClick={() => handlePageChange(currentPage + 1)}
+          label="Next Page"
+        ></Button>
       </div>
+      {/* </div> */}
     </div>
   );
 };
