@@ -17,13 +17,13 @@ import useNavigation from "./hooks/useNavigation";
 function App() {
   // hooks for searchState and navigation to a new category or to single business
   const { category, categoryId, currentCity, currentState } = useSearchState();
-  const { handleBusinessClick, handleCategoryClick } = useNavigation();
+  const { handleBusinessClick, handleListingsClick } = useNavigation();
 
   return (
     <>
       <Navbar
         handleBusinessClick={handleBusinessClick}
-        handleCategoryClick={handleCategoryClick}
+        handleListingsClick={handleListingsClick}
       />
       <Routes>
         {/* //MAKE ONE /search route with serach parameters like yelp!! */}
@@ -37,7 +37,7 @@ function App() {
               categoryId={categoryId}
               category={category}
               handleBusinessClick={handleBusinessClick}
-              handleCategoryClick={handleCategoryClick}
+              handleListingsClick={handleListingsClick}
             />
           }
         />

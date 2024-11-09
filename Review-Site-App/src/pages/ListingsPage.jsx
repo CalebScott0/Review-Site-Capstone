@@ -2,7 +2,7 @@ import Container from "../components/Container";
 
 import PaginationMenu from "../components/PaginationMenu";
 
-import { useGetListingsQuery } from "../services/businessesApi";
+import { useGetListingsByCategoryQuery } from "../services/businessesApi";
 
 import ListingsCard from "../components/cards/ListingsCard";
 
@@ -19,8 +19,9 @@ const ListingsPage = ({
   currentState,
   categoryId,
   category,
+  businessName,
   handleBusinessClick,
-  handleCategoryClick,
+  handleListingsClick,
 }) => {
   const dataLabel = "businesses";
 
@@ -36,7 +37,7 @@ const ListingsPage = ({
     totalPages,
     paginationRange,
   } = usePaginatedFetch(
-    useGetListingsQuery,
+    useGetListingsByCategoryQuery,
     {
       categoryId,
       city: currentCity,
@@ -82,10 +83,8 @@ const ListingsPage = ({
               <div>
                 <h1 className="text-2xl tracking-wide leading-10 ml-6">
                   {/* HAVE THIS TAKE {CHILDREN} */}
-                  Header - move to own component folder - results for {
-                    category
-                  }{" "}
-                  in {currentCity}, {currentState}
+                  Header - move to own component folder - results for{" "}
+                  {category || businessName} in {currentCity}, {currentState}
                 </h1>
                 <div className="mx-4">
                   {/* <div className=" lg:mx-24 mx-10 pb-12"> */}
@@ -104,7 +103,7 @@ const ListingsPage = ({
                           business={business}
                           // listingsIndex accounts for current page (adds 10 for each page after 1)
                           listingsIndex={listingsIndex(idx, currentPage)}
-                          onCategoryClick={handleCategoryClick}
+                          onCategoryClick={handleListingsClick}
                           currentCity={currentCity}
                           currentState={currentState}
                         />

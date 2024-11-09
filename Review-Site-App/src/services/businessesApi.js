@@ -6,7 +6,7 @@ const businessesApi = api.injectEndpoints({
       query: ({ businessId }) => `businesses/${businessId}`,
       providesTags: (result, error, id) => [{ type: "Businesses", id }],
     }),
-    getListings: builder.query({
+    getListingsByCategory: builder.query({
       query: ({ categoryId, city, state, page, limit = 10 }) =>
         `businesses/categories/${categoryId}?city=${city}&state=${state}&limit=${limit}&page=${page}`,
       providesTags: (result) =>
@@ -28,7 +28,7 @@ const businessesApi = api.injectEndpoints({
 });
 
 export const {
-  useGetListingsQuery,
+  useGetListingsByCategoryQuery,
   useGetPhotosQuery,
   useGetSingleBusinessQuery,
 } = businessesApi;

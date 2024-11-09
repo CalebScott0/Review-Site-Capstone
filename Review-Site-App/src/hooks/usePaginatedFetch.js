@@ -59,17 +59,16 @@ const usePaginatedFetch = (
 
     // Calculate range for current page
     let startPage;
-    // let endPage;
 
+    // shift range of pagination once above 6 if more than 9 pages
     if (page < 6) {
       startPage = 1;
-      // endPage = maxVisiblePages;
+      // if page + 4 would hit or go beyond total pages
     } else if (page + 4 >= totalPages) {
       startPage = totalPages - maxVisiblePages + 1;
-      // endPage = totalPages;
+      // else if past 6 and more than 9 pages, make current page middle of range
     } else {
       startPage = page - 4;
-      // endPage = page + 4;
     }
 
     return Array.from({ length: maxVisiblePages }, (_, idx) => startPage + idx);

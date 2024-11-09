@@ -40,15 +40,6 @@ const PaginationMenu = ({
           />
         </div>
       </div>
-      {/* <div className=" flex"> */}
-      {/* <div className="lg:hidden">
-          <Button
-            outline
-            disabled={currentPage === 1}
-            onClick={() => handlePageChange(currentPage - 1)}
-            label="Previous Page"
-          ></Button> */}
-      {/* </div> */}
       <div className="w-40 mx-3 sm:mx-6">
         <Button
           disabled={currentPage === totalPages}

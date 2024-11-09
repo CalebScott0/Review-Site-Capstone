@@ -11,18 +11,31 @@ const useNavigation = () => {
     });
   };
 
-  const handleCategoryClick = ({ categoryId, categoryName, city, state }) => {
+  const handleListingsClick = ({
+    categoryId,
+    categoryName,
+    businessName,
+    city,
+    state,
+    type,
+  }) => {
     if (!categoryId || !categoryName || !city || !state) return;
-    navigate(
-      // encode to handle & in categories - which intereres with url params
-      `/search?find_desc=${encodeURIComponent(categoryName)}&find_loc=${`${city} ${state}`}`,
-      {
-        state: { categoryId },
-      }
-    );
+    if (type === "category") {
+      navigate(
+        // encode to handle & in categories - which intereres with url params
+        `/search?find_desc=${encodeURIComponent(categoryName)}&find_loc=${`${city} ${state}`}`,
+        {
+          state: { categoryId },
+        }
+      );
+    } else if (type === "multipleBusinesses") {
+      navigate(
+        `/search?find_desc=${encodeURIComponent(businessName)}&find_loc=${`${city} ${state}`}`
+      );
+    }
   };
 
-  return { handleBusinessClick, handleCategoryClick };
+  return { handleBusinessClick, handleListingsClick };
 };
 
 export default useNavigation;
