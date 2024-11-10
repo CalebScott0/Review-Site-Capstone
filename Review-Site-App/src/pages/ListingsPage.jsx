@@ -2,7 +2,10 @@ import Container from "../components/Container";
 
 import PaginationMenu from "../components/PaginationMenu";
 
-import { useGetListingsByCategoryQuery } from "../services/businessesApi";
+import {
+  useGetListingsByCategoryQuery,
+  useGetListingsByNameQuery,
+} from "../services/businessesApi";
 
 import ListingsCard from "../components/cards/ListingsCard";
 
@@ -14,18 +17,39 @@ import checkIsOpen from "../utils/CheckIsOpen";
 
 import { DotLoader } from "react-spinners";
 
+import Header from "../components/Header";
+
 const ListingsPage = ({
   currentCity,
   currentState,
   categoryId,
-  category,
-  businessName,
-  handleBusinessClick,
-  handleListingsClick,
+  category, // will be either category name or name of business with multiple listings
+  handleSingleBusinessClick,
+  handleCategoryListingsClick,
 }) => {
   const dataLabel = "businesses";
-
   const limit = 10;
+
+  /*  conditional paginated fetch
+   *  if categoryId - call listings by category query, otherwise  call listings by business name query
+   */
+  const query = categoryId
+    ? useGetListingsByCategoryQuery
+    : useGetListingsByNameQuery;
+
+  const queryArgs = categoryId
+    ? {
+        categoryId,
+        city: currentCity,
+        state: currentState,
+        limit,
+      }
+    : {
+        businessName: category, //category from async select will still be value of business name
+        city: currentCity,
+        state: currentState,
+        limit,
+      };
 
   const {
     items: businesses,
@@ -36,16 +60,7 @@ const ListingsPage = ({
     currentPage,
     totalPages,
     paginationRange,
-  } = usePaginatedFetch(
-    useGetListingsByCategoryQuery,
-    {
-      categoryId,
-      city: currentCity,
-      state: currentState,
-      limit,
-    },
-    dataLabel
-  );
+  } = usePaginatedFetch(query, queryArgs, dataLabel); //pass query type, query args for endpoint and dataLabel of main item (businesses)
 
   // function to get listings insxdex for business, accounts for current page
   const listingsIndex = (idx, currPage) => {
@@ -81,29 +96,30 @@ const ListingsPage = ({
           <div>
             <div className="pt-44 flex pb-24">
               <div>
-                <h1 className="text-2xl tracking-wide leading-10 ml-6">
-                  {/* HAVE THIS TAKE {CHILDREN} */}
-                  Header - move to own component folder - results for{" "}
-                  {category || businessName} in {currentCity}, {currentState}
-                </h1>
+                {/* <h1 className="text-2xl tracking-wide leading-10 ml-6"> */}
+                <Header>
+                  Showing Results for {category} in {currentCity},{" "}
+                  {currentState}
+                </Header>
+                {/* </h1> */}
                 <div className="mx-4">
                   {/* <div className=" lg:mx-24 mx-10 pb-12"> */}
                   {businessesData.map((business, idx) => (
                     <div key={business.id}>
                       <div
                         onClick={() =>
-                          handleBusinessClick({
+                          handleSingleBusinessClick({
                             businessId: business.id,
                             businessName: business.name,
                           })
                         }
                       >
                         <ListingsCard
-                          onClick={handleBusinessClick}
+                          onClick={handleSingleBusinessClick}
                           business={business}
                           // listingsIndex accounts for current page (adds 10 for each page after 1)
                           listingsIndex={listingsIndex(idx, currentPage)}
-                          onCategoryClick={handleListingsClick}
+                          onCategoryClick={handleCategoryListingsClick}
                           currentCity={currentCity}
                           currentState={currentState}
                         />

@@ -24,7 +24,12 @@ const usePaginatedFetch = (
     setPage(1);
 
     setItems([]);
-  }, [queryArgs.categoryId, queryArgs.city, queryArgs.state]);
+  }, [
+    queryArgs.categoryId,
+    queryArgs.city,
+    queryArgs.state,
+    queryArgs.category,
+  ]);
 
   useEffect(() => {
     if (data) {

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 const useNavigation = () => {
   const navigate = useNavigate();
 
-  const handleBusinessClick = ({ businessId, businessName }) => {
+  const handleSingleBusinessClick = ({ businessId, businessName }) => {
     if (!businessId || !businessName) return;
     const joinNameWithDashes = businessName.split(" ").join("-");
     navigate(`/business/${joinNameWithDashes}`, {
@@ -11,31 +11,36 @@ const useNavigation = () => {
     });
   };
 
-  const handleListingsClick = ({
+  const handleCategoryListingsClick = ({
     categoryId,
     categoryName,
-    businessName,
     city,
     state,
-    type,
   }) => {
     if (!categoryId || !categoryName || !city || !state) return;
-    if (type === "category") {
-      navigate(
-        // encode to handle & in categories - which intereres with url params
-        `/search?find_desc=${encodeURIComponent(categoryName)}&find_loc=${`${city} ${state}`}`,
-        {
-          state: { categoryId },
-        }
-      );
-    } else if (type === "multipleBusinesses") {
-      navigate(
-        `/search?find_desc=${encodeURIComponent(businessName)}&find_loc=${`${city} ${state}`}`
-      );
-    }
+
+    navigate(
+      // encode to handle & in categories - which intereres with url params
+      `/search?find_desc=${encodeURIComponent(categoryName)}&find_loc=${`${city} ${state}`}`,
+      {
+        state: { categoryId },
+      }
+    );
   };
 
-  return { handleBusinessClick, handleListingsClick };
+  const handleBusinessListingsClick = ({ businessName, city, state }) => {
+    if (!businessName || !city || !state) return;
+    navigate(
+      // encode to handle & in categories - which intereres with url params
+      `/search?find_desc=${encodeURIComponent(businessName)}&find_loc=${`${city} ${state}`}`
+    );
+  };
+
+  return {
+    handleSingleBusinessClick,
+    handleBusinessListingsClick,
+    handleCategoryListingsClick,
+  };
 };
 
 export default useNavigation;

@@ -20,6 +20,20 @@ const businessesApi = api.injectEndpoints({
             ]
           : [{ type: "Businesses", id: "LIST" }],
     }),
+    getListingsByName: builder.query({
+      query: ({ businessName, city, state, page, limit = 10 }) =>
+        `businesses/name/${businessName}?city=${city}&state=${state}&limit=${limit}&page=${page}`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.businesses.map(({ id }) => ({
+                type: "Businesses",
+                id,
+              })),
+              { type: "Businesses", id: "LIST" },
+            ]
+          : [{ type: "Businesses", id: "LIST" }],
+    }),
     getPhotos: builder.query({
       query: ({ businessId, limit = 10000 }) =>
         `businesses/${businessId}/photos?limit=${limit}`,
@@ -29,6 +43,7 @@ const businessesApi = api.injectEndpoints({
 
 export const {
   useGetListingsByCategoryQuery,
+  useGetListingsByNameQuery,
   useGetPhotosQuery,
   useGetSingleBusinessQuery,
 } = businessesApi;

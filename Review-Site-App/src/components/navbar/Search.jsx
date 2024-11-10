@@ -16,7 +16,11 @@ import { toast } from "react-hot-toast";
 
 // import { useNavigate } from "react-router-dom";
 
-const Search = ({ handleListingsClick, handleBusinessClick }) => {
+const Search = ({
+  handleCategoryListingsClick,
+  handleBusinessListingsClick,
+  handleSingleBusinessClick,
+}) => {
   // const navigate = useNavigate();
 
   // hook returns: { isOpen, onClose, onOpen };
@@ -46,8 +50,12 @@ const Search = ({ handleListingsClick, handleBusinessClick }) => {
   const [hasInteractedWithLocation, setHasInteractedWithLocation] =
     useState(false);
 
-  // state to track if menu is open or not for icon
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // city and state variable for url search params for navigation
+  const location = selectedLocation ? selectedLocation : locationValue;
+  // slice out comma before passing to searchParams
+  const sliceIndex = location.indexOf(",");
+  const city = location.slice(0, sliceIndex).trim();
+  const state = location.slice(sliceIndex + 1).trim();
 
   const fetchSearchResults = async (searchParameter) => {
     // setError(null);
@@ -79,7 +87,6 @@ const Search = ({ handleListingsClick, handleBusinessClick }) => {
         // check business conditionals first
         if (item.type === "business") {
           if (!renderedBusinesses.has(item.name) && item.duplicate_count > 1) {
-            // if (item.duplicate_count > 1 && !renderedBusinesses.has(item.name)) {
             renderedBusinesses.add(item.name);
             /* if there are multiple of the business name in db - render all results message
              * add to set to avoid re rendering same name
@@ -87,14 +94,27 @@ const Search = ({ handleListingsClick, handleBusinessClick }) => {
             return {
               label: (
                 <>
-                  <div onClick={() => console.log("hi")}>{item.name}</div>
+                  <div
+                    onClick={() =>
+                      handleBusinessListingsClick({
+                        businessName: item.name,
+                        city,
+                        state,
+                      })
+                    }
+                  >
+                    {item.name}
+                  </div>
                   <div className="text-neutral-600">See all results</div>
                 </>
               ),
               value: item.name,
               type: "multipleBusinesses",
             };
-          } else if (!renderedBusinesses.has(item.name)) {
+          } else if (
+            !renderedBusinesses.has(item.name) &&
+            item.duplicate_count <= 1
+          ) {
             // if only one occurrence of this business name
             return {
               label: <BusinessSearchLabel business={item} />,
@@ -146,12 +166,6 @@ const Search = ({ handleListingsClick, handleBusinessClick }) => {
     // only handle category search here, business clicks will be handled on component
     if (selectedSearchTerm?.type === "category") {
       // use selected location or default of location value as backup
-      const location = selectedLocation ? selectedLocation : locationValue;
-
-      // slice out comma before passing to searchParams
-      const sliceIndex = location.indexOf(",");
-
-      const city = location.slice(0, sliceIndex).trim();
 
       if (!selectedSearchTerm || !selectedLocation) {
         toast.error(
@@ -165,15 +179,12 @@ const Search = ({ handleListingsClick, handleBusinessClick }) => {
         return;
       }
 
-      const state = location.slice(sliceIndex + 1).trim();
-
       // if search term is a category - show listings by distance from location
-      handleListingsClick({
+      handleCategoryListingsClick({
         categoryId: selectedSearchTerm.value,
         categoryName: selectedSearchTerm.label,
         city,
         state,
-        type: "category",
       });
     }
   };
@@ -195,8 +206,8 @@ const Search = ({ handleListingsClick, handleBusinessClick }) => {
   // functions to handle on selection change
   const handleSearchChange = (value) => {
     // if label selected is a business, navigate to page and set name as search term
-    if (value.type === "business" && value.id) {
-      handleBusinessClick({
+    if (value.type === "business" && value.label.props?.business.id) {
+      handleSingleBusinessClick({
         businessId: value.label.props?.business.id,
         businessName: value.label.props?.business.name,
       });
