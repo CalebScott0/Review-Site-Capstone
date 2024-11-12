@@ -1,12 +1,17 @@
-const SingleBusinessCarousel = ({ photos }) => {
+import { useGetPhotosQuery } from "../../services/businessesApi.js";
+
+const SingleBusinessCarousel = ({ businessId }) => {
+  // fetch business photos for passed in id
+  const { data: photos, error, isLoading } = useGetPhotosQuery({ businessId });
+
   // Duplicate if small amount of images to fill at least 6 images for the carousel
-  if (photos?.length) {
-    const repeatedPhotos = [...photos];
+  if (photos?.photos.length) {
+    const repeatedPhotos = [...photos.photos];
     let i = 0;
     while (repeatedPhotos.length < 6) {
-      repeatedPhotos.push(photos[i]);
+      repeatedPhotos.push(photos.photos[i]);
       // reset i to 0 if at end of array or increment 1
-      i = i + 1 === photos?.length ? 0 : i + 1;
+      i = i + 1 === photos.photos?.length ? 0 : i + 1;
     }
 
     // ADD NEXT AND PREV BUTTONS ?

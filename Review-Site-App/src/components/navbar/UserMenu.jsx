@@ -121,7 +121,7 @@ const UserMenu = () => {
         className="active:scale-95 flex cursor-pointer items-center border-neutral-200 border xl:hidden rounded-full p-2 mx-2 transition hover:shadow-md gap-2"
       >
         <AiOutlineMenu />
-        <Avatar />
+        <Avatar size={24} userMenu />
       </div>
 
       {isOpen && (

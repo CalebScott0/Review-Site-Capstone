@@ -6,7 +6,9 @@ const PaginationMenu = ({
   handlePageChange,
   paginationRange,
   totalPages,
+  button,
 }) => {
+  console.log(button);
   return (
     <div className="flex-wrap flex lg:flex-nowrap">
       <div className="join mb-4 lg:mb-0 mr-2">
@@ -41,11 +43,13 @@ const PaginationMenu = ({
         </div>
       </div>
       <div className="w-40 mx-3 sm:mx-6">
-        <Button
-          disabled={currentPage === totalPages}
-          onClick={() => handlePageChange(currentPage + 1)}
-          label="Next Page"
-        ></Button>
+        {button && (
+          <Button
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+            label="Next Page"
+          ></Button>
+        )}
       </div>
       {/* </div> */}
     </div>

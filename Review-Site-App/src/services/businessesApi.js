@@ -35,8 +35,14 @@ const businessesApi = api.injectEndpoints({
           : [{ type: "Businesses", id: "LIST" }],
     }),
     getPhotos: builder.query({
+      // high limit passed in to grab all photos unless specified limit
       query: ({ businessId, limit = 10000 }) =>
         `businesses/${businessId}/photos?limit=${limit}`,
+    }),
+    getReviewsForBusiness: builder.query({
+      // page and limit for paginated results
+      query: ({ businessId, page, limit = 10 }) =>
+        `businesses/${businessId}/reviews?limit=${limit}&page=${page}`,
     }),
   }),
 });
@@ -45,5 +51,6 @@ export const {
   useGetListingsByCategoryQuery,
   useGetListingsByNameQuery,
   useGetPhotosQuery,
+  useGetReviewsForBusinessQuery,
   useGetSingleBusinessQuery,
 } = businessesApi;

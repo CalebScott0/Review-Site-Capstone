@@ -21,7 +21,7 @@ const ListingsCard = ({
       className={`border-b transition-all border border-t-transparent border-r-transparent border-l-transparent hover:border-t-neutral-200 hover:border-r-neutral-200 hover:border-l-neutral-200 hover:border duration-200 hover:shadow-md cursor-pointer sm:grid sm:grid-cols-[auto_1fr] gap-4`}
     >
       <div className="justify-self-center">
-        {/* <div className="justify-self-center mt-10 md:mt-0"> */}
+        {/* carousel of business pictures on listings cards */}
         <ListingsCarousel businessId={business.id} />
         {/* </div> */}
       </div>
@@ -34,6 +34,7 @@ const ListingsCard = ({
         <CardContent>
           <div className="sm:flex flex-wrap items-center gap-2 sm:px-2 -mt-2 mb-2 text-center">
             <div className="flex flex-wrap justify-center items-center gap-2">
+              {/* business average rating information */}
               <ReactStars
                 className="justify-self-center"
                 count={5}
@@ -51,11 +52,13 @@ const ListingsCard = ({
             ({business.review_count}){" "}
             <span className="sm:-ml-1 ml-0.5">reviews</span>
           </div>
+          {/* show distance from target location */}
           <Badge disabled outline round>
             {`${business.distance_from_location} mi.`}
           </Badge>
           <div className="flex flex-wrap gap-2 max-w-sm mt-2 ml-0.5">
             {/* slice off back for better variety */}
+            {/* business categories */}
             {business.categories.slice(-3).map((category) => (
               // {business.categories.slice(0, 3).map((category) => (
               <Badge
@@ -76,6 +79,7 @@ const ListingsCard = ({
             ))}
           </div>
           <div className="pt-2">{business.is_open}</div>
+          {/* display most recent review */}
           <FaRegComment className="absolute transform translate-y-[22px] -scale-x-100 " />
           <q className="line-clamp-2 leading-6 pt-5 pl-6 sm:pr-12 overflow-hidden text-sm">
             {business.recent_review.review_text}

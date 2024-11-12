@@ -114,6 +114,7 @@ const ListingsPage = ({
                           })
                         }
                       >
+                        {/* Card for each business rendered */}
                         <ListingsCard
                           onClick={handleSingleBusinessClick}
                           business={business}
@@ -128,15 +129,18 @@ const ListingsPage = ({
                   ))}
                 </div>
                 <div className="mt-4 mx-10 md:mx-6 xl:mx-24">
+                  {/* menu for traversing listings pages */}
                   <PaginationMenu
                     totalPages={totalPages}
                     currentPage={currentPage}
                     handlePageChange={handlePageChange}
                     paginationRange={paginationRange}
+                    button
                   />
                 </div>
               </div>
               <div className="min-w-[320px] -mt-6 hidden md:block relative">
+                {/* interactive map to display current businesses rendered */}
                 <ListingsMap
                   businessMarkers={businesses}
                   currentPage={currentPage}

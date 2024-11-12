@@ -62,8 +62,8 @@ const Search = ({
 
     try {
       const res = await fetch(
-        `http://localhost:8080/api/search/businesses_and_categories?query=${searchParameter}`
-        // `https://api-review-site.onrender.com/api/search/businesses_and_categories?query=${searchParameter}`
+        // `http://localhost:8080/api/search/businesses_and_categories?query=${searchParameter}`
+        `https://api-review-site.onrender.com/api/search/businesses_and_categories?query=${searchParameter}`
       );
 
       if (res.status !== 200 && res.status !== 400) {
@@ -145,8 +145,8 @@ const Search = ({
 
     try {
       const res = await fetch(
-        `http://localhost:8080/api/search/locations?location=${searchParameter}`
-        // `https://api-review-site.onrender.com/api/search/locations?location=${searchParameter}`
+        // `http://localhost:8080/api/search/locations?location=${searchParameter}`
+        `https://api-review-site.onrender.com/api/search/locations?location=${searchParameter}`
       );
 
       const data = await res.json();
