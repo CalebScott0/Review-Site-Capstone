@@ -8,7 +8,6 @@ const PaginationMenu = ({
   totalPages,
   button,
 }) => {
-  console.log(button);
   return (
     <div className="flex-wrap flex lg:flex-nowrap">
       <div className="join mb-4 lg:mb-0 mr-2">
