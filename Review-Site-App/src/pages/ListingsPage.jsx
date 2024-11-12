@@ -96,14 +96,11 @@ const ListingsPage = ({
           <div>
             <div className="pt-44 flex pb-24">
               <div>
-                {/* <h1 className="text-2xl tracking-wide leading-10 ml-6"> */}
                 <Header>
                   Showing Results for {category} in {currentCity},{" "}
                   {currentState}
                 </Header>
-                {/* </h1> */}
                 <div className="mx-4">
-                  {/* <div className=" lg:mx-24 mx-10 pb-12"> */}
                   {businessesData.map((business, idx) => (
                     <div key={business.id}>
                       <div

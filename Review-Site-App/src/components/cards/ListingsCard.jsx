@@ -23,7 +23,6 @@ const ListingsCard = ({
       <div className="justify-self-center">
         {/* carousel of business pictures on listings cards */}
         <ListingsCarousel businessId={business.id} />
-        {/* </div> */}
       </div>
       <div>
         <CardHeader className="text-center sm:text-start">

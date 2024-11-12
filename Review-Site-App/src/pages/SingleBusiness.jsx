@@ -18,10 +18,10 @@ const SingleBusiness = () => {
   if (singleBusiness?.business) {
     return (
       <div className="pb-24">
+        {/* Business page Header */}
         <div className="relative">
           {/* carousel of images displayed on top of business page */}
           <SingleBusinessCarousel businessId={singleBusiness.business.id} />
-          {/* <div className="absolute top-0 left-0 z-5 w-full h-full bg-black/40"></div> */}
           <div className="text-shadow absolute bottom-[25%] left-[10%]">
             <div>
               <span className="text-5xl font-bold font-[poppins]">
@@ -29,6 +29,7 @@ const SingleBusiness = () => {
               </span>
             </div>
             <div className="-mt-2 flex items-center gap-2">
+              {/* Average Stars and review count */}
               <ReactStars
                 count={5}
                 edit={false}
