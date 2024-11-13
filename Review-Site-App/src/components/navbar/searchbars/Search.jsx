@@ -1,17 +1,16 @@
-import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineSearch } from "react-icons/ai";
 
 import useSearchModal from "../../../hooks/useSearchModal";
 
 import SearchModal from "../../modals/SearchModal";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import {
   customStyles,
   noOptionsMessage,
 } from "../../../styles/reactSelectStyles";
 
-import { toast } from "react-hot-toast";
 import CategoryAndBusinessSearch from "./CategoryAndBusinessSearch";
 import LocationSearch from "./LocationSearch";
 
@@ -26,10 +25,57 @@ const Search = ({
   //  onClose and onOpen toggle isOpen state between false and true respectively
   const searchModal = useSearchModal();
 
+  const locationRef = useRef(null);
+  const searchRef = useRef(null);
+
   // input values for server side filter search
   const [searchValue, setSearchValue] = useState("");
 
-  const [locationValue, setLocationValue] = useState("Indianapolis, In");
+  // state for current city and state for navigation
+  const [currentLocation, setCurrentLocation] = useState({
+    city: "",
+    state: "",
+  });
+
+  const handleSearchClick = () => {
+    // focus on search field if none selected and then location field
+    if (!searchValue) {
+      // Focus on the search field
+      searchRef.current.focus();
+      return;
+    } else if (!currentLocation.city.length) {
+      // Focus on the location field
+      locationRef.current.focus();
+      return;
+    } else {
+      // conditionals for type of search label clicked on
+      /*
+       * const handleCategoryListingsClick = ({
+       * categoryId,
+       * categoryName,
+       * city,
+       * state,
+       * }) => {
+       */
+      // if type category, state for search value = label: category name, value: category id
+
+      if (searchValue.type === "category") {
+        handleCategoryListingsClick({
+          categoryId: searchValue.value,
+          categoryName: searchValue.label,
+          city: currentLocation.city,
+          state: currentLocation.state,
+        });
+      } else if (searchValue.type === "multipleBusinesses") {
+        // const handleBusinessListingsClick = ({ businessName, city, state }) => {
+        handleBusinessListingsClick({
+          businessName: searchValue.label,
+          city: currentLocation.city,
+          state: currentLocation.state,
+        });
+      }
+    }
+  };
 
   return (
     <>
@@ -41,26 +87,25 @@ const Search = ({
         <div className="flex-1 relative">
           <CategoryAndBusinessSearch
             customStyles={customStyles}
+            handleSingleBusinessClick={handleSingleBusinessClick}
             noOptionsMessage={noOptionsMessage}
+            ref={searchRef}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            setCurrentLocation={setCurrentLocation}
           />
-          {/* {isMenuOpen && (
-            <div
-              onClick={clearSearchInput}
-              className="absolute z-10 p-1.5 bottom-1.5 right-2 cursor-pointer rounded-lg hover:bg-neutral-200"
-            >
-              <AiOutlineClose size={18} />
-            </div>
-          )} */}
         </div>
         <div className="flex-1 relative">
           <LocationSearch
+            currentLocation={currentLocation}
             customStyles={customStyles}
             noOptionsMessage={noOptionsMessage}
-            setLocationValue={setLocationValue}
+            setCurrentLocation={setCurrentLocation}
+            ref={locationRef}
           />
         </div>
         <button
-          // onClick={handleSearchClick}
+          onClick={handleSearchClick}
           className=" focus:outline-none focus:ring-2 focus:ring-gray-500/50 focus:ring-offset-2 focus:rounded-md focus:ring-offset-white transition active:scale-95 hover:opacity-80 shadow-sm absolute -right-12 bottom-0 top-0 px-3 bg-amber-500  border-amber-500 border-2 -my-[1px] rounded-r-md max-w-[50px] "
         >
           <AiOutlineSearch size={24} color="white" />

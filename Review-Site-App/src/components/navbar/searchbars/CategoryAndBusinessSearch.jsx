@@ -1,12 +1,21 @@
-import BusinessSearchLabel from "../BusinessSearchLabel";
+import { forwardRef } from "react";
+import BusinessSearchLabel from "./BusinessSearchLabel";
+import MultiBusinessLabel from "./MultiBusinessLabel";
 import { toast } from "react-hot-toast";
 import AsyncSelect from "react-select/async";
 
-const CategoryAndBusinessSearch = ({ customStyles, noOptionsMessage }) => {
-  const fetchSearchResults = async (searchParameter) => {
-    // setError(null);
-
-    try {
+const CategoryAndBusinessSearch = forwardRef(
+  (
+    {
+      customStyles,
+      handleSingleBusinessClick,
+      noOptionsMessage,
+      setCurrentLocation,
+      setSearchValue,
+    },
+    ref
+  ) => {
+    const fetchSearchResults = async (searchParameter) => {
       const res = await fetch(
         // `http://localhost:8080/api/search/businesses_and_categories?query=${searchParameter}`
         `https://api-review-site.onrender.com/api/search/businesses_and_categories?query=${searchParameter}`
@@ -18,7 +27,6 @@ const CategoryAndBusinessSearch = ({ customStyles, noOptionsMessage }) => {
       // error on 404 response, 400 could just mean no search results - which will be handled by
       // no Options Message
       let data = await res.json();
-
       data = [
         ...data.search_results.categories,
         ...data.search_results.businesses,
@@ -38,22 +46,7 @@ const CategoryAndBusinessSearch = ({ customStyles, noOptionsMessage }) => {
              * add to set to avoid re rendering same name
              */
             return {
-              label: (
-                <>
-                  <div
-                    onClick={() =>
-                      handleBusinessListingsClick({
-                        businessName: item.name,
-                        city,
-                        state,
-                      })
-                    }
-                  >
-                    {item.name}
-                  </div>
-                  <div className="text-neutral-600">See all results</div>
-                </>
-              ),
+              label: <MultiBusinessLabel business={item} />,
               value: item.name,
               type: "multipleBusinesses",
             };
@@ -61,7 +54,9 @@ const CategoryAndBusinessSearch = ({ customStyles, noOptionsMessage }) => {
             !renderedBusinesses.has(item.name) &&
             item.duplicate_count <= 1
           ) {
+            // console.log(item);
             // if only one occurrence of this business name
+            // info for custom label
             return {
               label: <BusinessSearchLabel business={item} />,
               value: item.id,
@@ -79,33 +74,68 @@ const CategoryAndBusinessSearch = ({ customStyles, noOptionsMessage }) => {
       });
       // filter out undefined values from map
       return menuItems.filter((item) => item !== undefined);
-    } catch (e) {
-      console.log(e);
+    };
 
-      // react select NoOptions message to handle results errors
-    }
-  };
+    const handleSearchChange = (value) => {
+      // value = {value: "", label: ""}
+      // change label shown to just name for multi business label
+      if (value.type === "multipleBusinesses") {
+        value.label = value.value;
+      } else if (value.type === "business") {
+        // set location on single business select
+        setCurrentLocation({
+          city: value.label.props?.business.city,
+          state: value.label.props?.business.state,
+        });
 
-  return (
-    <AsyncSelect
-      //   cacheOptions
-      //   defaultOptions
-      //   // value displayed in input on change
-      //   inputValue={searchValue}
-      //   // Function that returns a promise, which is the set of options to be used once the promise resolves.
-      //   loadOptions={fetchSearchResults}
-      noOptionsMessage={noOptionsMessage}
-      //   // set on select
-      //   // onChange={handleSearchChange}
-      //   onChange={(value) => {
-      //     handleSearchChange(value); // Set the state
-      //   }}
-      //   // set on input change
-      //   onInputChange={handleSearchInputChange}
-      placeholder="Things to do..."
-      styles={customStyles}
-    />
-  );
-};
+        // random number of categories array index
+        const randomCategory = Math.floor(
+          Math.random() * value.label.props?.business.categories?.length
+        );
 
+        // pull out business data from value before changing
+        const businessObj = {
+          businessId: value.value,
+          businessName: value.label.props?.business.name,
+          categoryName:
+            value.label.props?.business.categories[randomCategory]?.name,
+          categoryId:
+            value.label.props?.business.categories[randomCategory]?.id,
+        };
+
+        // set search value and label to a category from business
+        // with type, id, and name, it will become a searchable category
+        value.label = businessObj.categoryName;
+        value.value = businessObj.categoryId;
+        value.type = "category";
+
+        // navigate to businessPage
+        handleSingleBusinessClick({
+          businessId: businessObj.businessId,
+          businessName: businessObj.businessName,
+        });
+      }
+      setSearchValue(value);
+    };
+
+    return (
+      <AsyncSelect
+        // cacheOptions
+        defaultOptions
+        //  value displayed in input on change
+        //  Function that returns a promise, which is the set of options to be used once the promise resolves.
+        loadOptions={fetchSearchResults}
+        noOptionsMessage={noOptionsMessage}
+        //  set on select
+        onChange={handleSearchChange}
+        //  set on input change
+        placeholder="Things to do..."
+        ref={ref}
+        styles={customStyles}
+      />
+    );
+  }
+);
+
+CategoryAndBusinessSearch.displayName = "CategoryAndBusinessSearch";
 export default CategoryAndBusinessSearch;
