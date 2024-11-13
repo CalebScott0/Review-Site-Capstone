@@ -11,35 +11,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 // import toast from "react-hot-toast";
 
 const menuOptions = [
-  {
-    label: "Find near me",
-    onClick: () => {
-      requestLocation();
-    },
-  },
   { label: "Write a review", onClick: () => {} },
   { label: "Categories", onClick: () => {} },
   { label: "For businesses", onClick: () => {} },
   { label: "Login", onClick: () => {} },
   { label: "Sign up", onClick: () => {} },
 ];
-
-const requestLocation = () => {
-  // if (navigator.geolocation) {
-  //   navigator.geolocation.getCurrentPosition(setPosition, handleLocationError);
-  // } else {
-  //   toast.error("Browser does not support location services");
-  // }
-};
-
-// const setPosition
-// (pos) => {
-//   sessionStorage.setItem(
-//     "userCoordinates",
-//     JSON.stringify({
-//       latitude: pos.coords.latitude,
-//       longitude: pos.coords.longitude,
-//     })
 
 const mainMenuOptions = menuOptions.slice(0, 4);
 
