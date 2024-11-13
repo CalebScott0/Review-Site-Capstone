@@ -1,7 +1,7 @@
 import Button from "../Button";
 import Container from "../Container";
 import Logo from "./Logo";
-import Search from "./Search";
+import Search from "./searchbars/Search";
 import UserMenu from "./UserMenu";
 import { useLocation } from "react-router-dom";
 

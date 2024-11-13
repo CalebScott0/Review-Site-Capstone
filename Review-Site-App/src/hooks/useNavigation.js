@@ -29,6 +29,7 @@ const useNavigation = () => {
   };
 
   const handleBusinessListingsClick = ({ businessName, city, state }) => {
+    // ERROR MESSAGE FOR NO LOCATION
     if (!businessName || !city || !state) return;
     navigate(
       // encode to handle & in categories - which intereres with url params
