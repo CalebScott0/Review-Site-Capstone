@@ -19,7 +19,7 @@ import { DotLoader } from "react-spinners";
 
 import { toast } from "react-hot-toast";
 
-import Header from "../components/Header";
+import Heading from "../components/Heading";
 
 const ListingsPage = ({
   currentCity,
@@ -73,7 +73,7 @@ const ListingsPage = ({
     console.error("Error fetching listings:", error);
     toast.error("Failed to load listings");
     return (
-      <div className="pt-52 text-red-500 text-center text-2xl">
+      <div className="pt-52 text-rose-500 text-center text-2xl">
         Unable to show page, please try again.
       </div>
     );
@@ -99,10 +99,11 @@ const ListingsPage = ({
           <div>
             <div className="pt-44 flex pb-24">
               <div>
-                <Header>
-                  Showing Results for {category} in {currentCity},{" "}
-                  {currentState}
-                </Header>
+                <Heading
+                  center
+                  title={`Showing Results for ${category} in ${currentCity}, ${currentState}`}
+                />
+                {/* Showing Results for {category} in {currentCity}, {currentState} */}
                 <div className="mx-4">
                   {businessesData.map((business, idx) => (
                     <div key={business.id}>

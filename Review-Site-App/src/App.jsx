@@ -1,20 +1,13 @@
 import Navbar from "./components/navbar/Navbar";
-
 import { Toaster } from "react-hot-toast";
-
 import { Route, Routes } from "react-router-dom";
-
 import ListingsPage from "./pages/ListingsPage";
-
 import HomePage from "./pages/HomePage";
-
 import SingleBusiness from "./pages/SingleBusiness";
-
 import useSearchState from "./hooks/useSearchState";
-
 import useNavigation from "./hooks/useNavigation";
 import ReviewForm from "./pages/ReviewForm";
-import Modal from "./components/modals/Modal";
+import RegisterModal from "./components/modals/RegisterModal";
 
 function App() {
   // hooks for searchState and navigation to a new category or to single business
@@ -28,7 +21,7 @@ function App() {
 
   return (
     <>
-      {/* <Modal isOpen title="Hi There Bud" actionLabel="Submit" /> */}
+      <RegisterModal />
       <Navbar
         handleBusinessListingsClick={handleBusinessListingsClick}
         handleCategoryListingsClick={handleCategoryListingsClick}

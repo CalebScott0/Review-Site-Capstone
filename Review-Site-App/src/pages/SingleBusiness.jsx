@@ -22,7 +22,7 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
     toast.error("Failed to load business.");
 
     return (
-      <div className="text-red-500 text-center text-2xl mt-10">
+      <div className="text-rose-500 text-center text-2xl mt-10">
         Unable to show business, please try again.
       </div>
     );

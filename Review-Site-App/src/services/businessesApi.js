@@ -4,7 +4,7 @@ const businessesApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getSingleBusiness: builder.query({
       query: ({ businessId }) => `businesses/${businessId}`,
-      providesTags: (result, error, id) => [{ type: "Businesses", id }],
+      providesTags: (result, error, id) => [{ type: "business", id }],
     }),
     getListingsByCategory: builder.query({
       query: ({ categoryId, city, state, page, limit = 10 }) =>
@@ -13,12 +13,12 @@ const businessesApi = api.injectEndpoints({
         result
           ? [
               ...result.businesses.map(({ id }) => ({
-                type: "Businesses",
+                type: "business",
                 id,
               })),
-              { type: "Businesses", id: "LIST" },
+              { type: "business", id: "LIST" },
             ]
-          : [{ type: "Businesses", id: "LIST" }],
+          : [{ type: "business", id: "LIST" }],
     }),
     getListingsByName: builder.query({
       query: ({ businessName, city, state, page, limit = 10 }) =>
@@ -27,12 +27,12 @@ const businessesApi = api.injectEndpoints({
         result
           ? [
               ...result.businesses.map(({ id }) => ({
-                type: "Businesses",
+                type: "business",
                 id,
               })),
-              { type: "Businesses", id: "LIST" },
+              { type: "business", id: "LIST" },
             ]
-          : [{ type: "Businesses", id: "LIST" }],
+          : [{ type: "business", id: "LIST" }],
     }),
     getPhotos: builder.query({
       // high limit passed in to grab all photos unless specified limit

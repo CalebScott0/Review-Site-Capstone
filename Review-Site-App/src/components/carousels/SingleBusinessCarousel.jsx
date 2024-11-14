@@ -16,7 +16,7 @@ const SingleBusinessCarousel = ({ businessId }) => {
     }
 
     return error ? (
-      <div className="text-red-500 text-2xl text-center h-72 bg-neutral-300 pt-2">
+      <div className="text-rose-500 text-2xl text-center h-72 bg-neutral-300 pt-2">
         Unable to show pictures
       </div>
     ) : isLoading ? (

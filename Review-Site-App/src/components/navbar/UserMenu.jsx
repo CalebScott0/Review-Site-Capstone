@@ -8,18 +8,27 @@ import Avatar from "../Avatar";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import useRegisterModal from "../../hooks/useRegisterModal";
+import useLoginModal from "../../hooks/useLoginModal";
+
 const UserMenu = () => {
+  const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
+
   const menuOptions = [
     { label: "Write a review", onClick: () => {} },
     { label: "Categories", onClick: () => {} },
     { label: "For businesses", onClick: () => {} },
     { label: "Login", onClick: () => {} },
-    { label: "Sign up", onClick: () => {} },
+    {
+      label: "Sign up",
+      onClick: () => registerModal.onOpen(),
+    },
   ];
 
   const mainMenuOptions = menuOptions.slice(0, 3);
 
-  const authMenuOptions = menuOptions.slice();
+  const authMenuOptions = menuOptions.slice(3);
   const [isOpen, setIsOpen] = useState(false);
 
   // ref to dropdown div for event listeners when open
@@ -81,7 +90,8 @@ const UserMenu = () => {
         ))}
         <div className="flex gap-3 ml-3 ">
           <Button label="Login" outline />
-          <Button label="Sign up" />
+          <Button label="Sign up" onClick={() => registerModal.onOpen()} />
+          {/* <Button label="Sign up" onClick={() => registerModal.onOpen()} /> */}
         </div>
       </div>
       {/* drop down menu for medium and smaller screens */}
@@ -108,7 +118,7 @@ const UserMenu = () => {
           ))}
           <hr />
           {authMenuOptions.map((item, idx) => (
-            <MenuItem label={item.label} key={idx} />
+            <MenuItem label={item.label} handleClick={item.onClick} key={idx} />
           ))}
         </div>
       )}

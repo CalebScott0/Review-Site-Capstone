@@ -37,7 +37,7 @@ const ListingsCarousel = ({ businessId }) => {
 
   if (error) {
     return (
-      <div className="text-red-500 text-xl text-center h-44 w-44 px-2 flex items-center bg-neutral-300">
+      <div className="text-rose-500 text-xl text-center h-44 w-44 px-2 flex items-center bg-neutral-300">
         Unable to show pictures
       </div>
     );
