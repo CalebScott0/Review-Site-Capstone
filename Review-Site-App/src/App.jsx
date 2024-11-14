@@ -8,6 +8,7 @@ import useSearchState from "./hooks/useSearchState";
 import useNavigation from "./hooks/useNavigation";
 import ReviewForm from "./pages/ReviewForm";
 import RegisterModal from "./components/modals/RegisterModal";
+import LoginModal from "./components/modals/LoginModal";
 
 function App() {
   // hooks for searchState and navigation to a new category or to single business
@@ -22,6 +23,7 @@ function App() {
   return (
     <>
       <RegisterModal />
+      <LoginModal />
       <Navbar
         handleBusinessListingsClick={handleBusinessListingsClick}
         handleCategoryListingsClick={handleCategoryListingsClick}

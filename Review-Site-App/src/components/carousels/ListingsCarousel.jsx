@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import useEmblaCarousel from "embla-carousel-react";
 
-import { useGetPhotosQuery } from "../../services/businessesApi";
+import { useGetPhotosQuery } from "../../redux/services/businessesApi";
 
 import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 

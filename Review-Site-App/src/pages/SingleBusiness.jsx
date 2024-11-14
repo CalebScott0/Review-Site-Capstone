@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useGetSingleBusinessQuery } from "../services/businessesApi";
+import { useGetSingleBusinessQuery } from "../redux/services/businessesApi";
 import ReactStars from "react-stars";
 import SingleBusinessCarousel from "../components/carousels/SingleBusinessCarousel";
 import ReviewList from "../components/ReviewList";

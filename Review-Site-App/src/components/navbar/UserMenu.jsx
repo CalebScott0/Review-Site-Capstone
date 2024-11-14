@@ -7,13 +7,19 @@ import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-
-import useRegisterModal from "../../hooks/useRegisterModal";
-import useLoginModal from "../../hooks/useLoginModal";
+import {
+  useDispatch,
+  // useSelector
+} from "react-redux";
+import { onRegisterOpen } from "../../redux/slices/registerModalSlice";
+import { onLoginOpen } from "../../redux/slices/loginModalSlice";
 
 const UserMenu = () => {
-  const registerModal = useRegisterModal();
-  const loginModal = useLoginModal();
+  const dispatch = useDispatch();
+  // boolean isOpen from modal slice
+  // const isRegisterModalOpen = useSelector(
+  //   (state) => state.registerModal.isOpen
+  // );
 
   const menuOptions = [
     { label: "Write a review", onClick: () => {} },
@@ -22,7 +28,9 @@ const UserMenu = () => {
     { label: "Login", onClick: () => {} },
     {
       label: "Sign up",
-      onClick: () => registerModal.onOpen(),
+      onClick: () => {
+        dispatch(onRegisterOpen());
+      },
     },
   ];
 
@@ -89,8 +97,12 @@ const UserMenu = () => {
           <MenuItem key={idx} handleClick={item.onClick} label={item.label} />
         ))}
         <div className="flex gap-3 ml-3 ">
-          <Button label="Login" outline />
-          <Button label="Sign up" onClick={() => registerModal.onOpen()} />
+          <Button
+            label="Login"
+            outline
+            onClick={() => dispatch(onLoginOpen())}
+          />
+          <Button label="Sign up" onClick={() => dispatch(onRegisterOpen())} />
           {/* <Button label="Sign up" onClick={() => registerModal.onOpen()} /> */}
         </div>
       </div>

@@ -8,7 +8,7 @@ import "./index.css";
 
 import { BrowserRouter } from "react-router-dom";
 
-import { store } from "./store/index.js";
+import { store } from "./redux/store/index.js";
 
 import { Provider } from "react-redux";
 

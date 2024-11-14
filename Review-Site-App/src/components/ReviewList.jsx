@@ -1,4 +1,4 @@
-import { useGetReviewsForBusinessQuery } from "../services/businessesApi";
+import { useGetReviewsForBusinessQuery } from "../redux/services/businessesApi";
 import usePaginatedFetch from "../hooks/usePaginatedFetch";
 import Avatar from "../components/Avatar";
 import Container from "./Container";

@@ -5,7 +5,7 @@ import PaginationMenu from "../components/PaginationMenu";
 import {
   useGetListingsByCategoryQuery,
   useGetListingsByNameQuery,
-} from "../services/businessesApi";
+} from "../redux/services/businessesApi";
 
 import ListingsCard from "../components/cards/ListingsCard";
 

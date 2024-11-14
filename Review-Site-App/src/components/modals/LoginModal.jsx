@@ -1,32 +1,23 @@
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { useCallback, useState } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Modal from "./Modal";
 import Heading from "../Heading";
 import Input from "../inputs/Input";
 import toast from "react-hot-toast";
 import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
-import { onRegisterClose } from "../../redux/slices/registerModalSlice";
-import { onLoginOpen } from "../../redux/slices/loginModalSlice";
-import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { onRegisterOpen } from "../../redux/slices/registerModalSlice";
+import { onLoginClose } from "../../redux/slices/loginModalSlice";
 
-import { useRegisterMutation } from "../../redux/services/authSlice";
-
-const RegisterModal = () => {
+const LoginModal = () => {
   const dispatch = useDispatch();
   // boolean isOpen from modal slice
-  const isRegisterModalOpen = useSelector(
-    (state) => state.registerModal.isOpen
-  );
-
-  const [registerUser] = useRegisterMutation();
+  const isLoginModalOpen = useSelector((state) => state.loginModal.isOpen);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const [passwordType, setPasswordType] = useState("password");
 
   const {
     handleSubmit,
@@ -35,14 +26,10 @@ const RegisterModal = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      firstName: "",
-      lastName: "",
       email: "",
       password: "",
     },
   });
-
-  // VALIDATION FOR NAMES? like no spaces allowed!!
 
   register("email", {
     pattern: {
@@ -67,45 +54,24 @@ const RegisterModal = () => {
     },
   });
 
-  const onSubmit = async (data) => {
-    setError(null);
+  const onSubmit = (data) => {
     setIsLoading(true);
-    try {
-      await registerUser(data).unwrap();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    // try {
+
+    // }catch() {
+
+    // }finally{}
+    //   };
+    console.log(data);
   };
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
         center
-        title="Welcome to ReviewGuru"
-        subtitle="Create an account below!"
+        title="Welcome Back"
+        subtitle="Sign in to your account below!"
       />
-      <div className="flex gap-4">
-        <Input
-          id="firstName"
-          //   disabled={isLoading}
-          error={errors.firstName}
-          errors={errors}
-          label="First Name"
-          register={register}
-          required
-        />
-        <Input
-          id="lastName"
-          //   disabled={isLoading}
-          error={errors.lastName}
-          errors={errors}
-          label="Last Name"
-          register={register}
-          required
-        />
-      </div>
       <Input
         id="email"
         // disabled={isLoading}
@@ -115,31 +81,15 @@ const RegisterModal = () => {
         required
         register={register}
       />
-      <div className="relative">
-        <Input
-          id="password"
-          type={passwordType}
-          // disabled={isLoading}
-          error={errors.password}
-          errors={errors}
-          label="Password"
-          required
-          register={register}
-        />
-        <div className="absolute top-1/2 -translate-y-3 right-4 cursor-pointer">
-          {passwordType === "password" ? (
-            <IoEyeOffOutline
-              size={24}
-              onClick={() => setPasswordType("text")}
-            />
-          ) : (
-            <IoEyeOutline
-              size={24}
-              onClick={() => setPasswordType("password")}
-            />
-          )}
-        </div>
-      </div>
+      <Input
+        id="password"
+        // disabled={isLoading}
+        error={errors.password}
+        errors={errors}
+        label="Password"
+        required
+        register={register}
+      />
     </div>
   );
 
@@ -160,15 +110,15 @@ const RegisterModal = () => {
       />
       <div className="mt-4 text-center font-light text-neutral-500">
         <div className="flex flex-row items-center justify-center gap-2">
-          <div>Already have an account?</div>
+          <div>Need to create an account?</div>
           <div
             onClick={() => {
-              dispatch(onRegisterClose());
-              dispatch(onLoginOpen());
+              dispatch(onRegisterOpen());
+              dispatch(onLoginClose());
             }}
             className="cursor-pointer text-neutral-800 hover:underline"
           >
-            Log in
+            Register
           </div>
         </div>
       </div>
@@ -178,10 +128,10 @@ const RegisterModal = () => {
   return (
     <Modal
       // disabled={isLoading}
-      isOpen={isRegisterModalOpen}
-      title="Register"
+      isOpen={isLoginModalOpen}
+      title="Login"
       actionLabel="Continue"
-      onClose={() => dispatch(onRegisterClose())}
+      onClose={() => dispatch(onLoginClose())}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
@@ -189,4 +139,4 @@ const RegisterModal = () => {
   );
 };
 
-export default RegisterModal;
+export default LoginModal;

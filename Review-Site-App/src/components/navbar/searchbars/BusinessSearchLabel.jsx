@@ -1,4 +1,4 @@
-import { useGetPhotosQuery } from "../../../services/businessesApi";
+import { useGetPhotosQuery } from "../../../redux/services/businessesApi";
 const BusinessSearchLabel = ({ business }) => {
   const { data, error, isLoading } = useGetPhotosQuery({
     businessId: business.id,

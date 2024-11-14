@@ -1,5 +1,5 @@
 import { DotLoader } from "react-spinners";
-import { useGetPhotosQuery } from "../../services/businessesApi.js";
+import { useGetPhotosQuery } from "../../redux/services/businessesApi.js";
 
 const SingleBusinessCarousel = ({ businessId }) => {
   // fetch business photos for passed in id
