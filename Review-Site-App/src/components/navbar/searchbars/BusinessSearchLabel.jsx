@@ -5,6 +5,8 @@ const BusinessSearchLabel = ({ business }) => {
     limit: 1,
   });
 
+  if (isLoading || error) return;
+
   const photoUrl = data?.photos[0].signed_url;
   if (photoUrl) {
     return (

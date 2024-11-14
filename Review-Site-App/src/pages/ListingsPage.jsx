@@ -17,6 +17,8 @@ import checkIsOpen from "../utils/CheckIsOpen";
 
 import { DotLoader } from "react-spinners";
 
+import { toast } from "react-hot-toast";
+
 import Header from "../components/Header";
 
 const ListingsPage = ({
@@ -67,13 +69,14 @@ const ListingsPage = ({
     return idx + 1 + (currPage - 1) * limit;
   };
 
-  if (isLoading)
-    return <div className="text-center pt-72 text-2xl">Loading Gang!</div>;
-
   if (error) {
     console.error("Error fetching listings:", error);
-
-    return <div>Error: {error.message}</div>;
+    toast.error("Failed to load listings");
+    return (
+      <div className="pt-52 text-red-500 text-center text-2xl">
+        Unable to show page, please try again.
+      </div>
+    );
   }
 
   if (businesses) {
@@ -88,8 +91,8 @@ const ListingsPage = ({
     });
     return (
       <Container>
-        {isFetchingNextPage ? (
-          <div className="py-8 pt-44 flex justify-center">
+        {isFetchingNextPage || isLoading ? (
+          <div className="my-8 pt-44 flex justify-center">
             <DotLoader size={30} color="#cccccc" />
           </div>
         ) : (

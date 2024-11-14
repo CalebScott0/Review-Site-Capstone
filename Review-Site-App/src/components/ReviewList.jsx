@@ -9,6 +9,8 @@ import CardContent from "../components/cards/CardContent";
 import { RiContactsBook2Line } from "react-icons/ri";
 import { FaRegLaughBeam, FaRegLightbulb, FaRegStar } from "react-icons/fa";
 import { BsEmojiSunglasses } from "react-icons/bs";
+import { DotLoader } from "react-spinners";
+import { toast } from "react-hot-toast";
 
 import ReactStars from "react-stars";
 import PaginationMenu from "./PaginationMenu";
@@ -34,6 +36,24 @@ const ReviewList = ({ businessId }) => {
     },
     dataLabel
   );
+
+  if (error) {
+    toast.error("Failed to load reviews.");
+
+    return (
+      <div className="text-red-500 text-center text-2xl mt-10">
+        Unable to show reviews, please try again.
+      </div>
+    );
+  }
+
+  if (isFetchingNextPage || isLoading) {
+    return (
+      <div className="mt-8 flex justify-center">
+        <DotLoader size={30} color="#cccccc" />
+      </div>
+    );
+  }
 
   const reviewDate = (date) => {
     return new Date(date).toLocaleDateString("en-US", {

@@ -28,7 +28,7 @@ function App() {
 
   return (
     <>
-      <Modal isOpen title="Hi There Bud" actionLabel="Submit" />
+      {/* <Modal isOpen title="Hi There Bud" actionLabel="Submit" /> */}
       <Navbar
         handleBusinessListingsClick={handleBusinessListingsClick}
         handleCategoryListingsClick={handleCategoryListingsClick}

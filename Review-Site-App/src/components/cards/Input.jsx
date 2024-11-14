@@ -9,6 +9,4 @@ const Input = (
 
   errors,
   error
-) => {
-  return <div className="relative w-full"></div>;
-};
+) => {};

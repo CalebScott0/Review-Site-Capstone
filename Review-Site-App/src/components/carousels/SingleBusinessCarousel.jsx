@@ -1,3 +1,4 @@
+import { DotLoader } from "react-spinners";
 import { useGetPhotosQuery } from "../../services/businessesApi.js";
 
 const SingleBusinessCarousel = ({ businessId }) => {
@@ -14,9 +15,15 @@ const SingleBusinessCarousel = ({ businessId }) => {
       i = i + 1 === photos.photos?.length ? 0 : i + 1;
     }
 
-    // ADD NEXT AND PREV BUTTONS ?
-
-    return (
+    return error ? (
+      <div className="text-red-500 text-2xl text-center h-72 bg-neutral-300 pt-2">
+        Unable to show pictures
+      </div>
+    ) : isLoading ? (
+      <div className="h-72 flex justify-center my-10 items-center">
+        <DotLoader />
+      </div>
+    ) : (
       <div className="carousel relative">
         {repeatedPhotos?.map((photo, idx) => (
           <div key={idx} className="carousel-item">

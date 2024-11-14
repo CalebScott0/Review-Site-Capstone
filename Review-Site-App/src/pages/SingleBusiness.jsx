@@ -4,6 +4,8 @@ import ReactStars from "react-stars";
 import SingleBusinessCarousel from "../components/carousels/SingleBusinessCarousel";
 import ReviewList from "../components/ReviewList";
 import Button from "../components/Button";
+import { DotLoader } from "react-spinners";
+import { toast } from "react-hot-toast";
 
 const SingleBusiness = ({ handleReviewNavigateClick }) => {
   const { state } = useLocation();
@@ -15,6 +17,24 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
     error,
     isLoading,
   } = useGetSingleBusinessQuery({ businessId });
+
+  if (error) {
+    toast.error("Failed to load business.");
+
+    return (
+      <div className="text-red-500 text-center text-2xl mt-10">
+        Unable to show business, please try again.
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="my-8 flex justify-center">
+        <DotLoader size={30} color="#cccccc" />
+      </div>
+    );
+  }
 
   if (singleBusiness?.business) {
     return (

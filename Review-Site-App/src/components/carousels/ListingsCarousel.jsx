@@ -6,6 +6,8 @@ import { useGetPhotosQuery } from "../../services/businessesApi";
 
 import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 
+import { DotLoader } from "react-spinners";
+
 const ListingsCarousel = ({ businessId }) => {
   const { data, error, isLoading } = useGetPhotosQuery({ businessId });
 
@@ -33,7 +35,21 @@ const ListingsCarousel = ({ businessId }) => {
     [emblaApi]
   );
 
-  if (isLoading) return <div>We loading pictures gang</div>;
+  if (error) {
+    return (
+      <div className="text-red-500 text-xl text-center h-44 w-44 px-2 flex items-center bg-neutral-300">
+        Unable to show pictures
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="h-44 w-44 flex justify-center my-10">
+        <DotLoader />
+      </div>
+    );
+  }
 
   if (data) {
     return (
