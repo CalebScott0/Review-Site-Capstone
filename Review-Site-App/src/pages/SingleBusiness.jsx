@@ -3,8 +3,9 @@ import { useGetSingleBusinessQuery } from "../services/businessesApi";
 import ReactStars from "react-stars";
 import SingleBusinessCarousel from "../components/carousels/SingleBusinessCarousel";
 import ReviewList from "../components/ReviewList";
+import Button from "../components/Button";
 
-const SingleBusiness = () => {
+const SingleBusiness = ({ handleReviewNavigateClick }) => {
   const { state } = useLocation();
   // grab businessId from location state
   const { businessId } = state;
@@ -45,6 +46,16 @@ const SingleBusiness = () => {
                   ({singleBusiness.business.review_count}) reviews
                 </span>
               </div>
+            </div>
+            <div className="max-w-44 mt-2">
+              <Button
+                onClick={() =>
+                  handleReviewNavigateClick({
+                    businessName: singleBusiness.business.name,
+                  })
+                }
+                label="Write a review"
+              ></Button>
             </div>
           </div>
         </div>

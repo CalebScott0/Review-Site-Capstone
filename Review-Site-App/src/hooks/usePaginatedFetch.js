@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const usePaginatedFetch = (
   query,
@@ -45,15 +45,18 @@ const usePaginatedFetch = (
     // page update caused timing mismatch with async loading of data
   }, [data, dataLabel]);
 
-  const handlePageChange = (newPage) => {
-    // if new page is requested and data has a next page
-    if (newPage !== page && newPage > 0 && newPage <= data?.pages) {
-      setPage(newPage);
-    }
-  };
+  const handlePageChange = useCallback(
+    (newPage) => {
+      // if new page is requested and data has a next page
+      if (newPage !== page && newPage > 0 && newPage <= data?.pages) {
+        setPage(newPage);
+      }
+    },
+    [setPage, data?.pages, page]
+  );
 
   // Pagination range logic
-  const getPaginationRange = () => {
+  const getPaginationRange = useCallback(() => {
     const maxVisiblePages = 9;
     const totalPages = data?.pages ?? 0;
 
@@ -77,7 +80,7 @@ const usePaginatedFetch = (
     }
 
     return Array.from({ length: maxVisiblePages }, (_, idx) => startPage + idx);
-  };
+  }, [data?.pages, page]);
 
   return {
     items,

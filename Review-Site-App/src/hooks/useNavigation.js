@@ -37,10 +37,19 @@ const useNavigation = () => {
     );
   };
 
+  const handleReviewNavigateClick = ({ businessName, businessId }) => {
+    navigate(`/write-a-review/${encodeURIComponent(businessName)}`, {
+      state: {
+        businessId,
+      },
+    });
+  };
+
   return {
     handleSingleBusinessClick,
     handleBusinessListingsClick,
     handleCategoryListingsClick,
+    handleReviewNavigateClick,
   };
 };
 

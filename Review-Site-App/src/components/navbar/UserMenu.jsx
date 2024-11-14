@@ -8,21 +8,18 @@ import Avatar from "../Avatar";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-// import toast from "react-hot-toast";
-
-const menuOptions = [
-  { label: "Write a review", onClick: () => {} },
-  { label: "Categories", onClick: () => {} },
-  { label: "For businesses", onClick: () => {} },
-  { label: "Login", onClick: () => {} },
-  { label: "Sign up", onClick: () => {} },
-];
-
-const mainMenuOptions = menuOptions.slice(0, 4);
-
-const authMenuOptions = menuOptions.slice(4);
-
 const UserMenu = () => {
+  const menuOptions = [
+    { label: "Write a review", onClick: () => {} },
+    { label: "Categories", onClick: () => {} },
+    { label: "For businesses", onClick: () => {} },
+    { label: "Login", onClick: () => {} },
+    { label: "Sign up", onClick: () => {} },
+  ];
+
+  const mainMenuOptions = menuOptions.slice(0, 3);
+
+  const authMenuOptions = menuOptions.slice();
   const [isOpen, setIsOpen] = useState(false);
 
   // ref to dropdown div for event listeners when open

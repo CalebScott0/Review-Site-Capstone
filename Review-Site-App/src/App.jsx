@@ -13,6 +13,8 @@ import SingleBusiness from "./pages/SingleBusiness";
 import useSearchState from "./hooks/useSearchState";
 
 import useNavigation from "./hooks/useNavigation";
+import ReviewForm from "./pages/ReviewForm";
+import Modal from "./components/modals/Modal";
 
 function App() {
   // hooks for searchState and navigation to a new category or to single business
@@ -21,14 +23,16 @@ function App() {
     handleSingleBusinessClick,
     handleBusinessListingsClick,
     handleCategoryListingsClick,
+    handleReviewNavigateClick,
   } = useNavigation();
 
   return (
     <>
+      <Modal isOpen title="Hi There Bud" actionLabel="Submit" />
       <Navbar
-        handleSingleBusinessClick={handleSingleBusinessClick}
-        handleCategoryListingsClick={handleCategoryListingsClick}
         handleBusinessListingsClick={handleBusinessListingsClick}
+        handleCategoryListingsClick={handleCategoryListingsClick}
+        handleSingleBusinessClick={handleSingleBusinessClick}
       />
       <Routes>
         {/* //MAKE ONE /search route with serach parameters like yelp!! */}
@@ -46,7 +50,15 @@ function App() {
             />
           }
         />
-        <Route path="/business/:business_name" element={<SingleBusiness />} />
+        <Route
+          path="/business/:business_name"
+          element={
+            <SingleBusiness
+              handleReviewNavigateClick={handleReviewNavigateClick}
+            />
+          }
+        />
+        <Route path="/write-a-review/:business_name" element={<ReviewForm />} />
       </Routes>
       <Toaster />
     </>

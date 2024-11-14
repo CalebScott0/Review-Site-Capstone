@@ -6,9 +6,9 @@ import UserMenu from "./UserMenu";
 import { useLocation } from "react-router-dom";
 
 const Navbar = ({
+  handleBusinessListingsClick,
   handleCategoryListingsClick,
   handleSingleBusinessClick,
-  handleBusinessListingsClick,
 }) => {
   const { pathname } = useLocation();
   return (
