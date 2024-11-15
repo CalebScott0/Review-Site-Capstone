@@ -1,13 +1,18 @@
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useGetReviewsForBusinessQuery } from "../redux/services/businessesApi";
+import { useEffect, useState } from "react";
 
 const ReviewForm = () => {
-  // if no user navigate back
   const userId = useSelector((state) => state.auth.userId);
   const navigate = useNavigate();
-  if (!userId) navigate(-1);
+  const { business_name } = useParams();
+
+  // if no user navigate back
+  useEffect(() => {
+    if (!userId) navigate(-1);
+  }, [userId]);
 
   // grab businessId from location state
   const { state } = useLocation();
@@ -24,7 +29,7 @@ const ReviewForm = () => {
 
   console.log(reviews);
 
-  return <div>We reviewin</div>;
+  return <form></form>;
 };
 
 export default ReviewForm;

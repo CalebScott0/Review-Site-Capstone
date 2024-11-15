@@ -72,18 +72,19 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
       </div>
     );
   }
+  const business = singleBusiness?.business;
 
-  if (singleBusiness?.business) {
+  if (business) {
     return (
       <div className="pb-24">
         {/* Business page Header */}
         <div className="relative">
           {/* carousel of images displayed on top of business page */}
-          <SingleBusinessCarousel businessId={singleBusiness.business.id} />
+          <SingleBusinessCarousel businessId={business.id} />
           <div className="text-shadow absolute bottom-10 lg:bottom-16 left-12 md:left-20 lg:left-32">
             <div>
               <span className="md:text-5xl text-4xl font-bold font-[poppins]">
-                {singleBusiness.business?.name}
+                {business.name}
               </span>
             </div>
             <div className="-mt-2 md:flex items-center gap-2">
@@ -92,7 +93,7 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
                 <ReactStars
                   count={5}
                   edit={false}
-                  value={singleBusiness.business.average_stars}
+                  value={business.average_stars}
                   color2="#ff007f"
                   size={40}
                   // char={<FaRegStar />}
@@ -100,17 +101,15 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
                 />
                 {/* render average stars inline to rating stars on smaller screens */}
                 <span className="text-lg  font-semibold md:hidden inline">
-                  {singleBusiness.business.average_stars}
+                  {business.average_stars}
                 </span>
               </div>
               <div className=" text-lg text-white font-semibold">
                 {/* render average stars normally */}
                 <span className="hidden md:inline">
-                  {singleBusiness.business.average_stars}
+                  {business.average_stars}
                 </span>
-                <span className="ml-1">
-                  ({singleBusiness.business.review_count}) reviews
-                </span>
+                <span className="ml-1">({business.review_count}) reviews</span>
               </div>
             </div>
             <div className="max-w-44 mt-2">
@@ -122,7 +121,7 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
           </div>
         </div>
         {/* review list for business */}
-        <ReviewList businessId={singleBusiness.business.id} />
+        <ReviewList businessId={business.id} />
       </div>
     );
   }
