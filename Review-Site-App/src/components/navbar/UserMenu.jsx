@@ -13,30 +13,17 @@ import {
 } from "react-redux";
 import { onRegisterOpen } from "../../redux/slices/registerModalSlice";
 import { onLoginOpen } from "../../redux/slices/loginModalSlice";
+import { useLogoutMutation } from "../../redux/services/authSlice";
+import { useSelector } from "react-redux";
 
 const UserMenu = () => {
   const dispatch = useDispatch();
-  // boolean isOpen from modal slice
-  // const isRegisterModalOpen = useSelector(
-  //   (state) => state.registerModal.isOpen
-  // );
 
-  const menuOptions = [
-    { label: "Write a review", onClick: () => {} },
-    { label: "Categories", onClick: () => {} },
-    { label: "For businesses", onClick: () => {} },
-    { label: "Login", onClick: () => {} },
-    {
-      label: "Sign up",
-      onClick: () => {
-        dispatch(onRegisterOpen());
-      },
-    },
-  ];
+  // user Id from auth slice
+  const userId = useSelector((state) => state.auth.userId);
 
-  const mainMenuOptions = menuOptions.slice(0, 3);
+  const [logout] = useLogoutMutation();
 
-  const authMenuOptions = menuOptions.slice(3);
   const [isOpen, setIsOpen] = useState(false);
 
   // ref to dropdown div for event listeners when open
@@ -49,6 +36,46 @@ const UserMenu = () => {
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
+
+  const menuOptions = [
+    {
+      label: "Write a review",
+      onClick: () => {
+        toggleOpen();
+      },
+    },
+    {
+      label: "Categories",
+      onClick: () => {
+        toggleOpen();
+      },
+    },
+    {
+      label: "For businesses",
+      onClick: () => {
+        toggleOpen();
+      },
+    },
+
+    {
+      label: "Login",
+      onClick: () => {
+        dispatch(onLoginOpen());
+        toggleOpen();
+      },
+    },
+    {
+      label: "Sign up",
+      onClick: () => {
+        dispatch(onRegisterOpen());
+        toggleOpen();
+      },
+    },
+  ];
+
+  const mainMenuOptions = menuOptions.slice(0, 3);
+
+  const authMenuOptions = menuOptions.slice(3);
 
   // use effect to add event listener on component mount and remove when unmounted
   useEffect(() => {
@@ -96,15 +123,30 @@ const UserMenu = () => {
         {mainMenuOptions.map((item, idx) => (
           <MenuItem key={idx} handleClick={item.onClick} label={item.label} />
         ))}
-        <div className="flex gap-3 ml-3 ">
-          <Button
-            label="Login"
-            outline
-            onClick={() => dispatch(onLoginOpen())}
-          />
-          <Button label="Sign up" onClick={() => dispatch(onRegisterOpen())} />
-          {/* <Button label="Sign up" onClick={() => registerModal.onOpen()} /> */}
-        </div>
+        {!userId ? (
+          <div className="flex gap-3 ml-3 ">
+            <Button
+              label="Login"
+              outline
+              onClick={() => dispatch(onLoginOpen())}
+            />
+            <Button
+              label="Sign up"
+              onClick={() => dispatch(onRegisterOpen())}
+            />
+          </div>
+        ) : (
+          <div className="min-w-32">
+            <Button
+              outline
+              label="Sign out"
+              onClick={() => {
+                dispatch(logout());
+                toggleOpen();
+              }}
+            />
+          </div>
+        )}
       </div>
       {/* drop down menu for medium and smaller screens */}
       <div
@@ -129,9 +171,17 @@ const UserMenu = () => {
             <MenuItem label={item.label} handleClick={item.onClick} key={idx} />
           ))}
           <hr />
-          {authMenuOptions.map((item, idx) => (
-            <MenuItem label={item.label} handleClick={item.onClick} key={idx} />
-          ))}
+          {!userId ? (
+            authMenuOptions.map((item, idx) => (
+              <MenuItem
+                label={item.label}
+                handleClick={item.onClick}
+                key={idx}
+              />
+            ))
+          ) : (
+            <MenuItem label="Sign out" handleClick={() => dispatch(logout())} />
+          )}
         </div>
       )}
     </div>

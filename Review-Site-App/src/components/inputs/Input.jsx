@@ -1,4 +1,6 @@
 const Input = ({
+  autoComplete,
+  capitalize,
   id,
   label,
   type = "text",
@@ -11,15 +13,18 @@ const Input = ({
   // only take error if it is a string
   const errorMessage =
     error && typeof error.message === "string" ? error.message : null;
+
   return (
     <div className="relative w-full">
       <input
+        autoComplete={autoComplete}
         id={id}
         disabled={disabled}
         {...register(id, { required })}
         placeholder=" "
         type={type}
-        className={`peer w-full rounded-md border-2 bg-white p-4 pt-6 font-light outline-none transition disabled:cursor-not-allowed disabled:opacity-70  "pl-4" ${errors[id] ? "border-rose-500" : "border-neutral-300"} ${errors[id] ? "focus:border-rose-500" : "focus:border-black"} `}
+        className={`peer w-full rounded-md border-2 bg-white p-4 pt-6 font-light outline-none transition disabled:cursor-not-allowed disabled:opacity-70  "pl-4" ${errors[id] ? "border-rose-500" : "border-neutral-300"} ${errors[id] ? "focus:border-rose-500" : "focus:border-black"} 
+        ${capitalize ? `capitalize` : ""}`}
       />
       {/* on peer focus, translate label up 4 and scale to 75 */}
       <label

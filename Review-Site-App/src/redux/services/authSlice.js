@@ -18,21 +18,32 @@ const authApi = api.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
+    login: builder.mutation({
+      query: (credentials) => ({
+        url: `auth/login`,
+        method: "POST",
+        body: credentials,
+      }),
+      invalidatesTags: ["user"],
+    }),
+    logout: builder.mutation({
+      queryFn: () => ({ data: {} }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
 // Store payload token in state and set to cookie
 const storeToken = (state, { payload }) => {
   // Decode jwt token
-  const decoded = jwtDecode(payload.token);
-  state.token = payload.token;
+  const decoded = jwtDecode(payload.TOKEN);
   state.userId = decoded.id;
 
   localStorage.setItem("USER_ID", decoded.id);
   // set cookies with expiration date
-  cookies.set(JWT, payload.token, {
+  cookies.set(JWT, payload.TOKEN, {
     path: "/",
-    // httpOnly: true,
+    httpOnly: true,
     expires: new Date(decoded.exp * 1000),
   });
 };
@@ -41,7 +52,6 @@ const storeToken = (state, { payload }) => {
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    token: cookies.get(JWT),
     userId: localStorage.getItem("USER_ID"),
   },
   reducers: {},
@@ -49,22 +59,22 @@ const authSlice = createSlice({
    *  & match on redux action storeToken for login/register
    *     matchFulfilled: Matcher<FulfilledAction> */
   extraReducers: (builder) => {
-    // builder.addMatcher(api.endpoints.login.matchFulfilled, storeToken);
+    builder.addMatcher(api.endpoints.login.matchFulfilled, storeToken);
     builder.addMatcher(api.endpoints.register.matchFulfilled, storeToken);
-    // builder.addMatcher(api.endpoints.logout.matchFulfilled, (state) => {
-    //   state.token = null;
-    //   state.userId = null;
-    //   cookies.remove(JWT);
-    //   localStorage.removeItem("USER_ID");
-    // });
+    builder.addMatcher(api.endpoints.logout.matchFulfilled, (state) => {
+      state.userId = null;
+      cookies.remove(JWT);
+      localStorage.removeItem("USER_ID");
+      location.reload();
+    });
   },
 });
 
 export default authSlice.reducer;
 
 export const {
-  // useLoginMutation,
-  // useLogoutMutation,
+  useLoginMutation,
+  useLogoutMutation,
   useRegisterMutation,
   // useGetMeQuery,
 } = authApi;

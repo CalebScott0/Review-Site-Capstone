@@ -1,7 +1,7 @@
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { useCallback, useState } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Modal from "./Modal";
 import Heading from "../Heading";
 import Input from "../inputs/Input";
@@ -26,7 +26,7 @@ const RegisterModal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [passwordType, setPasswordType] = useState("password");
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     handleSubmit,
@@ -42,20 +42,31 @@ const RegisterModal = () => {
     },
   });
 
-  // VALIDATION FOR NAMES? like no spaces allowed!!
-
   register("email", {
     pattern: {
       // matches only letters after the . and requires at least 2 letters in the top-level domain (part after the .)
       value: /^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/,
       message: "Please enter a valid email.",
     },
-    onChange() {
-      setError(null);
+    // onChange() {
+    //   setError(null);
+    // },
+  });
+
+  register("firstName", {
+    pattern: {
+      value: /^[A-Za-z]+( [A-Za-z]+)*$/,
+      message: "Please enter a valid name.",
     },
   });
 
-  //   ADD MORE VALIDATION
+  register("lastName", {
+    pattern: {
+      value: /^[A-Za-z]+( [A-Za-z]+)*$/,
+      message: "Please enter a valid name.",
+    },
+  });
+
   register("password", {
     minLength: {
       value: 8,
@@ -65,6 +76,12 @@ const RegisterModal = () => {
       value: 20,
       message: "Password should be shorter than 20 characters.",
     },
+    pattern: {
+      value:
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}[\]|:;?.])[A-Za-z\d!@#$%^&*()_+={}[\]|:;?.]{8,20}$/,
+      message:
+        "Password must contain at least one uppercase and lowercase letter, number, and special character.",
+    },
   });
 
   const onSubmit = async (data) => {
@@ -72,8 +89,16 @@ const RegisterModal = () => {
     setIsLoading(true);
     try {
       await registerUser(data).unwrap();
+      // close and reset form
+      dispatch(onRegisterClose());
+      reset();
     } catch (error) {
-      console.log(error);
+      // specific error handling for duplicate email register
+      if (error.data?.message) {
+        setError(error.data.message);
+      } else if (error) {
+        toast.error("Something went wrong.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -89,7 +114,8 @@ const RegisterModal = () => {
       <div className="flex gap-4">
         <Input
           id="firstName"
-          //   disabled={isLoading}
+          capitalize
+          disabled={isLoading}
           error={errors.firstName}
           errors={errors}
           label="First Name"
@@ -98,7 +124,8 @@ const RegisterModal = () => {
         />
         <Input
           id="lastName"
-          //   disabled={isLoading}
+          capitalize
+          disabled={isLoading}
           error={errors.lastName}
           errors={errors}
           label="Last Name"
@@ -108,7 +135,7 @@ const RegisterModal = () => {
       </div>
       <Input
         id="email"
-        // disabled={isLoading}
+        disabled={isLoading}
         error={errors.email}
         errors={errors}
         label="Email"
@@ -118,28 +145,23 @@ const RegisterModal = () => {
       <div className="relative">
         <Input
           id="password"
-          type={passwordType}
-          // disabled={isLoading}
+          type={!showPassword ? "password" : "text"}
+          disabled={isLoading}
           error={errors.password}
           errors={errors}
           label="Password"
           required
           register={register}
         />
-        <div className="absolute top-1/2 -translate-y-3 right-4 cursor-pointer">
-          {passwordType === "password" ? (
-            <IoEyeOffOutline
-              size={24}
-              onClick={() => setPasswordType("text")}
-            />
+        <div className="absolute right-4 top-6 cursor-pointer">
+          {!showPassword ? (
+            <IoEyeOffOutline size={24} onClick={() => setShowPassword(true)} />
           ) : (
-            <IoEyeOutline
-              size={24}
-              onClick={() => setPasswordType("password")}
-            />
+            <IoEyeOutline size={24} onClick={() => setShowPassword(false)} />
           )}
         </div>
       </div>
+      {error && <div className="mt-2 text-xl -mb-4 text-rose-500">{error}</div>}
     </div>
   );
 

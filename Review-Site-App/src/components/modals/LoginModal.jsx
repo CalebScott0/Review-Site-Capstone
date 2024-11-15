@@ -1,6 +1,6 @@
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "./Modal";
 import Heading from "../Heading";
@@ -10,14 +10,20 @@ import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { onRegisterOpen } from "../../redux/slices/registerModalSlice";
 import { onLoginClose } from "../../redux/slices/loginModalSlice";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { useLoginMutation } from "../../redux/services/authSlice";
 
 const LoginModal = () => {
   const dispatch = useDispatch();
   // boolean isOpen from modal slice
   const isLoginModalOpen = useSelector((state) => state.loginModal.isOpen);
 
+  const [login] = useLoginMutation();
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     handleSubmit,
@@ -37,32 +43,44 @@ const LoginModal = () => {
       value: /^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/,
       message: "Please enter a valid email.",
     },
-    onChange() {
-      setError(null);
-    },
   });
 
-  //   ADD MORE VALIDATION
   register("password", {
     minLength: {
       value: 8,
-      message: "Password should be at least 8 characters.",
+      message: "Password is at least 8 characters.",
     },
     maxLength: {
       value: 20,
-      message: "Password should be shorter than 20 characters.",
+      message: "Password is shorter than 20 characters.",
+    },
+    pattern: {
+      value:
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}[\]|:;?.])[A-Za-z\d!@#$%^&*()_+={}[\]|:;?.]{8,20}$/,
+      message:
+        "Password contains at least one uppercase and lowercase letter, number, and special character.",
     },
   });
 
-  const onSubmit = (data) => {
-    setIsLoading(true);
-    // try {
-
-    // }catch() {
-
-    // }finally{}
-    //   };
+  const onSubmit = async (data) => {
     console.log(data);
+    setError(null);
+    setIsLoading(true);
+    try {
+      await login(data).unwrap();
+      // close and reset form
+      dispatch(onLoginClose());
+      reset();
+    } catch (error) {
+      // specific error handling for duplicate email register
+      if (error.data?.message) {
+        setError(error.data.message);
+      } else if (error) {
+        toast.error("Something went wrong.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const bodyContent = (
@@ -74,22 +92,35 @@ const LoginModal = () => {
       />
       <Input
         id="email"
-        // disabled={isLoading}
+        disabled={isLoading}
         error={errors.email}
         errors={errors}
         label="Email"
         required
         register={register}
+        autoComplete="email"
       />
-      <Input
-        id="password"
-        // disabled={isLoading}
-        error={errors.password}
-        errors={errors}
-        label="Password"
-        required
-        register={register}
-      />
+      <div className="relative">
+        <Input
+          type={!showPassword ? "password" : "text"}
+          id="password"
+          disabled={isLoading}
+          error={errors.password}
+          errors={errors}
+          label="Password"
+          required
+          register={register}
+          autoComplete="current-password"
+        />
+        <div className="absolute right-4 top-6 cursor-pointer">
+          {!showPassword ? (
+            <IoEyeOffOutline size={24} onClick={() => setShowPassword(true)} />
+          ) : (
+            <IoEyeOutline size={24} onClick={() => setShowPassword(false)} />
+          )}
+        </div>
+      </div>
+      {error && <div className="mt-2 text-xl -mb-4 text-rose-500">{error}</div>}
     </div>
   );
 
