@@ -80,7 +80,7 @@ const Search = ({
   return (
     <>
       {/* regular search bar for medium screens and larger */}
-      <div className="xl:mx-24 mx-12 w-full max-w-[60vw] flex font-semibold text-sm border rounded-md border-r-0 shadow-md">
+      <div className="xl:mx-24 mx-12 w-1/2 max-w-[60vw] flex font-semibold text-sm border rounded-md border-r-0 shadow-md">
         {/* <div className="xl:mx-24 mx-12 hidden w-full max-w-[60vw] relative md:flex font-semibold text-sm border rounded-md border-r-0 shadow-md"> */}
         {/* categories/businesses drop down */}
 
