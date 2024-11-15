@@ -20,16 +20,22 @@ const Navbar = ({
         <Container>
           <div className="flex flex-row items-center mb-4 justify-between mx-2">
             <Logo />
-            <Search
+            {/* <Search
               handleSingleBusinessClick={handleSingleBusinessClick}
               handleCategoryListingsClick={handleCategoryListingsClick}
               handleBusinessListingsClick={handleBusinessListingsClick}
-            />
+              /> */}
             <UserMenu />
           </div>
         </Container>
         <Container>
           <div className="mt-6">
+            {/* DLETE AND UNCOMMENT OUT TOP - JUST PUTTING THIS HERE TO CHECK OUT ON MOBILE  */}
+            <Search
+              handleSingleBusinessClick={handleSingleBusinessClick}
+              handleCategoryListingsClick={handleCategoryListingsClick}
+              handleBusinessListingsClick={handleBusinessListingsClick}
+            />
             <Button label="Categories" outline disabled small />
           </div>
         </Container>
