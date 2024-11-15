@@ -8,6 +8,7 @@ import { DotLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { onLoginOpen } from "./../redux/slices/loginModalSlice";
+import { useEffect, useState } from "react";
 
 const SingleBusiness = ({ handleReviewNavigateClick }) => {
   const { state } = useLocation();
@@ -19,11 +20,27 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
   // check if userId
   const userId = useSelector((state) => state.auth.userId);
 
+  // State to store pending review navigation
+  const [pendingReview, setPendingReview] = useState(false);
+
   const {
     data: singleBusiness,
     error,
     isLoading,
   } = useGetSingleBusinessQuery({ businessId });
+
+  // redirect after login if user clicked write a review before authentication
+  useEffect(() => {
+    if (userId && pendingReview) {
+      setTimeout(() => {
+        handleReviewNavigateClick({
+          businessName: singleBusiness?.business.name,
+          businessId: singleBusiness?.business.id,
+        });
+        setPendingReview(false);
+      }, 300);
+    }
+  }, [handleReviewNavigateClick, userId, pendingReview, singleBusiness]);
 
   if (error) {
     toast.error("Failed to load business.");
@@ -36,13 +53,16 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
   }
 
   const handleReviewButtonClick = () => {
-    !userId
-      ? // if no user Id redirect to login
-        dispatch(onLoginOpen())
-      : handleReviewNavigateClick({
-          businessName: singleBusiness?.business.name,
-          businessId: singleBusiness?.business.id,
-        });
+    if (!userId) {
+      // if no user Id redirect to login
+      dispatch(onLoginOpen());
+      setPendingReview(true);
+    } else {
+      handleReviewNavigateClick({
+        businessName: singleBusiness?.business.name,
+        businessId: singleBusiness?.business.id,
+      });
+    }
   };
 
   if (isLoading) {
@@ -60,7 +80,7 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
         <div className="relative">
           {/* carousel of images displayed on top of business page */}
           <SingleBusinessCarousel businessId={singleBusiness.business.id} />
-          <div className="text-shadow absolute bottom-[25%] left-[10%]">
+          <div className="text-shadow absolute bottom-10 lg:bottom-16 left-12 md:left-20 lg:left-32">
             <div>
               <span className="md:text-5xl text-4xl font-bold font-[poppins]">
                 {singleBusiness.business?.name}
@@ -68,17 +88,26 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
             </div>
             <div className="-mt-2 md:flex items-center gap-2">
               {/* Average Stars and review count */}
-              <ReactStars
-                count={5}
-                edit={false}
-                value={singleBusiness.business.average_stars}
-                color2="#ff007f"
-                size={40}
-                // char={<FaRegStar />}
-                half={true}
-              />
-              <div className="ml-2 md:ml-0 text-lg text-white font-semibold">
-                <span>{singleBusiness.business.average_stars}</span>
+              <div className="flex items-center gap-2">
+                <ReactStars
+                  count={5}
+                  edit={false}
+                  value={singleBusiness.business.average_stars}
+                  color2="#ff007f"
+                  size={40}
+                  // char={<FaRegStar />}
+                  half={true}
+                />
+                {/* render average stars inline to rating stars on smaller screens */}
+                <span className="text-lg  font-semibold md:hidden inline">
+                  {singleBusiness.business.average_stars}
+                </span>
+              </div>
+              <div className=" text-lg text-white font-semibold">
+                {/* render average stars normally */}
+                <span className="hidden md:inline">
+                  {singleBusiness.business.average_stars}
+                </span>
                 <span className="ml-1">
                   ({singleBusiness.business.review_count}) reviews
                 </span>

@@ -8,8 +8,8 @@ export const customStyles = {
     paddingTop: "6px",
     paddingBottom: "6px",
     boxShadow: "none",
-    paddingRight: window.innerWidth < 768 ? "42px" : "",
-    paddingLeft: window.innerWidth < 768 ? "30px" : "",
+    paddingRight: "0px",
+    paddingLeft: "10px",
     borderRadius: "0.125rem", //tailwind sm radius
     cursor: "text",
     width: "100%", // Ensures the control spans the full width of its container

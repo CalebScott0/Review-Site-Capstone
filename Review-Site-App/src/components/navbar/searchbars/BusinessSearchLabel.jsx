@@ -10,7 +10,10 @@ const BusinessSearchLabel = ({ business }) => {
   const photoUrl = data?.photos[0].signed_url;
   if (photoUrl) {
     return (
-      <div className="tracking-wide flex items-center gap-2">
+      <div
+        className="tracking-wide flex items-center gap-2"
+        // hide location menu on smaller screens
+      >
         <div className="w-8 h-8 box-content border-neutral-500 border-[0.5px] object-cover">
           <img className="w-full h-full" alt="data" src={photoUrl} />
         </div>

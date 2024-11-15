@@ -92,12 +92,12 @@ const ListingsPage = ({
     return (
       <Container>
         {isFetchingNextPage || isLoading ? (
-          <div className="my-8 pt-44 flex justify-center">
+          <div className="my-8 pt-60 lg:pt-48 flex justify-center">
             <DotLoader size={30} color="#cccccc" />
           </div>
         ) : (
           <div>
-            <div className="pt-44 flex pb-24">
+            <div className="pt-60 lg:pt-48 flex pb-24">
               <div>
                 <Heading
                   center
@@ -140,7 +140,7 @@ const ListingsPage = ({
                   />
                 </div>
               </div>
-              <div className="min-w-[320px] -mt-6 hidden md:block relative">
+              <div className="min-w-[320px] -mt-20 hidden lg:block relative">
                 {/* interactive map to display current businesses rendered */}
                 <ListingsMap
                   businessMarkers={businesses}

@@ -41,7 +41,7 @@ const PaginationMenu = ({
           />
         </div>
       </div>
-      <div className="w-40 mx-3 sm:mx-6">
+      <div className="w-40 hidden md:block">
         {button && (
           <Button
             disabled={currentPage === totalPages}

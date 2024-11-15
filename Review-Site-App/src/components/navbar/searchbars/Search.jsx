@@ -1,9 +1,5 @@
 import { AiOutlineSearch } from "react-icons/ai";
 
-import useSearchModal from "../../../hooks/useSearchModal";
-
-import SearchModal from "../../modals/SearchModal";
-
 import { useRef, useState } from "react";
 
 import {
@@ -14,19 +10,16 @@ import {
 import CategoryAndBusinessSearch from "./CategoryAndBusinessSearch";
 import LocationSearch from "./LocationSearch";
 
-// import { useNavigate } from "react-router-dom";
-
 const Search = ({
   handleCategoryListingsClick,
   handleBusinessListingsClick,
   handleSingleBusinessClick,
 }) => {
-  // hook returns: { isOpen, onClose, onOpen };
-  //  onClose and onOpen toggle isOpen state between false and true respectively
-  const searchModal = useSearchModal();
-
   const locationRef = useRef(null);
   const searchRef = useRef(null);
+
+  // state to show location search on click of category/business search on smaller screens
+  const [showLocationSearch, setShowLocationSearch] = useState(false);
 
   // input values for server side filter search
   const [searchValue, setSearchValue] = useState("");
@@ -48,6 +41,7 @@ const Search = ({
       locationRef.current.focus();
       return;
     } else {
+      setShowLocationSearch(false);
       // conditionals for type of search label clicked on
       /*
        * const handleCategoryListingsClick = ({
@@ -79,13 +73,14 @@ const Search = ({
 
   return (
     <>
-      {/* regular search bar for medium screens and larger */}
-      <div className="xl:mx-24 mx-12 w-1/2 max-w-[60vw] flex font-semibold text-sm border rounded-md border-r-0 shadow-md">
-        {/* <div className="xl:mx-24 mx-12 hidden w-full max-w-[60vw] relative md:flex font-semibold text-sm border rounded-md border-r-0 shadow-md"> */}
+      <div className="xl:mx-24 mx-12 w-full max-w-[60vw] relative flex md:flex-row flex-col font-semibold text-sm border rounded-md border-r-0 shadow-md ">
         {/* categories/businesses drop down */}
 
         {/* USE ASYNC SELECT with api calls */}
-        <div className="flex-1 relative">
+        <div
+          className="flex-1 relative md:border-none border rounded-sm"
+          onClick={() => setShowLocationSearch(true)}
+        >
           <CategoryAndBusinessSearch
             customStyles={customStyles}
             handleSingleBusinessClick={handleSingleBusinessClick}
@@ -96,7 +91,9 @@ const Search = ({
             setCurrentLocation={setCurrentLocation}
           />
         </div>
-        <div className="flex-1 relative">
+        <div
+          className={`flex-1 md:border-none border rounded-sm relative ${showLocationSearch ? "block" : "hidden"} md:block`}
+        >
           <LocationSearch
             currentLocation={currentLocation}
             customStyles={customStyles}
@@ -112,32 +109,6 @@ const Search = ({
           <AiOutlineSearch size={24} color="white" />
         </button>
       </div>
-      {/* Search button onclick shows a search modal */}
-      <div className="md:hidden flex w-full place-content-end ">
-        <div
-          onClick={searchModal.onOpen}
-          className="cursor-pointer hover:shadow-md rounded-full p-2"
-        >
-          <AiOutlineSearch size={24} />
-        </div>
-      </div>
-      {/* full screen search modal for md and smaller screens */}
-      {searchModal.isOpen && (
-        <SearchModal
-        // fetchLocationResults={fetchLocationResults}
-        // fetchSearchResults={fetchSearchResults}
-        // selectStyles={customStyles}
-        // handleSearchInputChange={handleSearchInputChange}
-        // handleLocationInputChange={handleLocationInputChange}
-        // // handleSearchMenuClose={handleSearchMenuClose}
-        // // handleLocationMenuClose={handleLocationMenuClose}
-        // onClose={searchModal.onClose}
-        // isOpen={searchModal.isOpen}
-        // noOptionsMessage={noOptionsMessage}
-        // searchValue={searchValue}
-        // locationValue={locationValue}
-        />
-      )}
     </>
   );
 };
