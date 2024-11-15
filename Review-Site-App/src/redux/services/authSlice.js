@@ -65,7 +65,6 @@ const authSlice = createSlice({
       state.userId = null;
       cookies.remove(JWT);
       localStorage.removeItem("USER_ID");
-      location.reload();
     });
   },
 });

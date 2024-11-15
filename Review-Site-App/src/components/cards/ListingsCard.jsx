@@ -20,7 +20,7 @@ const ListingsCard = ({
       // grid first column carousel auto and remaining content 1fr for full remaining space
       className={`border-b transition-all border border-t-transparent border-r-transparent border-l-transparent hover:border-t-neutral-200 hover:border-r-neutral-200 hover:border-l-neutral-200 hover:border duration-200 hover:shadow-md cursor-pointer sm:grid sm:grid-cols-[auto_1fr] gap-4`}
     >
-      <div className="justify-self-center">
+      <div className="flex justify-center items-center">
         {/* carousel of business pictures on listings cards */}
         <ListingsCarousel businessId={business.id} />
       </div>

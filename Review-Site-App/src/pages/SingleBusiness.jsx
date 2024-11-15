@@ -6,11 +6,18 @@ import ReviewList from "../components/ReviewList";
 import Button from "../components/Button";
 import { DotLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { onLoginOpen } from "./../redux/slices/loginModalSlice";
 
 const SingleBusiness = ({ handleReviewNavigateClick }) => {
   const { state } = useLocation();
   // grab businessId from location state
   const { businessId } = state;
+
+  const dispatch = useDispatch();
+
+  // check if userId
+  const userId = useSelector((state) => state.auth.userId);
 
   const {
     data: singleBusiness,
@@ -27,6 +34,16 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
       </div>
     );
   }
+
+  const handleReviewButtonClick = () => {
+    !userId
+      ? // if no user Id redirect to login
+        dispatch(onLoginOpen())
+      : handleReviewNavigateClick({
+          businessName: singleBusiness?.business.name,
+          businessId: singleBusiness?.business.id,
+        });
+  };
 
   if (isLoading) {
     return (
@@ -45,11 +62,11 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
           <SingleBusinessCarousel businessId={singleBusiness.business.id} />
           <div className="text-shadow absolute bottom-[25%] left-[10%]">
             <div>
-              <span className="text-5xl font-bold font-[poppins]">
+              <span className="md:text-5xl text-4xl font-bold font-[poppins]">
                 {singleBusiness.business?.name}
               </span>
             </div>
-            <div className="-mt-2 flex items-center gap-2">
+            <div className="-mt-2 md:flex items-center gap-2">
               {/* Average Stars and review count */}
               <ReactStars
                 count={5}
@@ -60,7 +77,7 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
                 // char={<FaRegStar />}
                 half={true}
               />
-              <div className="text-lg text-white font-semibold">
+              <div className="ml-2 md:ml-0 text-lg text-white font-semibold">
                 <span>{singleBusiness.business.average_stars}</span>
                 <span className="ml-1">
                   ({singleBusiness.business.review_count}) reviews
@@ -69,11 +86,7 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
             </div>
             <div className="max-w-44 mt-2">
               <Button
-                onClick={() =>
-                  handleReviewNavigateClick({
-                    businessName: singleBusiness.business.name,
-                  })
-                }
+                onClick={() => handleReviewButtonClick()}
                 label="Write a review"
               ></Button>
             </div>

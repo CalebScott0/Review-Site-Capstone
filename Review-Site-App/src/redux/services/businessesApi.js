@@ -41,7 +41,7 @@ const businessesApi = api.injectEndpoints({
     }),
     getReviewsForBusiness: builder.query({
       // page and limit for paginated results
-      query: ({ businessId, page, limit = 10 }) =>
+      query: ({ businessId, page = 1, limit = 10 }) =>
         `businesses/${businessId}/reviews?limit=${limit}&page=${page}`,
     }),
   }),

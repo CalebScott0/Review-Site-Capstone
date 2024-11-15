@@ -63,7 +63,6 @@ const LoginModal = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
     setError(null);
     setIsLoading(true);
     try {
@@ -158,7 +157,7 @@ const LoginModal = () => {
 
   return (
     <Modal
-      // disabled={isLoading}
+      disabled={isLoading}
       isOpen={isLoginModalOpen}
       title="Login"
       actionLabel="Continue"

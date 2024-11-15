@@ -199,7 +199,7 @@ const RegisterModal = () => {
 
   return (
     <Modal
-      // disabled={isLoading}
+      disabled={isLoading}
       isOpen={isRegisterModalOpen}
       title="Register"
       actionLabel="Continue"
