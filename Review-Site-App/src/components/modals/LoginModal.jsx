@@ -68,6 +68,7 @@ const LoginModal = () => {
     try {
       await login(data).unwrap();
       // close and reset form
+      toast.success("Logged in!");
       dispatch(onLoginClose());
       reset();
     } catch (error) {

@@ -90,6 +90,7 @@ const RegisterModal = () => {
     try {
       await registerUser(data).unwrap();
       // close and reset form
+      toast.success("Account created!");
       dispatch(onRegisterClose());
       reset();
     } catch (error) {

@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 
 const SingleBusiness = ({ handleReviewNavigateClick }) => {
   const { state } = useLocation();
+
   // grab businessId from location state
   const { businessId } = state;
 

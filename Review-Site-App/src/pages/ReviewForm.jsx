@@ -7,12 +7,13 @@ import { useEffect, useState } from "react";
 const ReviewForm = () => {
   const userId = useSelector((state) => state.auth.userId);
   const navigate = useNavigate();
-  const { business_name } = useParams();
+
+  const businessName = useParams().business_name;
 
   // if no user navigate back
   useEffect(() => {
     if (!userId) navigate(-1);
-  }, [userId]);
+  }, [userId, navigate]);
 
   // grab businessId from location state
   const { state } = useLocation();
