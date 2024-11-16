@@ -73,7 +73,7 @@ const Search = ({
 
   return (
     <>
-      <div className="xl:mx-24 mx-12 w-full max-w-[60vw] relative flex md:flex-row flex-col font-semibold text-sm border rounded-md border-r-0 shadow-md ">
+      <div className="xl:mx-24 mx-12 w-full max-w-[60vw] relative flex md:flex-row flex-col font-semibold text-sm border rounded-md border-r-0 shadow ">
         {/* categories/businesses drop down */}
 
         {/* USE ASYNC SELECT with api calls */}

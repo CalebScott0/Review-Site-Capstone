@@ -90,7 +90,7 @@ const ReviewForm = ({ businessId, businessName }) => {
           disabled={isLoading}
           id="reviewText"
           name="reviewText"
-          className={`resize-none border-2 rounded-md w-full min-h-[350px] pt-28 pl-5 ${`${errors.reviewText ? "border-red-500 outline-rose-500" : ""}`}`}
+          className={`resize-none border-2 shadow-sm rounded-md w-full min-h-[350px] pt-28 pl-5 ${`${errors.reviewText ? "border-red-500 outline-rose-500" : ""}`}`}
           placeholder="Start your review..."
           autoFocus
           rows="6"
