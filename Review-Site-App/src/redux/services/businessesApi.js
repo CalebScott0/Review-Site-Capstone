@@ -4,7 +4,12 @@ const businessesApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getSingleBusiness: builder.query({
       query: ({ businessId }) => `businesses/${businessId}`,
-      providesTags: (result, error, id) => [{ type: "business", id }],
+      providesTags: (result) => {
+        if (result?.business?.id) {
+          return [{ type: "business", id: result.business.id }];
+        }
+        return []; // Return empty array if there's no valid result
+      },
     }),
     getListingsByCategory: builder.query({
       query: ({ categoryId, city, state, page, limit = 10 }) =>
@@ -43,6 +48,9 @@ const businessesApi = api.injectEndpoints({
       // page and limit for paginated results
       query: ({ businessId, page = 1, limit = 10 }) =>
         `businesses/${businessId}/reviews?limit=${limit}&page=${page}`,
+      providesTags: (result, error, { businessId }) => [
+        { type: "reviews", id: businessId },
+      ],
     }),
   }),
 });

@@ -82,7 +82,6 @@ const ReviewList = ({ businessId }) => {
                     <span className=" text-sm">
                       {review.author_friend_count}
                     </span>
-                    {/* <MdOutlineReviews /> */}
                     <FaRegStar className="transform -scale-x-100 ml-0.5" />
                     <span className=" text-sm">
                       {review.author_review_count}

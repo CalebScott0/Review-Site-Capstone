@@ -2,8 +2,19 @@ import { useForm, Controller } from "react-hook-form";
 import Heading from "../components/Heading";
 import ReactStars from "react-stars";
 import Button from "../components/Button";
+import { useAddReviewMutation } from "../redux/services/reviewsApi";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const ReviewForm = ({ userId, businessId, businessName }) => {
+const ReviewForm = ({ businessId, businessName }) => {
+  const [addReview] = useAddReviewMutation();
+
+  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState();
+
+  const navigate = useNavigate();
+
   const {
     control,
     register,
@@ -17,41 +28,72 @@ const ReviewForm = ({ userId, businessId, businessName }) => {
     },
   });
 
-  errors && console.log(errors);
-
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await addReview({ businessId, data }).unwrap();
+      // close and reset form
+      toast.success("Review submitted!");
+      reset();
+      setTimeout(() => {
+        navigate(-1);
+      }, 300);
+    } catch (error) {
+      if (error.data?.message) {
+        setError(error.data.message);
+      } else if (error) {
+        toast.error("Something went wrong.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <div className="md:w-1/3 w-2/3 mx-auto mt-10">
-      <form>
-        <Heading center title={`Start your review for\n ${businessName}`} />
+    <form className="relative">
+      <Heading center title={`Start your review for\n ${businessName}`} />
+      <div>
         {/* register react stars as controlled input */}
-        <Controller
-          name="stars"
-          control={control}
-          defaultValue={1} // Default rating value
-          render={({ field }) => (
-            <ReactStars
-              size={40}
-              half={false}
-              color2="#ff007f"
-              count={5}
-              className="my-4"
-              value={field.value} // Controlled value from React Hook Form
-              onChange={field.onChange} // Updates React Hook Form's state
-            />
-          )}
-        />
-        <label className="font-semibold text-lg">
+        <div className="absolute left-5 top-20">
+          <Controller
+            name="stars"
+            control={control}
+            defaultValue={1} // Default rating value
+            rules={{
+              required: "Rating is required", // Validation rule for required
+              validate: (value) => value > 0 || "Please select at least 1 star", // Custom validation
+            }}
+            render={({ field }) => (
+              <ReactStars
+                edit={isLoading}
+                size={40}
+                half={false}
+                color2="#ff007f"
+                count={5}
+                value={field.value} // Controlled value from React Hook Form
+                onChange={field.onChange} // Updates React Hook Form's state
+              />
+            )}
+          />
+        </div>
+        {errors.stars?.message && (
+          <div className="absolute top-24 right-48 text-rose-500">
+            {errors.stars.message}
+          </div>
+        )}
+        {/* text area for review */}
+        <label className="absolute top-36 left-5 text-neutral-500  font-semibold">
           Share your experience below
         </label>
         <textarea
+          disabled={isLoading}
           id="reviewText"
           name="reviewText"
-          className={`border w-full p-4 mt-2 ${`${errors.reviewText ? "border-red-500 outline-rose-500" : ""}`}`}
-          rows="6"
+          className={`resize-none border-2 rounded-md w-full min-h-[350px] pt-28 pl-5 ${`${errors.reviewText ? "border-red-500 outline-rose-500" : ""}`}`}
           placeholder="Start your review..."
           autoFocus
+          rows="6"
           {...register("reviewText", {
             required: true,
             minLength: {
@@ -63,9 +105,14 @@ const ReviewForm = ({ userId, businessId, businessName }) => {
         {errors.reviewText?.message && (
           <div className="my-4 text-rose-500">{errors.reviewText.message}</div>
         )}
-        <Button label="Continue" onClick={handleSubmit(onSubmit)}></Button>
-      </form>
-    </div>
+        {error && <div className="my-4 text-xl text-rose-500">{error}</div>}
+      </div>
+      <Button
+        disabled={isLoading}
+        label="Continue"
+        onClick={handleSubmit(onSubmit)}
+      ></Button>
+    </form>
   );
 };
 
