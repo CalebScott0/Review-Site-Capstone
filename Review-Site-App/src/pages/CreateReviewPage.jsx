@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import { useGetReviewsForBusinessQuery } from "../redux/services/businessesApi";
 import { useCallback, useEffect, useState } from "react";
 import ReviewForm from "../forms/ReviewForm";
-import Heading from "../components/Heading";
 import Avatar from "../components/Avatar";
 import Card from "../components/cards/Card";
 import CardHeader from "../components/cards/CardHeader";
@@ -12,7 +11,6 @@ import CardContent from "../components/cards/CardContent";
 // import CardFooter from "../components/cards/CardFooter";
 import { RiContactsBook2Line } from "react-icons/ri";
 import { FaChevronLeft, FaChevronRight, FaRegStar } from "react-icons/fa";
-// import { DotLoader } from "react-spinners";
 import ReactStars from "react-stars";
 import { DotLoader } from "react-spinners";
 
@@ -69,10 +67,13 @@ const CreateReviewPage = () => {
       {/* MOVE INTO OWN COMPONENT WHEN DONE */}
       {showRecentReviews ? (
         <div className="w-full max-w-sm shadow-md border rounded-md">
-          <div className=" pt-6 pl-4">
-            <Heading title="Recent reviews" />
+          {/* recent reviews header */}
+          <div className=" pt-6 pl-4 text-lg font-semibold tracking-wide pb-4 ">
+            See what other users are saying
           </div>
+          <hr className="w-5/6 ml-4" />
           {reviews &&
+            // list of 10 recent reviews cards
             reviews.map((review) => (
               <div key={review.id}>
                 <Card className="max-w-4xl mx-2 border-b">
@@ -115,6 +116,7 @@ const CreateReviewPage = () => {
                 </Card>
               </div>
             ))}
+          {/* button toggle to open and close menu (open by default on mount) */}
           <div
             onClick={() => toggleOpen()}
             className="absolute top-10 right-[25.3%] hover:bg-neutral-100/80 rounded-sm border cursor-pointer py-4 px-1"
