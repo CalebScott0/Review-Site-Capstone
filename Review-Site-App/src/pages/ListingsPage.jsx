@@ -101,10 +101,10 @@ const ListingsPage = ({
               <div>
                 <Heading
                   center
-                  title={`Showing Results for ${category} in ${currentCity}, ${currentState}`}
+                  title={`Showing Results for ${category} in \n ${currentCity}, ${currentState}`}
                 />
                 {/* Showing Results for {category} in {currentCity}, {currentState} */}
-                <div className="mx-4">
+                <div className="m-4 border-t">
                   {businessesData.map((business, idx) => (
                     <div key={business.id}>
                       <div

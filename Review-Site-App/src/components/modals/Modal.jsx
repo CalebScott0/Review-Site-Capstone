@@ -19,6 +19,15 @@ const Modal = ({
   // set show modal to isOpen value on mount
   useEffect(() => {
     setShowModal(isOpen);
+    // Add 'overflow-hidden' to body to prevent background scrolling
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    }
+
+    // Clean up the class when component unmounts or modal closes
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
   }, [isOpen]);
 
   const handleClose = useCallback(() => {
@@ -62,10 +71,8 @@ const Modal = ({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-neutral-800/70 outline-none focus:outline-none">
-        <div
-          className={`relative mx-auto my-6 w-full h-full md:h-auto md:w-4/6 lg:w-3/6 xl:w-2/5`}
-        >
+      <div className="fixed inset-0 z-50 flex items-center justify-center  bg-neutral-800/70 outline-none focus:outline-none">
+        <div className="relative mx-auto my-6 w-full overflow-y-auto h-full md:h-auto md:w-4/6 lg:w-3/6 xl:w-2/5">
           {/* CONTENT */}
           {/* animation on open close of modal */}
           <div

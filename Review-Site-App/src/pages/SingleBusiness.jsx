@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { onLoginOpen } from "./../redux/slices/loginModalSlice";
 import { useEffect, useState } from "react";
+import { PiPencilFill } from "react-icons/pi";
 
 const SingleBusiness = ({ handleReviewNavigateClick }) => {
   const { state } = useLocation();
@@ -117,6 +118,7 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
               <Button
                 onClick={() => handleReviewButtonClick()}
                 label="Write a review"
+                icon={PiPencilFill}
               ></Button>
             </div>
           </div>

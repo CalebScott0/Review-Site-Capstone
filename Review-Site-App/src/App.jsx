@@ -6,9 +6,9 @@ import HomePage from "./pages/HomePage";
 import SingleBusiness from "./pages/SingleBusiness";
 import useSearchState from "./hooks/useSearchState";
 import useNavigation from "./hooks/useNavigation";
-import ReviewForm from "./pages/ReviewForm";
 import RegisterModal from "./components/modals/RegisterModal";
 import LoginModal from "./components/modals/LoginModal";
+import CreateReviewPage from "./pages/CreateReviewPage";
 
 function App() {
   // hooks for searchState and navigation to a new category or to single business
@@ -53,7 +53,10 @@ function App() {
             />
           }
         />
-        <Route path="/write-a-review/:business_name" element={<ReviewForm />} />
+        <Route
+          path="/write-a-review/:business_name"
+          element={<CreateReviewPage />}
+        />
       </Routes>
       <Toaster />
     </>

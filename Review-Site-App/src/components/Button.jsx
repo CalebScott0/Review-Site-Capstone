@@ -18,10 +18,10 @@ const Button = ({ label, onClick, disabled, outline, small, icon: Icon }) => {
       {Icon && (
         <Icon
           size={24}
-          className={`absolute left-4 ${small ? "bottom-[2px] text-neutral-600" : ""}`}
+          className={`absolute left-2 ${small ? "bottom-[2px] text-neutral-600" : ""}`}
         />
       )}
-      {label}
+      <span className={`${Icon ? "ml-4" : ""}`}>{label}</span>
     </button>
   );
 };

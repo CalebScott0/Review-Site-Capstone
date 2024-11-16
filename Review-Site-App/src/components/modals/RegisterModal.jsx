@@ -181,7 +181,7 @@ const RegisterModal = () => {
         icon={AiFillGithub}
         onClick={() => {}}
       />
-      <div className="mt-4 text-center font-light text-neutral-500">
+      <div className="mt-4 text-center font-light text-neutral-500 bg-white p-2 rounded-lg">
         <div className="flex flex-row items-center justify-center gap-2">
           <div>Already have an account?</div>
           <div
