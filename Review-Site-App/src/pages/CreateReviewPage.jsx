@@ -11,16 +11,10 @@ import CardHeader from "../components/cards/CardHeader";
 import CardContent from "../components/cards/CardContent";
 // import CardFooter from "../components/cards/CardFooter";
 import { RiContactsBook2Line } from "react-icons/ri";
-import {
-  FaChevronLeft,
-  FaChevronRight,
-  FaRegLaughBeam,
-  FaRegLightbulb,
-  FaRegStar,
-} from "react-icons/fa";
-import { BsEmojiSunglasses } from "react-icons/bs";
+import { FaChevronLeft, FaChevronRight, FaRegStar } from "react-icons/fa";
 // import { DotLoader } from "react-spinners";
 import ReactStars from "react-stars";
+import { DotLoader } from "react-spinners";
 
 const CreateReviewPage = () => {
   const userId = useSelector((state) => state.auth.userId);
