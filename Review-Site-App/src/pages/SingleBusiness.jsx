@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useGetSingleBusinessQuery } from "../redux/services/businessesApi";
 import ReactStars from "react-stars";
 import SingleBusinessCarousel from "../components/carousels/SingleBusinessCarousel";
-import ReviewList from "../components/ReviewList";
+import ReviewList from "../components/businessReviews/ReviewList";
 import Button from "../components/Button";
 import { DotLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
@@ -124,7 +124,7 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
           </div>
         </div>
         {/* review list for business */}
-        <ReviewList businessId={business.id} />
+        <ReviewList businessId={business.id} userId={userId} />
       </div>
     );
   }

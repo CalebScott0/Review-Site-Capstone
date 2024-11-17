@@ -13,6 +13,7 @@ const Modal = ({
   disabled,
   secondaryAction,
   secondaryActionLabel,
+  warning,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
 
@@ -51,7 +52,16 @@ const Modal = ({
     if (disabled || !secondaryAction) return;
 
     secondaryAction();
-  }, [disabled, secondaryAction]);
+    // if action is a cancel action, call close with animation timer
+    if (secondaryActionLabel === "Cancel") {
+      setShowModal(false);
+
+      // timeout for onClose to align with animation
+      setTimeout(() => {
+        onClose();
+      }, 300);
+    }
+  }, [disabled, secondaryAction, secondaryActionLabel, onClose]);
 
   // must be above return null conditional to avoid extra render error
   //  remove this if it interferes with loading aspects!!
@@ -102,11 +112,14 @@ const Modal = ({
                       onClick={handleSecondaryAction}
                     />
                   )}
-                  <Button
-                    disabled={disabled}
-                    label={actionLabel}
-                    onClick={handleSubmit}
-                  />
+                  {actionLabel && (
+                    <Button
+                      warning={warning}
+                      disabled={disabled}
+                      label={actionLabel}
+                      onClick={handleSubmit}
+                    />
+                  )}
                 </div>
                 {footer}
               </div>
