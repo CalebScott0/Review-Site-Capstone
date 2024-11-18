@@ -3,12 +3,15 @@ import Modal from "./Modal";
 import { onDeleteReviewClose } from "../../redux/slices/deleteReviewModalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import { useDeleteReviewMutation } from "../../redux/services/reviewsApi";
+import toast from "react-hot-toast";
 
-const DeleteReviewModal = () => {
-  const [error, setError] = useState(null);
+const DeleteReviewModal = ({ businessId, reviewId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
+
+  const [deleteReview] = useDeleteReviewMutation();
 
   const isDeleteReviewOpen = useSelector(
     (state) => state.deleteReviewModal.isOpen
@@ -16,6 +19,25 @@ const DeleteReviewModal = () => {
 
   const handleClose = () => {
     dispatch(onDeleteReviewClose());
+  };
+
+  const handleSubmit = async () => {
+    // setError(null);
+    setIsLoading(true);
+    try {
+      await deleteReview({ businessId, reviewId }).unwrap();
+      toast.success("Review deleted.");
+      // dispatch(onDeleteReviewClose());
+    } catch (error) {
+      console.log(error);
+      if (error.data?.error?.message) {
+        toast.error(error.data.error.message);
+      } else {
+        toast.error("Something went wrong.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const bodyContent = (
@@ -38,6 +60,7 @@ const DeleteReviewModal = () => {
       disabled={isLoading}
       warning
       onClose={() => handleClose()}
+      onSubmit={() => handleSubmit()}
       isOpen={isDeleteReviewOpen}
       title="Confirm Review Deletion"
       actionLabel="Delete"

@@ -47,6 +47,9 @@ const UserReviewBusiness = ({ businessId, reviewDateFunc, userId }) => {
     // setIsOpen(false);
     // toggleOpen();
   };
+  if (isLoading) {
+    return;
+  }
 
   if (review) {
     return (
@@ -78,7 +81,10 @@ const UserReviewBusiness = ({ businessId, reviewDateFunc, userId }) => {
                   />
                 </div>
                 {/* modal to confirm review deletion */}
-                <DeleteReviewModal />
+                <DeleteReviewModal
+                  reviewId={review.id}
+                  businessId={review.business_id}
+                />
               </div>
             )}
           </div>

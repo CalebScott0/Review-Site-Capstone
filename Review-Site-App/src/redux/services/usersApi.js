@@ -5,6 +5,9 @@ const usersApi = api.injectEndpoints({
     getUserReviewForBusiness: builder.query({
       query: ({ userId, businessId }) =>
         `users/${userId}/review/business/${businessId}`,
+      providesTags: (result, error, { userId }) => [
+        { type: "reviews", id: userId },
+      ],
     }),
   }),
 });

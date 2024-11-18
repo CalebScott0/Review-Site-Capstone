@@ -6,6 +6,7 @@ import { useAddReviewMutation } from "../redux/services/reviewsApi";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+// import useNavigation from "../hooks/useNavigation";
 
 const ReviewForm = ({ businessId, businessName }) => {
   const [addReview] = useAddReviewMutation();
@@ -107,11 +108,20 @@ const ReviewForm = ({ businessId, businessName }) => {
         )}
         {error && <div className="my-4 text-xl text-rose-500">{error}</div>}
       </div>
-      <Button
-        disabled={isLoading}
-        label="Continue"
-        onClick={handleSubmit(onSubmit)}
-      ></Button>
+      <div className="flex gap-2">
+        <Button
+          disabled={isLoading}
+          label="Cancel"
+          outline
+          small
+          onClick={() => navigate(-1)}
+        />
+        <Button
+          disabled={isLoading}
+          label="Continue"
+          onClick={handleSubmit(onSubmit)}
+        />
+      </div>
     </form>
   );
 };

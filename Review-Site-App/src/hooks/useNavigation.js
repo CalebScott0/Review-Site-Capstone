@@ -6,9 +6,7 @@ const useNavigation = () => {
   const handleSingleBusinessClick = ({ businessId, businessName }) => {
     if (!businessId || !businessName) return;
     const joinNameWithDashes = businessName.split(" ").join("-");
-    navigate(`/business/${joinNameWithDashes}`, {
-      state: { businessId },
-    });
+    navigate(`/business/${joinNameWithDashes}/${businessId}`);
   };
 
   const handleCategoryListingsClick = ({
@@ -21,10 +19,7 @@ const useNavigation = () => {
 
     navigate(
       // encode to handle & in categories - which intereres with url params
-      `/search?find_desc=${encodeURIComponent(categoryName)}&find_loc=${`${city} ${state}`}`,
-      {
-        state: { categoryId },
-      }
+      `/search?find_desc=${encodeURIComponent(categoryName)}&find_loc=${`${city} ${state}&with_id=${categoryId}`}`
     );
   };
 
@@ -38,11 +33,9 @@ const useNavigation = () => {
   };
 
   const handleReviewNavigateClick = ({ businessName, businessId }) => {
-    navigate(`/write-a-review/${encodeURIComponent(businessName)}`, {
-      state: {
-        businessId,
-      },
-    });
+    navigate(
+      `/write-a-review/${encodeURIComponent(businessName)}/${businessId}`
+    );
   };
 
   return {

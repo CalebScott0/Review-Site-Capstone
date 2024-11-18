@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import { useGetReviewsForBusinessQuery } from "../redux/services/businessesApi";
 import { useCallback, useEffect, useState } from "react";
 import ReviewForm from "../forms/ReviewForm";
@@ -19,8 +18,7 @@ const CreateReviewPage = () => {
   const navigate = useNavigate();
 
   // grab businessId from location state
-  const { state } = useLocation();
-  const { businessId } = state;
+  const businessId = useParams().business_id;
 
   const [showRecentReviews, setShowRecentReviews] = useState(true);
 

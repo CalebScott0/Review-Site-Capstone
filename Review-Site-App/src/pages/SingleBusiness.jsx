@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetSingleBusinessQuery } from "../redux/services/businessesApi";
 import ReactStars from "react-stars";
 import SingleBusinessCarousel from "../components/carousels/SingleBusinessCarousel";
@@ -12,10 +12,8 @@ import { useEffect, useState } from "react";
 import { PiPencilFill } from "react-icons/pi";
 
 const SingleBusiness = ({ handleReviewNavigateClick }) => {
-  const { state } = useLocation();
-
-  // grab businessId from location state
-  const { businessId } = state;
+  // grab businessId from location params
+  const businessId = useParams().business_id;
 
   const dispatch = useDispatch();
 

@@ -46,7 +46,7 @@ function App() {
           }
         />
         <Route
-          path="/business/:business_name"
+          path="/business/:business_name/:business_id"
           element={
             <SingleBusiness
               handleReviewNavigateClick={handleReviewNavigateClick}
@@ -54,7 +54,7 @@ function App() {
           }
         />
         <Route
-          path="/write-a-review/:business_name"
+          path="/write-a-review/:business_name/:business_id"
           element={<CreateReviewPage />}
         />
       </Routes>
