@@ -25,10 +25,11 @@ const LocationSearch = forwardRef(
           value: `${city}, ${state}`,
         }));
 
-        locationData.unshift({
-          label: "Current Location",
-          value: "Current Location",
-        });
+        // FOR CURRENT LOCATION OF USER IF ADDDED
+        // locationData.unshift({
+        //   label: "Current Location",
+        //   value: "Current Location",
+        // });
 
         return locationData;
       } catch (e) {

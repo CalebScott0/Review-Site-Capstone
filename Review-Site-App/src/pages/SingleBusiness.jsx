@@ -13,7 +13,7 @@ import { PiPencilFill } from "react-icons/pi";
 
 const SingleBusiness = ({ handleReviewNavigateClick }) => {
   // grab businessId from location params
-  const businessId = useParams().business_id;
+  const { business_id } = useParams();
 
   const dispatch = useDispatch();
 
@@ -27,7 +27,7 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
     data: singleBusiness,
     error,
     isLoading,
-  } = useGetSingleBusinessQuery({ businessId });
+  } = useGetSingleBusinessQuery({ businessId: business_id });
 
   // redirect after login if user clicked write a review before authentication
   useEffect(() => {
