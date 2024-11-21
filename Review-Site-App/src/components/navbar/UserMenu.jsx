@@ -121,7 +121,17 @@ const UserMenu = () => {
     <div className="relative">
       <div className="hidden xl:flex items-center md:gap-2 gap-0">
         {mainMenuOptions.map((item, idx) => (
-          <MenuItem key={idx} handleClick={item.onClick} label={item.label} />
+          // import { NavLink } from "react-router-dom";
+
+          <div
+            key={idx}
+            onClick={item.onClick}
+            className={`xl:min-w-28  xl:hover:bg-white xl:hover:shadow-sm transition font-semibold px-4 xl:px-1 py-4 text-sm cursor-pointer border-transparent xl:border-b-2 hover:border-black xl:text-center`}
+          >
+            {/* <NavLink> */}
+            <span>{item.label}</span>
+            {/* </NavLink> */}
+          </div>
         ))}
         {!userId ? (
           <div className="flex gap-3 ml-3 ">

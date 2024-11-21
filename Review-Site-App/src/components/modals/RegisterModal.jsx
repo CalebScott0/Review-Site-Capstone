@@ -162,7 +162,11 @@ const RegisterModal = () => {
           )}
         </div>
       </div>
-      {error && <div className="mt-2 text-xl -mb-4 text-rose-500">{error}</div>}
+      {error && (
+        <div className="mt-2 text-xl -mb-4 font-semibold text-rose-500">
+          {error}
+        </div>
+      )}
     </div>
   );
 

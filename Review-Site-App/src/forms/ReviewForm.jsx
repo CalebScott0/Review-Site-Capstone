@@ -55,16 +55,17 @@ const ReviewForm = ({
     }
   };
 
+  // STOP SCROLL ON PAGE? ADD SCROLL TO REVIEWLIST
+
   return (
-    <form className="relative">
+    <form>
       <Heading center title={`Start your review for\n ${businessName}`} />
-      <div>
+      <div className="relative">
         {/* register react stars as controlled input */}
-        <div className="absolute left-5 top-20">
+        <div className="absolute left-10 top-4">
           <Controller
             name="stars"
             control={control}
-            defaultValue={1} // Default rating value
             rules={{
               required: "Rating is required", // Validation rule for required
               validate: (value) => value > 0 || "Please select at least 1 star", // Custom validation
@@ -75,6 +76,7 @@ const ReviewForm = ({
                 size={40}
                 half={false}
                 color2="#ff007f"
+                className="z-10"
                 count={5}
                 value={field.value} // Controlled value from React Hook Form
                 onChange={field.onChange} // Updates React Hook Form's state
@@ -83,34 +85,44 @@ const ReviewForm = ({
           />
         </div>
         {errors.stars?.message && (
-          <div className="absolute top-24 right-48 text-rose-500">
+          <div className="absolute top-9 left-[42%] text-lg font-semibold text-rose-500">
             {errors.stars.message}
           </div>
         )}
-        {/* text area for review */}
-        <label className="absolute top-36 left-5 text-neutral-500  font-semibold">
-          Share your experience below
-        </label>
-        <textarea
-          disabled={isLoading}
-          id="reviewText"
-          name="reviewText"
-          className={`resize-none border-2 shadow-sm rounded-md w-full min-h-[350px] pt-28 pl-5 ${`${errors.reviewText ? "border-red-500 outline-rose-500" : ""}`}`}
-          placeholder="Start your review..."
-          autoFocus
-          rows="6"
-          {...register("reviewText", {
-            required: true,
-            minLength: {
-              value: 75,
-              message: "Review should be at least 75 characters.",
-            },
-          })}
-        />
+        {/* container area for review */}
+        <div
+          className={`focus-within:ring-black focus-within:ring-2 focus-within:ring-offset-4 border-2 shadow-sm rounded-md mb-4 min-h-[400px] ${errors.reviewText ? "border-red-500 outline-rose-500" : ""} relative`}
+        >
+          <label className="absolute top-24 z-20 left-10 text-neutral-500  font-semibold">
+            Share your experience below
+          </label>
+          <textarea
+            disabled={isLoading}
+            id="reviewText"
+            name="reviewText"
+            className="w-full px-10 resize-none outline-none absolute top-36"
+            placeholder="Start your review..."
+            autoFocus
+            rows="10"
+            {...register("reviewText", {
+              required: true,
+              minLength: {
+                value: 75,
+                message: "Review should be at least 75 characters.",
+              },
+            })}
+          />
+        </div>
         {errors.reviewText?.message && (
-          <div className="my-4 text-rose-500">{errors.reviewText.message}</div>
+          <div className="my-4 text-rose-500 text-lg font-semibold">
+            {errors.reviewText.message}
+          </div>
         )}
-        {error && <div className="my-4 text-xl text-rose-500">{error}</div>}
+        {error && (
+          <div className="my-4 text-xl font-semibold text-rose-500">
+            {error}
+          </div>
+        )}
       </div>
       <div className="flex gap-2">
         <Button
