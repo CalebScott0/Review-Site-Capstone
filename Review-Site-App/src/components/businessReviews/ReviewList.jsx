@@ -16,7 +16,7 @@ import { toast } from "react-hot-toast";
 import ReactStars from "react-stars";
 import PaginationMenu from "../PaginationMenu";
 
-const ReviewList = ({ businessId, userId }) => {
+const ReviewList = ({ businessId, setUserHasReview, userId }) => {
   // datalabel of main data to grab in paginated fetch
   const dataLabel = "reviews";
 
@@ -70,6 +70,7 @@ const ReviewList = ({ businessId, userId }) => {
         <UserReviewBusiness
           businessId={businessId}
           reviewDateFunc={reviewDate}
+          setUserHasReview={setUserHasReview}
           userId={userId}
         />
         {reviews &&

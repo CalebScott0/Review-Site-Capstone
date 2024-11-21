@@ -8,11 +8,15 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 // import useNavigation from "../hooks/useNavigation";
 
-const ReviewForm = ({ businessId, businessName }) => {
+const ReviewForm = ({
+  businessId,
+  businessName,
+  handleSingleBusinessClick,
+}) => {
   const [addReview] = useAddReviewMutation();
 
-  const [error, setError] = useState();
-  const [isLoading, setIsLoading] = useState();
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -67,7 +71,7 @@ const ReviewForm = ({ businessId, businessName }) => {
             }}
             render={({ field }) => (
               <ReactStars
-                edit={isLoading}
+                edit={!isLoading}
                 size={40}
                 half={false}
                 color2="#ff007f"
@@ -114,7 +118,10 @@ const ReviewForm = ({ businessId, businessName }) => {
           label="Cancel"
           outline
           small
-          onClick={() => navigate(-1)}
+          // navigate (-1) not working, navigate directly back to single business page
+          onClick={() =>
+            handleSingleBusinessClick({ businessId, businessName })
+          }
         />
         <Button
           disabled={isLoading}

@@ -13,7 +13,7 @@ import { FaChevronLeft, FaChevronRight, FaRegStar } from "react-icons/fa";
 import ReactStars from "react-stars";
 import { DotLoader } from "react-spinners";
 
-const CreateReviewPage = () => {
+const CreateReviewPage = ({ handleSingleBusinessClick }) => {
   const userId = useSelector((state) => state.auth.userId);
   const navigate = useNavigate();
 
@@ -55,6 +55,7 @@ const CreateReviewPage = () => {
       <div className="w-2/3 lg:w-5/12 mx-auto mt-10">
         {/* Review form */}
         <ReviewForm
+          handleSingleBusinessClick={handleSingleBusinessClick}
           userId={userId}
           businessId={businessId}
           businessName={businessName}
@@ -64,7 +65,7 @@ const CreateReviewPage = () => {
       {/* ANIMATE CLOSE AND OPEN!!! */}
       {/* MOVE INTO OWN COMPONENT WHEN DONE */}
       {showRecentReviews ? (
-        <div className="w-full max-w-sm shadow-md border rounded-md">
+        <div className="relative w-full max-w-sm shadow-md border rounded-md">
           {/* recent reviews header */}
           <div className=" pt-6 pl-4 text-lg font-semibold tracking-wide pb-4 ">
             See what other users are saying
@@ -117,7 +118,7 @@ const CreateReviewPage = () => {
           {/* button toggle to open and close menu (open by default on mount) */}
           <div
             onClick={() => toggleOpen()}
-            className="absolute top-10 right-[25.3%] hover:bg-neutral-100/80 rounded-sm border cursor-pointer py-4 px-1"
+            className="absolute top-10 -translate-x-[25.5px] hover:bg-neutral-100/80 rounded-sm border cursor-pointer py-4 px-1"
           >
             <FaChevronRight />
           </div>

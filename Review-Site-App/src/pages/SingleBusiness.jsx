@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGetSingleBusinessQuery } from "../redux/services/businessesApi";
 import ReactStars from "react-stars";
 import SingleBusinessCarousel from "../components/carousels/SingleBusinessCarousel";
@@ -22,6 +22,8 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
 
   // State to store pending review navigation
   const [pendingReview, setPendingReview] = useState(false);
+  // state if user has a review on business
+  const [userHasReview, setUserHasReview] = useState(false);
 
   const {
     data: singleBusiness,
@@ -29,9 +31,9 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
     isLoading,
   } = useGetSingleBusinessQuery({ businessId: business_id });
 
-  // redirect after login if user clicked write a review before authentication
+  // redirect after login if user clicked write a review before authentication & does not have a review on business currentlty
   useEffect(() => {
-    if (userId && pendingReview) {
+    if (userId && !userHasReview && pendingReview) {
       setTimeout(() => {
         handleReviewNavigateClick({
           businessName: singleBusiness?.business.name,
@@ -40,7 +42,13 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
         setPendingReview(false);
       }, 300);
     }
-  }, [handleReviewNavigateClick, userId, pendingReview, singleBusiness]);
+  }, [
+    handleReviewNavigateClick,
+    userId,
+    pendingReview,
+    singleBusiness,
+    userHasReview,
+  ]);
 
   if (error) {
     toast.error("Failed to load business.");
@@ -114,15 +122,21 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
             </div>
             <div className="max-w-44 mt-2">
               <Button
+                disabled={userHasReview}
                 onClick={() => handleReviewButtonClick()}
                 label="Write a review"
                 icon={PiPencilFill}
               ></Button>
+              {/* )} */}
             </div>
           </div>
         </div>
         {/* review list for business */}
-        <ReviewList businessId={business.id} userId={userId} />
+        <ReviewList
+          businessId={business.id}
+          setUserHasReview={setUserHasReview}
+          userId={userId}
+        />
       </div>
     );
   }

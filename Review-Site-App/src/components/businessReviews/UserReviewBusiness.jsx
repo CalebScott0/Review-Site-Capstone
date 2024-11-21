@@ -16,13 +16,18 @@ import Heading from "../Heading";
 import { AiOutlineMenu } from "react-icons/ai";
 
 import { useGetUserReviewForBusinessQuery } from "../../redux/services/usersApi";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MenuItem from "../navbar/MenuItem";
 import DeleteReviewModal from "../modals/DeleteReviewModal";
 import { useDispatch } from "react-redux";
 import { onDeleteReviewOpen } from "../../redux/slices/deleteReviewModalSlice";
 
-const UserReviewBusiness = ({ businessId, reviewDateFunc, userId }) => {
+const UserReviewBusiness = ({
+  businessId,
+  reviewDateFunc,
+  setUserHasReview,
+  userId,
+}) => {
   // state for review options menu
   const [isOpen, setIsOpen] = useState(false);
 
@@ -41,6 +46,15 @@ const UserReviewBusiness = ({ businessId, reviewDateFunc, userId }) => {
     businessId,
   });
   const review = userReview?.user_review_for_business[0];
+
+  useEffect(() => {
+    // update state after render
+    if (review) setUserHasReview(true);
+
+    // clean up on unMount (when user leaves page or when review is deleted);
+    // will reset to true if user just leaves page and comes back on remount above
+    return () => setUserHasReview(false);
+  }, [review, setUserHasReview]);
 
   const onDeleteReviewClick = () => {
     dispatch(onDeleteReviewOpen());

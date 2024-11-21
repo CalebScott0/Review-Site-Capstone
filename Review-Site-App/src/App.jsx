@@ -55,7 +55,11 @@ function App() {
         />
         <Route
           path="/write-a-review/:business_name/:business_id"
-          element={<CreateReviewPage />}
+          element={
+            <CreateReviewPage
+              handleSingleBusinessClick={handleSingleBusinessClick}
+            />
+          }
         />
       </Routes>
       <Toaster />
