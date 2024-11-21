@@ -175,7 +175,7 @@ const UserMenu = () => {
       {isOpen && (
         <div
           ref={menuRef}
-          className="absolute z-10 right-0 top-12 w-52 md:w-[25vw] bg-white shadow-md overflow-hidden rounded-lg border"
+          className="absolute z-40 right-0 top-12 w-52 md:w-[25vw] bg-white shadow-md overflow-hidden rounded-lg border"
         >
           {mainMenuOptions.map((item, idx) => (
             <MenuItem label={item.label} handleClick={item.onClick} key={idx} />

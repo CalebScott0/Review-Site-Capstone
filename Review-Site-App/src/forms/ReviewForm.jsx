@@ -62,7 +62,7 @@ const ReviewForm = ({
       <Heading center title={`Start your review for\n ${businessName}`} />
       <div className="relative">
         {/* register react stars as controlled input */}
-        <div className="absolute left-10 top-4">
+        <div className="absolute sm:left-10 left-4 top-4">
           <Controller
             name="stars"
             control={control}
@@ -93,14 +93,14 @@ const ReviewForm = ({
         <div
           className={`focus-within:ring-black focus-within:ring-2 focus-within:ring-offset-4 border-2 shadow-sm rounded-md mb-4 min-h-[400px] ${errors.reviewText ? "border-red-500 outline-rose-500" : ""} relative`}
         >
-          <label className="absolute top-24 z-20 left-10 text-neutral-500  font-semibold">
+          <label className="absolute top-24 z-20 left-4 sm:left-10 text-neutral-500  font-semibold">
             Share your experience below
           </label>
           <textarea
             disabled={isLoading}
             id="reviewText"
             name="reviewText"
-            className="w-full px-10 resize-none outline-none absolute top-36"
+            className="w-full sm:px-10 px-4 resize-none outline-none absolute top-36"
             placeholder="Start your review..."
             autoFocus
             rows="10"
@@ -124,7 +124,7 @@ const ReviewForm = ({
           </div>
         )}
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-4">
         <Button
           disabled={isLoading}
           label="Cancel"

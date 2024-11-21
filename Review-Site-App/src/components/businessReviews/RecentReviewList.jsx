@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Avatar from "../Avatar";
 import Card from "..//cards/Card";
 import CardHeader from "..//cards/CardHeader";
@@ -14,7 +14,6 @@ const RecentReviewList = ({ error, reviews }) => {
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
-  // recent reviews to display on side of review form
 
   const reviewDate = (date) => {
     return new Date(date).toLocaleDateString("en-US", {
@@ -26,16 +25,20 @@ const RecentReviewList = ({ error, reviews }) => {
 
   if (!error)
     return isOpen && reviews ? (
-      <div className="lg:relative w-full lg:max-w-sm shadow-md border rounded-md">
+      <div
+        className={`lg:relative absolute right-0 z-20 bg-white w-full h-full max-w-sm shadow-md border rounded-md transform transition-transform duration-1000 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
         {/* recent reviews header */}
-        <div className=" pt-6 pl-4 text-lg font-semibold tracking-wide pb-4 ">
+        <div className="pt-6 pl-4 text-xl font-semibold tracking-wide pb-4 ">
           See what other users are saying
         </div>
         <hr className="w-5/6 ml-4" />
         {/* // list of 10 recent reviews cards */}
         {reviews.map((review) => (
           <div key={review.id}>
-            <Card className="max-w-4xl mx-2 border-b">
+            <Card className=" mx-2 border-b">
               {/* user avatar (placeholder) and information */}
               <CardHeader className="flex gap-2">
                 <Avatar size={32} />
@@ -78,7 +81,7 @@ const RecentReviewList = ({ error, reviews }) => {
         {/* button toggle to open and close menu (open by default on mount) */}
         <div
           onClick={() => toggleOpen()}
-          className="absolute top-10 -translate-x-[25.5px] hover:bg-neutral-100/80 rounded-sm border cursor-pointer py-4 px-1"
+          className="absolute top-10 -translate-x-[25.5px] bg-neutral-100 hover:bg-neutral-300 xl:bg-white lg:hover:bg-neutral-100/80 rounded-sm border cursor-pointer py-4 px-1"
         >
           <FaChevronRight />
         </div>

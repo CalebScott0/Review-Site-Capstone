@@ -40,7 +40,7 @@ const CreateReviewPage = ({ handleSingleBusinessClick }) => {
   if (!isLoading) {
     return (
       <div className="relative flex">
-        <div className="w-2/3 lg:w-5/12 mx-auto mt-10">
+        <div className="w-full max-w-2xl mx-2 sm:mx-10 md:mx-auto mt-10">
           {/* Review form */}
           <ReviewForm
             handleSingleBusinessClick={handleSingleBusinessClick}
@@ -49,15 +49,15 @@ const CreateReviewPage = ({ handleSingleBusinessClick }) => {
             businessName={businessName}
           />
         </div>
-        {/* Side bar of most recent reviews */}
+        {/* Side bar of most recent reviews - hidden on mobile*/}
         {/* ANIMATE CLOSE AND OPEN!!! */}
-        {/* MOVE INTO OWN COMPONENT WHEN DONE */}
-        <RecentReviewList
-          // businessId={businessId}
-          reviews={reviews}
-          reviewDate={reviewDate}
-          error={error}
-        />
+        <div className="hidden sm:block">
+          <RecentReviewList
+            reviews={reviews}
+            reviewDate={reviewDate}
+            error={error}
+          />
+        </div>
       </div>
     );
   }

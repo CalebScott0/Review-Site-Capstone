@@ -1,7 +1,7 @@
 const Heading = ({ title, subtitle, center, warningLabel }) => {
   return (
     <div
-      className={`whitespace-pre-line ${center ? "text-center" : "text-start"}`}
+      className={` whitespace-pre-line ${center ? "text-center" : "text-start"}`}
     >
       <div
         className={`text-2xl font-bold tracking-wide ${warningLabel ? "text-rose-500" : "text-black"}`}
