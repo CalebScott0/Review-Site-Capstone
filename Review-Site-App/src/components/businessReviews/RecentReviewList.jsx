@@ -26,9 +26,8 @@ const RecentReviewList = ({ error, reviews }) => {
   if (!error)
     return isOpen && reviews ? (
       <div
-        className={`lg:relative absolute right-0 z-20 bg-white w-full h-full max-w-sm shadow-md border rounded-md transform transition-transform duration-1000 ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        // ${isOpen ? "translate-x-0" : "translate-x-full"}
+        className={`lg:relative absolute right-0 z-10 bg-white w-full h-full max-w-sm shadow-md border rounded-md transform transition-transform duration-300`}
       >
         {/* recent reviews header */}
         <div className="pt-6 pl-4 text-xl font-semibold tracking-wide pb-4 ">

@@ -93,7 +93,7 @@ const ReviewForm = ({
         <div
           className={`focus-within:ring-black focus-within:ring-2 focus-within:ring-offset-4 border-2 shadow-sm rounded-md mb-4 min-h-[400px] ${errors.reviewText ? "border-red-500 outline-rose-500" : ""} relative`}
         >
-          <label className="absolute top-24 z-20 left-4 sm:left-10 text-neutral-500  font-semibold">
+          <label className="absolute top-24 z-10 left-4 sm:left-10 text-neutral-500  font-semibold">
             Share your experience below
           </label>
           <textarea
