@@ -3,6 +3,7 @@ import { api } from "../services";
 import registerModalReducer from "../slices/registerModalSlice";
 import loginModalReducer from "../slices/loginModalSlice";
 import deleteReviewModalReducer from "../slices/deleteReviewModalSlice";
+import editReviewModalReducer from "../slices/editReviewModalSlice";
 import authReducer from "../services/authSlice";
 import reviewsApi from "../services/reviewsApi";
 import usersApi from "../services/usersApi";
@@ -17,6 +18,7 @@ export const store = configureStore({
     loginModal: loginModalReducer,
     registerModal: registerModalReducer,
     deleteReviewModal: deleteReviewModalReducer,
+    editReviewModal: editReviewModalReducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.

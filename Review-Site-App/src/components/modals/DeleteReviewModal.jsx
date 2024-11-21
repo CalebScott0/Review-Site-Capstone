@@ -27,7 +27,7 @@ const DeleteReviewModal = ({ businessId, reviewId }) => {
     try {
       await deleteReview({ businessId, reviewId }).unwrap();
       toast.success("Review deleted.");
-      // dispatch(onDeleteReviewClose());
+      dispatch(onDeleteReviewClose());
     } catch (error) {
       console.log(error);
       if (error.data?.error?.message) {

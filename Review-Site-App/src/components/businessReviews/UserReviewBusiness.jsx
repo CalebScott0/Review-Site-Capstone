@@ -21,6 +21,8 @@ import MenuItem from "../navbar/MenuItem";
 import DeleteReviewModal from "../modals/DeleteReviewModal";
 import { useDispatch } from "react-redux";
 import { onDeleteReviewOpen } from "../../redux/slices/deleteReviewModalSlice";
+import { onEditReviewOpen } from "../../redux/slices/editReviewModalSlice";
+import EditReviewModal from "../modals/EditReviewModal";
 
 const UserReviewBusiness = ({
   businessId,
@@ -56,16 +58,24 @@ const UserReviewBusiness = ({
     return () => setUserHasReview(false);
   }, [review, setUserHasReview]);
 
-  const onDeleteReviewClick = () => {
-    dispatch(onDeleteReviewOpen());
-    // setIsOpen(false);
-    // toggleOpen();
-  };
   if (isLoading) {
     return;
   }
 
   if (review) {
+    const onDeleteReviewClick = () => {
+      dispatch(onDeleteReviewOpen());
+      // setIsOpen(false);
+      // toggleOpen();
+    };
+
+    const onEditReviewClick = () => {
+      // pass text and stars into action payload for state
+      dispatch(
+        onEditReviewOpen({ text: review.review_text, stars: review.stars })
+      );
+    };
+
     return (
       <Card
         key={review.id}
@@ -84,7 +94,11 @@ const UserReviewBusiness = ({
             {isOpen && (
               <div className="absolute border bg-white shadow-sm w-40 right-0 top-11 rounded-md z-10 text-black">
                 <div className="relative">
-                  <MenuItem icon={FaRegEdit} label="Edit Review" />
+                  <MenuItem
+                    icon={FaRegEdit}
+                    label="Edit Review"
+                    handleClick={onEditReviewClick}
+                  />
                 </div>
                 <hr />
                 <div className="relative text-rose-500">
@@ -99,6 +113,8 @@ const UserReviewBusiness = ({
                   reviewId={review.id}
                   businessId={review.business_id}
                 />
+                {/* modal for editing review */}
+                <EditReviewModal />
               </div>
             )}
           </div>

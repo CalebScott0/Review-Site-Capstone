@@ -11,6 +11,8 @@ const deleteReviewModalSlice = createSlice({
       state.isOpen = true;
     },
     onDeleteReviewClose(state) {
+      console.log("closing modal");
+
       state.isOpen = false;
     },
   },
