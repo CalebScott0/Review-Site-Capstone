@@ -52,13 +52,11 @@ const CreateReviewPage = ({ handleSingleBusinessClick }) => {
         </div>
         {/* Side bar of most recent reviews - hidden on mobile*/}
         {/* ANIMATE CLOSE AND OPEN!!! */}
-        <div className="hidden sm:block">
-          <RecentReviewList
-            reviews={reviews}
-            reviewDate={reviewDate}
-            error={error}
-          />
-        </div>
+        <RecentReviewList
+          reviews={reviews}
+          reviewDate={reviewDate}
+          error={error}
+        />
       </div>
     );
   }
