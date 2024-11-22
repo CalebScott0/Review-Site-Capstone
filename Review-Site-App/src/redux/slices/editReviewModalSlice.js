@@ -22,7 +22,6 @@ const editReviewModalSlice = createSlice({
     },
     onEditReviewClose(state) {
       state.isOpen = false;
-      state.isModalOpen = false;
       state.review = { id: "", text: "", stars: 0 };
     },
   },

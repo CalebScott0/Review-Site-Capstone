@@ -70,7 +70,7 @@ const RecentReviewList = ({ error, reviews }) => {
                   {reviewDate(review.created_at)}
                 </div>
                 {/* review text */}
-                <div className="mt-2 w-10/12 line-clamp-6 text-black">
+                <div className="mt-2 w-10/12 line-clamp-6 text-black break-words break-all whitespace-normal">
                   {review.review_text}
                 </div>
               </CardContent>

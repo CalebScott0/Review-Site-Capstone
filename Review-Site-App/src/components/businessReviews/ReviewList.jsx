@@ -111,7 +111,9 @@ const ReviewList = ({ businessId, setUserHasReview, userId }) => {
                     {reviewDate(review.created_at)}
                   </div>
                   {/* review text */}
-                  <div className="mt-2 text-black">{review.review_text}</div>
+                  <div className="mt-2 text-black break-words break-all whitespace-normal">
+                    {review.review_text}
+                  </div>
                 </CardContent>
                 {/* Card Footer for useful, funny, and cool ratings of review*/}
                 <section className="flex gap-4 mt-4">

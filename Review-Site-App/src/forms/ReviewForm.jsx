@@ -10,7 +10,8 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 // import useNavigation from "../hooks/useNavigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { onEditReviewClose } from "../redux/slices/editReviewModalSlice";
 
 const ReviewForm = ({
   businessId,
@@ -25,6 +26,7 @@ const ReviewForm = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // for edit grab text and stars of review to update
   const reviewToUpdate = useSelector((state) => state.editReviewModal.review);
@@ -66,13 +68,16 @@ const ReviewForm = ({
       await reviewMethod({ ...reviewData }).unwrap();
       // close and reset form
       toast.success(`Review ${mode === "Create" ? `submitted` : `updated`}!`);
-      reset();
       // for edit, modal close will take care of returning to business page
       if (mode === "Create") {
         setTimeout(() => {
           navigate(-1);
         }, 300);
+      } else {
+        // if edit mode, close modal on success
+        dispatch(onEditReviewClose());
       }
+      reset();
     } catch (error) {
       if (error.data?.message) {
         setError(error.data.message);
