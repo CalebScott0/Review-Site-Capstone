@@ -64,7 +64,6 @@ const ReviewForm = ({
         ? { businessId, data }
         : { businessId, reviewId: reviewToUpdate?.id, data };
     try {
-      console.log(reviewData);
       await reviewMethod({ ...reviewData }).unwrap();
       // close and reset form
       toast.success(`Review ${mode === "Create" ? `submitted` : `updated`}!`);

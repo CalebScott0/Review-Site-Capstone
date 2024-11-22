@@ -33,15 +33,23 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
 
   // redirect after login if user clicked write a review before authentication & does not have a review on business currentlty
   useEffect(() => {
-    if (userId && !userHasReview && pendingReview) {
-      setTimeout(() => {
-        handleReviewNavigateClick({
-          businessName: singleBusiness?.business.name,
-          businessId: singleBusiness?.business.id,
-        });
+    // Ctimeout to debounce the navigation
+    const debounceTimeout = setTimeout(() => {
+      if (userId && pendingReview) {
+        if (!userHasReview) {
+          // Navigate to the review form only if the user doesn't have a review
+          handleReviewNavigateClick({
+            businessName: singleBusiness?.business.name,
+            businessId: singleBusiness?.business.id,
+          });
+        }
+        // Reset pendingReview whether or not navigation occurs
         setPendingReview(false);
-      }, 300);
-    }
+      }
+    }, 300); // Delay of 300ms
+
+    // Cleanup the timeout on dependencies change or component unmount
+    return () => clearTimeout(debounceTimeout);
   }, [
     handleReviewNavigateClick,
     userId,

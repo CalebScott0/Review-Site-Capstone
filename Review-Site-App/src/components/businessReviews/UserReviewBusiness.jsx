@@ -55,7 +55,9 @@ const UserReviewBusiness = ({
 
     // clean up on unMount (when user leaves page or when review is deleted);
     // will reset to true if user just leaves page and comes back on remount above
-    return () => setUserHasReview(false);
+    return () => {
+      if (!review) setUserHasReview(false);
+    };
   }, [review, setUserHasReview]);
 
   const onEditReviewClick = useCallback(() => {

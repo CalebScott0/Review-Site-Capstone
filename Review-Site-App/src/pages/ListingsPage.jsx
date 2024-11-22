@@ -70,7 +70,6 @@ const ListingsPage = ({
   };
 
   if (error) {
-    console.error("Error fetching listings:", error);
     toast.error("Failed to load listings");
     return (
       <div className="pt-52 text-rose-500 text-center text-2xl">
