@@ -2,28 +2,38 @@ import { useForm, Controller } from "react-hook-form";
 import Heading from "../components/Heading";
 import ReactStars from "react-stars";
 import Button from "../components/Button";
-import { useAddReviewMutation } from "../redux/services/reviewsApi";
-import { useState } from "react";
+import {
+  useAddReviewMutation,
+  useEditReviewMutation,
+} from "../redux/services/reviewsApi";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 // import useNavigation from "../hooks/useNavigation";
+import { useSelector } from "react-redux";
 
 const ReviewForm = ({
   businessId,
   businessName,
   handleSingleBusinessClick,
+  mode,
 }) => {
   const [addReview] = useAddReviewMutation();
+  const [editReview] = useEditReviewMutation();
 
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
+  // for edit grab text and stars of review to update
+  const reviewToUpdate = useSelector((state) => state.editReviewModal.review);
+
   const {
     control,
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm({
@@ -33,17 +43,36 @@ const ReviewForm = ({
     },
   });
 
+  // if form is being used to edit, set form values from redux state
+  useEffect(() => {
+    if (mode === "Edit") {
+      setValue("reviewText", reviewToUpdate?.text);
+      setValue("stars", reviewToUpdate?.stars);
+    }
+  }, [mode, reviewToUpdate?.text, reviewToUpdate?.stars, setValue]);
+
   const onSubmit = async (data) => {
     setError(null);
     setIsLoading(true);
+    // set method of review for form
+    // and object to pass to rtk query endpoint
+    const reviewMethod = mode === "Create" ? addReview : editReview;
+    const reviewData =
+      mode === "Create"
+        ? { businessId, data }
+        : { businessId, reviewId: reviewToUpdate?.id, data };
     try {
-      await addReview({ businessId, data }).unwrap();
+      console.log(reviewData);
+      await reviewMethod({ ...reviewData }).unwrap();
       // close and reset form
-      toast.success("Review submitted!");
+      toast.success(`Review ${mode === "Create" ? `submitted` : `updated`}!`);
       reset();
-      setTimeout(() => {
-        navigate(-1);
-      }, 300);
+      // for edit, modal close will take care of returning to business page
+      if (mode === "Create") {
+        setTimeout(() => {
+          navigate(-1);
+        }, 300);
+      }
     } catch (error) {
       if (error.data?.message) {
         setError(error.data.message);
@@ -59,7 +88,9 @@ const ReviewForm = ({
 
   return (
     <form>
-      <Heading center title={`Start your review for\n ${businessName}`} />
+      {mode === "Create" && (
+        <Heading center title={`Start your review for\n ${businessName}`} />
+      )}
       <div className="relative">
         {/* register react stars as controlled input */}
         <div className="absolute sm:left-10 left-4 top-4">
@@ -78,7 +109,7 @@ const ReviewForm = ({
                 color2="#ff007f"
                 className="z-10"
                 count={5}
-                value={field.value} // Controlled value from React Hook Form
+                value={field.value} // Controlled valune from React Hook Form
                 onChange={field.onChange} // Updates React Hook Form's state
               />
             )}
@@ -124,17 +155,18 @@ const ReviewForm = ({
           </div>
         )}
       </div>
-      <div className="flex gap-4">
-        <Button
-          disabled={isLoading}
-          label="Cancel"
-          outline
-          small
-          // navigate (-1) not working, navigate directly back to single business page
-          onClick={() =>
-            handleSingleBusinessClick({ businessId, businessName })
-          }
-        />
+      <div className={`flex gap-4 ${mode === "Edit" ? "-mb-6 mt-6" : ""}`}>
+        {mode === "Create" && (
+          <Button
+            disabled={isLoading}
+            label="Cancel"
+            outline
+            // navigate (-1) not working, navigate directly back to single business page
+            onClick={() => {
+              handleSingleBusinessClick({ businessId, businessName });
+            }}
+          />
+        )}
         <Button
           disabled={isLoading}
           label="Continue"

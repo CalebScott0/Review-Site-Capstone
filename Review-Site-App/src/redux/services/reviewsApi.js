@@ -15,6 +15,19 @@ const reviewsApi = api.injectEndpoints({
         "user", //  invalidate user data
       ],
     }),
+    editReview: builder.mutation({
+      query: ({ businessId, reviewId, data }) => ({
+        url: `reviews/${reviewId}/business/${businessId}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: "business", id: id.businessId }, // Invalidate the business data for the specific business
+        { type: "reviews", id: id.businessId }, // Invalidate the reviews data for the specific business
+        { type: "reviews", id: id.userId }, // Invalidate the review for the user
+        "user", //  invalidate user data
+      ],
+    }),
     deleteReview: builder.mutation({
       query: ({ businessId, reviewId }) => ({
         url: `reviews/${reviewId}/business/${businessId}`,
@@ -30,6 +43,10 @@ const reviewsApi = api.injectEndpoints({
   }),
 });
 
-export const { useAddReviewMutation, useDeleteReviewMutation } = reviewsApi;
+export const {
+  useAddReviewMutation,
+  useDeleteReviewMutation,
+  useEditReviewMutation,
+} = reviewsApi;
 
 export default reviewsApi; // Exporting reviewsApi for use in store

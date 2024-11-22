@@ -133,6 +133,7 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
         </div>
         {/* review list for business */}
         <ReviewList
+          businessName={business.name}
           businessId={business.id}
           setUserHasReview={setUserHasReview}
           userId={userId}

@@ -43,6 +43,7 @@ const CreateReviewPage = ({ handleSingleBusinessClick }) => {
         <div className="w-full max-w-2xl mx-2 sm:mx-10 md:mx-auto mt-10">
           {/* Review form */}
           <ReviewForm
+            mode="Create"
             handleSingleBusinessClick={handleSingleBusinessClick}
             userId={userId}
             businessId={businessId}

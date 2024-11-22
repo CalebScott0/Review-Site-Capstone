@@ -58,6 +58,17 @@ const UserReviewBusiness = ({
     return () => setUserHasReview(false);
   }, [review, setUserHasReview]);
 
+  const onEditReviewClick = useCallback(() => {
+    // pass text and stars into action payload for state
+    dispatch(
+      onEditReviewOpen({
+        id: review?.id,
+        text: review?.review_text,
+        stars: review?.stars,
+      })
+    );
+  }, [dispatch, review?.id, review?.review_text, review?.stars]);
+
   if (isLoading) {
     return;
   }
@@ -67,13 +78,6 @@ const UserReviewBusiness = ({
       dispatch(onDeleteReviewOpen());
       // setIsOpen(false);
       // toggleOpen();
-    };
-
-    const onEditReviewClick = () => {
-      // pass text and stars into action payload for state
-      dispatch(
-        onEditReviewOpen({ text: review.review_text, stars: review.stars })
-      );
     };
 
     return (
@@ -111,10 +115,10 @@ const UserReviewBusiness = ({
                 {/* modal to confirm review deletion */}
                 <DeleteReviewModal
                   reviewId={review.id}
-                  businessId={review.business_id}
+                  businessId={businessId}
                 />
                 {/* modal for editing review */}
-                <EditReviewModal />
+                <EditReviewModal businessId={businessId} />
               </div>
             )}
           </div>
