@@ -46,7 +46,7 @@ const ListingsMap = ({ businessMarkers, currentPage, limit, showFullMap }) => {
 
         center: [businessMarkers[0]?.longitude, businessMarkers[0]?.latitude],
         // center: [center?.longitude, center?.latitude],
-        zoom: 16, //default zoom value
+        zoom: 12, //default zoom value
       });
       const navigation = new maplibregl.NavigationControl();
       map.current?.addControl(navigation, 'top-left');

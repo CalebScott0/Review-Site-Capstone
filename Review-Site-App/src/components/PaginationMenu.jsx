@@ -7,6 +7,7 @@ const PaginationMenu = ({
   paginationRange,
   totalPages,
   button,
+  showFullMap,
 }) => {
   return (
     <div className='flex flex-wrap lg:flex-nowrap'>
@@ -42,7 +43,7 @@ const PaginationMenu = ({
         </div>
       </div>
       <div className='hidden w-40 md:block'>
-        {button && (
+        {button && !showFullMap && (
           <Button
             disabled={currentPage === totalPages}
             onClick={() => handlePageChange(currentPage + 1)}

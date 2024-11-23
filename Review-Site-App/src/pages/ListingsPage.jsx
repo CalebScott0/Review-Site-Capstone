@@ -23,6 +23,13 @@ import Heading from '../components/Heading';
 import { useCallback, useState } from 'react';
 import { MdOutlineZoomInMap, MdOutlineZoomOutMap } from 'react-icons/md';
 
+/*
+ * TODO:
+ *  - Make map transition smoother
+ *
+ * FIXME:
+ */
+
 const ListingsPage = ({
   currentCity,
   currentState,
@@ -105,7 +112,7 @@ const ListingsPage = ({
         ) : (
           <div>
             <div className='flex pb-24 pt-60 lg:pt-48'>
-              <div>
+              <div className={`${showFullMap ? 'w-2/5 flex-1' : ''}`}>
                 <Heading
                   center
                   title={`Showing Results for ${category} in \n ${currentCity}, ${currentState}`}
@@ -143,19 +150,17 @@ const ListingsPage = ({
                     currentPage={currentPage}
                     handlePageChange={handlePageChange}
                     paginationRange={paginationRange}
+                    showFullMap={showFullMap}
                     button
                   />
                 </div>
               </div>
               {/* interactive map to display current businesses rendered */}
-              <div className='relative z-10 -mt-9 flex w-full flex-col'>
+              <div className='relative z-10 -mt-9 w-full'>
                 <div
-                  className={`fixed right-0 h-[81vh] ${
-                    showFullMap
-                      ? 'h-full w-full translate-x-0 opacity-100'
-                      : 'h-[400px] w-[320px] translate-x-[-20px] opacity-75'
-                    // "w-full translate-x-0" : "w-96"
-                  } transform overflow-hidden transition-all duration-500 ease-in-out`}
+                  className={`fixed right-0 h-[81vh] w-96 ${
+                    showFullMap ? 'w-3/5' : ''
+                  } `}
                 >
                   <ListingsMap
                     businessMarkers={businesses}
