@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isOpen: false,
 };
 const registerModalSlice = createSlice({
-  name: "registerModal",
+  name: 'registerModal',
   initialState,
   reducers: {
     onRegisterOpen(state) {

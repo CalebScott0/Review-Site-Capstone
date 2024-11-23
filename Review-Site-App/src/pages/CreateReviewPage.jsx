@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { useGetReviewsForBusinessQuery } from "../redux/services/businessesApi";
-import { useEffect } from "react";
-import ReviewForm from "../forms/ReviewForm";
-import RecentReviewList from "../components/businessReviews/RecentReviewList";
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useGetReviewsForBusinessQuery } from '../redux/services/businessesApi';
+import { useEffect } from 'react';
+import ReviewForm from '../forms/ReviewForm';
+import RecentReviewList from '../components/businessReviews/RecentReviewList';
 
 const CreateReviewPage = ({ handleSingleBusinessClick }) => {
   const userId = useSelector((state) => state.auth.userId);
@@ -30,20 +30,20 @@ const CreateReviewPage = ({ handleSingleBusinessClick }) => {
   const reviews = businessReviews?.reviews;
 
   const reviewDate = (date) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+    return new Date(date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     });
   };
 
   if (!isLoading) {
     return (
-      <div className="relative flex">
-        <div className="w-full max-w-2xl mx-2 sm:mx-10 md:mx-auto mt-10">
+      <div className='relative flex'>
+        <div className='mx-2 mt-10 w-full max-w-2xl sm:mx-10 md:mx-auto'>
           {/* Review form */}
           <ReviewForm
-            mode="Create"
+            mode='Create'
             handleSingleBusinessClick={handleSingleBusinessClick}
             userId={userId}
             businessId={businessId}

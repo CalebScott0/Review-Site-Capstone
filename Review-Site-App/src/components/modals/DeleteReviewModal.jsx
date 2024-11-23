@@ -1,10 +1,10 @@
-import Heading from "../Heading";
-import Modal from "./Modal";
-import { onDeleteReviewClose } from "../../redux/slices/deleteReviewModalSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { useDeleteReviewMutation } from "../../redux/services/reviewsApi";
-import toast from "react-hot-toast";
+import Heading from '../Heading';
+import Modal from './Modal';
+import { onDeleteReviewClose } from '../../redux/slices/deleteReviewModalSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useDeleteReviewMutation } from '../../redux/services/reviewsApi';
+import toast from 'react-hot-toast';
 
 const DeleteReviewModal = ({ businessId, reviewId }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,14 +26,14 @@ const DeleteReviewModal = ({ businessId, reviewId }) => {
     setIsLoading(true);
     try {
       await deleteReview({ businessId, reviewId }).unwrap();
-      toast.success("Review deleted.");
+      toast.success('Review deleted.');
       dispatch(onDeleteReviewClose());
     } catch (error) {
       console.log(error);
       if (error.data?.error?.message) {
         toast.error(error.data.error.message);
       } else {
-        toast.error("Something went wrong.");
+        toast.error('Something went wrong.');
       }
     } finally {
       setIsLoading(false);
@@ -45,8 +45,8 @@ const DeleteReviewModal = ({ businessId, reviewId }) => {
       <Heading
         center
         warningLabel
-        title="Delete review?"
-        subtitle="This action cannot be undone"
+        title='Delete review?'
+        subtitle='This action cannot be undone'
       />
       {/* <div className="flex gap-2 mt-10 -mb-10 mx-6">
         <Button outline label="Cancel" onClick={handleClose} />
@@ -62,10 +62,10 @@ const DeleteReviewModal = ({ businessId, reviewId }) => {
       onClose={() => handleClose()}
       onSubmit={() => handleSubmit()}
       isOpen={isDeleteReviewOpen}
-      title="Confirm Review Deletion"
-      actionLabel="Delete"
+      title='Confirm Review Deletion'
+      actionLabel='Delete'
       secondaryAction={() => {}}
-      secondaryActionLabel="Cancel"
+      secondaryActionLabel='Cancel'
       body={bodyContent}
     />
   );

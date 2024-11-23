@@ -1,25 +1,27 @@
-import Container from "../components/Container";
+import Container from '../components/Container';
 
-import PaginationMenu from "../components/PaginationMenu";
+import PaginationMenu from '../components/PaginationMenu';
 
 import {
   useGetListingsByCategoryQuery,
   useGetListingsByNameQuery,
-} from "../redux/services/businessesApi";
+} from '../redux/services/businessesApi';
 
-import ListingsCard from "../components/cards/ListingsCard";
+import ListingsCard from '../components/cards/ListingsCard';
 
-import ListingsMap from "../components/map/ListingsMap";
+import ListingsMap from '../components/map/ListingsMap';
 
-import usePaginatedFetch from "../hooks/usePaginatedFetch";
+import usePaginatedFetch from '../hooks/usePaginatedFetch';
 
-import checkIsOpen from "../utils/CheckIsOpen";
+import checkIsOpen from '../utils/CheckIsOpen';
 
-import { DotLoader } from "react-spinners";
+import { DotLoader } from 'react-spinners';
 
-import { toast } from "react-hot-toast";
+import { toast } from 'react-hot-toast';
 
-import Heading from "../components/Heading";
+import Heading from '../components/Heading';
+import { useCallback, useState } from 'react';
+import { MdOutlineZoomInMap, MdOutlineZoomOutMap } from 'react-icons/md';
 
 const ListingsPage = ({
   currentCity,
@@ -29,8 +31,14 @@ const ListingsPage = ({
   handleSingleBusinessClick,
   handleCategoryListingsClick,
 }) => {
-  const dataLabel = "businesses";
+  const dataLabel = 'businesses';
   const limit = 10;
+
+  const [showFullMap, setShowFullMap] = useState(false);
+
+  const toggleOpen = useCallback(() => {
+    setShowFullMap((value) => !value);
+  }, []);
 
   /*  conditional paginated fetch
    *  if categoryId - call listings by category query, otherwise  call listings by business name query
@@ -70,9 +78,9 @@ const ListingsPage = ({
   };
 
   if (error) {
-    toast.error("Failed to load listings");
+    toast.error('Failed to load listings');
     return (
-      <div className="pt-52 text-rose-500 text-center text-2xl">
+      <div className='pt-52 text-center text-2xl text-rose-500'>
         Unable to show page, please try again.
       </div>
     );
@@ -91,19 +99,19 @@ const ListingsPage = ({
     return (
       <Container>
         {isFetchingNextPage || isLoading ? (
-          <div className="my-8 pt-60 lg:pt-48 flex justify-center">
-            <DotLoader size={30} color="#cccccc" />
+          <div className='my-8 flex justify-center pt-60 lg:pt-48'>
+            <DotLoader size={30} color='#cccccc' />
           </div>
         ) : (
           <div>
-            <div className="pt-60 lg:pt-48 flex pb-24">
+            <div className='flex pb-24 pt-60 lg:pt-48'>
               <div>
                 <Heading
                   center
                   title={`Showing Results for ${category} in \n ${currentCity}, ${currentState}`}
                 />
                 {/* Showing Results for {category} in {currentCity}, {currentState} */}
-                <div className="m-4 border-t">
+                <div className='m-4 border-t'>
                   {businessesData.map((business, idx) => (
                     <div key={business.id}>
                       <div
@@ -128,7 +136,7 @@ const ListingsPage = ({
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 mx-10 md:mx-6 xl:mx-24">
+                <div className='mx-10 mt-4 md:mx-6 xl:mx-24'>
                   {/* menu for traversing listings pages */}
                   <PaginationMenu
                     totalPages={totalPages}
@@ -139,13 +147,36 @@ const ListingsPage = ({
                   />
                 </div>
               </div>
-              <div className="min-w-[320px] -mt-20 hidden lg:block relative">
-                {/* interactive map to display current businesses rendered */}
-                <ListingsMap
-                  businessMarkers={businesses}
-                  currentPage={currentPage}
-                  limit={limit}
-                />
+              {/* interactive map to display current businesses rendered */}
+              <div className='relative z-10 -mt-9 flex w-full flex-col'>
+                <div
+                  className={`fixed right-0 h-[81vh] ${
+                    showFullMap
+                      ? 'h-full w-full translate-x-0 opacity-100'
+                      : 'h-[400px] w-[320px] translate-x-[-20px] opacity-75'
+                    // "w-full translate-x-0" : "w-96"
+                  } transform overflow-hidden transition-all duration-500 ease-in-out`}
+                >
+                  <ListingsMap
+                    businessMarkers={businesses}
+                    currentPage={currentPage}
+                    limit={limit}
+                    showFullMap={showFullMap}
+                  />
+                </div>
+                <div className='fixed right-10 z-20 translate-y-2 bg-white transition-all ease-in-out hover:bg-neutral-100 active:scale-95'>
+                  {showFullMap ? (
+                    <MdOutlineZoomInMap
+                      size={40}
+                      onClick={() => toggleOpen()}
+                    />
+                  ) : (
+                    <MdOutlineZoomOutMap
+                      size={40}
+                      onClick={() => toggleOpen()}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -154,5 +185,13 @@ const ListingsPage = ({
     );
   }
 };
+// <div className="-mt-10 hidden lg:block relative">
+//   {/* interactive map to display current businesses rendered */}
+//   <ListingsMap
+//     businessMarkers={businesses}
+//     currentPage={currentPage}
+//     limit={limit}
+//   />
+// </div>
 
 export default ListingsPage;

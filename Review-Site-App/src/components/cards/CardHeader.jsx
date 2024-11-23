@@ -1,6 +1,6 @@
 const CardHeader = ({ children, className }) => {
   return (
-    <h2 className={`font-bold text-xl tracking-wide p-2 ${className}`}>
+    <h2 className={`p-2 text-xl font-bold tracking-wide ${className}`}>
       {children}
     </h2>
   );

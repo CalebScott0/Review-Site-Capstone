@@ -1,6 +1,6 @@
-import AsyncSelect from "react-select/async";
-import { forwardRef } from "react";
-import { toast } from "react-hot-toast";
+import AsyncSelect from 'react-select/async';
+import { forwardRef } from 'react';
+import { toast } from 'react-hot-toast';
 
 /*
  * TODO:
@@ -20,7 +20,7 @@ const LocationSearch = forwardRef(
         );
 
         if (res.status !== 200 && res.status !== 400) {
-          toast.error("Unable to fetch search results");
+          toast.error('Unable to fetch search results');
         }
 
         const data = await res.json();
@@ -46,7 +46,7 @@ const LocationSearch = forwardRef(
       // Location formatted as value = {value: "City, ST", label: ""}
       const location = value?.value;
 
-      const commaIndex = location.indexOf(",");
+      const commaIndex = location.indexOf(',');
 
       const city = location.slice(0, commaIndex);
 
@@ -63,14 +63,14 @@ const LocationSearch = forwardRef(
         loadOptions={fetchLocationResults}
         noOptionsMessage={noOptionsMessage}
         onChange={handleLocationChange}
-        placeholder="Search by city..."
+        placeholder='Search by city...'
         ref={ref}
         styles={customStyles}
         value={
           // Show current location in input
           currentLocation.city && {
             label: `${currentLocation.city}, ${currentLocation.state}`,
-            value: "",
+            value: '',
           }
         }
       />
@@ -78,5 +78,5 @@ const LocationSearch = forwardRef(
   }
 );
 
-LocationSearch.displayName = "LocationSearch";
+LocationSearch.displayName = 'LocationSearch';
 export default LocationSearch;

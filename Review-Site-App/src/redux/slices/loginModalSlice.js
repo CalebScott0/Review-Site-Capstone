@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isOpen: false,
 };
 const loginModalSlice = createSlice({
-  name: "loginModal",
+  name: 'loginModal',
   initialState,
   reducers: {
     onLoginOpen(state) {

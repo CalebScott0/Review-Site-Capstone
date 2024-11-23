@@ -1,13 +1,13 @@
 const daysOfWeekMap = new Map();
 
 const daysOfWeekArray = [
-  "SUNDAY",
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
+  'SUNDAY',
+  'MONDAY',
+  'TUESDAY',
+  'WEDNESDAY',
+  'THURSDAY',
+  'FRIDAY',
+  'SATURDAY',
 ];
 
 // create map of days of week and corresponding values 0-6 for Sunday - Saturday
@@ -25,7 +25,7 @@ const checkIsOpen = (hoursArray) => {
   );
   // if business has no hours for particular day, assume them to be closed
   if (!todaysHours)
-    return <p className="text-sm text-rose-600 font-bold">Closed Today</p>;
+    return <p className='text-sm font-bold text-rose-600'>Closed Today</p>;
 
   // convert today's hours to a date object for business
   const closingHour = new Date(todaysHours.close_time);
@@ -49,11 +49,11 @@ const checkIsOpen = (hoursArray) => {
     openingTimeInSeconds < currTimeInSeconds
   ) {
     return (
-      <p className="text-sm">
-        <span className="font-bold text-emerald-600">Open</span> until{" "}
+      <p className='text-sm'>
+        <span className='font-bold text-emerald-600'>Open</span> until{' '}
         {closingHour.toLocaleTimeString([], {
-          hour: "numeric",
-          minute: "2-digit",
+          hour: 'numeric',
+          minute: '2-digit',
         })}
       </p>
     );
@@ -76,8 +76,8 @@ const checkIsOpen = (hoursArray) => {
     // });
 
     return (
-      <p className="text-sm">
-        <span className="text-rose-600 font-bold">Closed</span>
+      <p className='text-sm'>
+        <span className='font-bold text-rose-600'>Closed</span>
         {/* until {tomorrowOpeningHour} tomorrow */}
       </p>
     );

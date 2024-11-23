@@ -1,10 +1,10 @@
-import Button from "../Button";
-import Container from "../Container";
-import Logo from "./Logo";
-import Search from "./searchbars/Search";
-import UserMenu from "./UserMenu";
-import { useLocation } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import Button from '../Button';
+import Container from '../Container';
+import Logo from './Logo';
+import Search from './searchbars/Search';
+import UserMenu from './UserMenu';
+import { useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 /*
  * TODO:
@@ -21,29 +21,29 @@ const Navbar = ({
   return (
     // fixed on list page, not fixed on single business page
     <div
-      className={`${pathname === "/search" ? "fixed" : ""} z-10 w-full bg-white shadow-sm`}
+      className={`${pathname === '/search' ? 'fixed' : ''} z-10 w-full bg-white shadow-sm`}
     >
-      <div className="border-b py-6">
+      <div className='border-b py-6'>
         <Container>
-          <div className="flex lg:flex-row flex-col items-center mb-4 justify-between mx-2">
-            <div className="lg:static absolute top-5 left-4">
+          <div className='mx-2 mb-4 flex flex-col items-center justify-between lg:flex-row'>
+            <div className='absolute left-4 top-5 lg:static'>
               <Logo />
             </div>
-            <div className="mt-14 md:mt-10 lg:mt-0 w-full flex justify-center lg:block mr-10 xl:mr-40 xl:-ml-6 md:mx-10 ">
+            <div className='mr-10 mt-14 flex w-full justify-center md:mx-10 md:mt-10 lg:mt-0 lg:block xl:-ml-6 xl:mr-40'>
               <Search
                 handleSingleBusinessClick={handleSingleBusinessClick}
                 handleCategoryListingsClick={handleCategoryListingsClick}
                 handleBusinessListingsClick={handleBusinessListingsClick}
               />
             </div>
-            <div className="absolute lg:static top-3 right-4">
+            <div className='absolute right-4 top-3 lg:static'>
               <UserMenu />
             </div>
           </div>
         </Container>
         <Container>
-          <div className="mt-6">
-            <Button label="Categories" outline disabled small />
+          <div className='mt-6'>
+            <Button label='Categories' outline disabled small />
           </div>
         </Container>
       </div>

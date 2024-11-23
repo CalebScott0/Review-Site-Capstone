@@ -1,4 +1,4 @@
-import { api } from "./index";
+import { api } from './index';
 
 const businessesApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -6,7 +6,7 @@ const businessesApi = api.injectEndpoints({
       query: ({ businessId }) => `businesses/${businessId}`,
       providesTags: (result) => {
         if (result?.business?.id) {
-          return [{ type: "business", id: result.business.id }];
+          return [{ type: 'business', id: result.business.id }];
         }
         return []; // Return empty array if there's no valid result
       },
@@ -18,12 +18,12 @@ const businessesApi = api.injectEndpoints({
         result
           ? [
               ...result.businesses.map(({ id }) => ({
-                type: "business",
+                type: 'business',
                 id,
               })),
-              { type: "business", id: "LIST" },
+              { type: 'business', id: 'LIST' },
             ]
-          : [{ type: "business", id: "LIST" }],
+          : [{ type: 'business', id: 'LIST' }],
     }),
     getListingsByName: builder.query({
       query: ({ businessName, city, state, page, limit = 10 }) =>
@@ -32,12 +32,12 @@ const businessesApi = api.injectEndpoints({
         result
           ? [
               ...result.businesses.map(({ id }) => ({
-                type: "business",
+                type: 'business',
                 id,
               })),
-              { type: "business", id: "LIST" },
+              { type: 'business', id: 'LIST' },
             ]
-          : [{ type: "business", id: "LIST" }],
+          : [{ type: 'business', id: 'LIST' }],
     }),
     getPhotos: builder.query({
       // high limit passed in to grab all photos unless specified limit
@@ -49,7 +49,7 @@ const businessesApi = api.injectEndpoints({
       query: ({ businessId, page = 1, limit = 10 }) =>
         `businesses/${businessId}/reviews?limit=${limit}&page=${page}`,
       providesTags: (result, error, { businessId }) => [
-        { type: "reviews", id: businessId },
+        { type: 'reviews', id: businessId },
       ],
     }),
   }),

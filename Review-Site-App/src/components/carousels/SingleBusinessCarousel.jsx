@@ -1,5 +1,5 @@
-import { DotLoader } from "react-spinners";
-import { useGetPhotosQuery } from "../../redux/services/businessesApi.js";
+import { DotLoader } from 'react-spinners';
+import { useGetPhotosQuery } from '../../redux/services/businessesApi.js';
 
 /*
  * TODO:
@@ -21,19 +21,19 @@ const SingleBusinessCarousel = ({ businessId }) => {
     }
 
     return error ? (
-      <div className="text-rose-500 text-2xl text-center h-72 bg-neutral-300 pt-2">
+      <div className='h-72 bg-neutral-300 pt-2 text-center text-2xl text-rose-500'>
         Unable to show pictures
       </div>
     ) : isLoading ? (
-      <div className="h-72 flex justify-center my-10 items-center">
+      <div className='my-10 flex h-72 items-center justify-center'>
         <DotLoader />
       </div>
     ) : (
-      <div className="carousel relative">
+      <div className='carousel relative'>
         {repeatedPhotos?.map((photo, idx) => (
-          <div key={idx} className="carousel-item">
+          <div key={idx} className='carousel-item'>
             <img
-              className="w-full h-full object-cover"
+              className='h-full w-full object-cover'
               alt={photo.label}
               src={photo.signed_url}
             />

@@ -1,7 +1,7 @@
-import Modal from "./Modal";
-import { useDispatch, useSelector } from "react-redux";
-import { onEditReviewClose } from "../../redux/slices/editReviewModalSlice";
-import ReviewForm from "../../forms/ReviewForm";
+import Modal from './Modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { onEditReviewClose } from '../../redux/slices/editReviewModalSlice';
+import ReviewForm from '../../forms/ReviewForm';
 
 const EditReviewModal = ({ businessId }) => {
   const dispatch = useDispatch();
@@ -12,16 +12,16 @@ const EditReviewModal = ({ businessId }) => {
     dispatch(onEditReviewClose());
   };
 
-  const bodyContent = <ReviewForm mode="Edit" businessId={businessId} />;
+  const bodyContent = <ReviewForm mode='Edit' businessId={businessId} />;
 
   return (
     <Modal
       isOpen={isEditReviewOpen}
       onClose={() => handleClose()}
-      secondaryActionLabel="Cancel"
+      secondaryActionLabel='Cancel'
       secondaryAction={() => {}}
       body={bodyContent}
-      title="Edit your review"
+      title='Edit your review'
     />
   );
 };

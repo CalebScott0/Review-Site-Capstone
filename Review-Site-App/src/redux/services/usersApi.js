@@ -1,4 +1,4 @@
-import { api } from "./index";
+import { api } from './index';
 
 const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -6,7 +6,7 @@ const usersApi = api.injectEndpoints({
       query: ({ userId, businessId }) =>
         `users/${userId}/review/business/${businessId}`,
       providesTags: (result, error, { userId }) => [
-        { type: "reviews", id: userId },
+        { type: 'reviews', id: userId },
       ],
     }),
   }),

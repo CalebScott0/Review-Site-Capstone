@@ -1,23 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
-import maplibregl from "maplibre-gl";
+import maplibregl from 'maplibre-gl';
 
-import "maplibre-gl/dist/maplibre-gl.css";
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 /*
  * TODO:
- *  - Add index number of business to marker
  *  - change "active" marker based on current business in view (look at yelp)
  *  - onClick (so it works with mobile too) - show popup on marker of business info
  *     - onClick of this popup - navigate to business page
- *  - Add option to make map full screen on computers
  *  - Button to show full screen map on smaller screens
+ *  - variable zoom depending on distance between businesses?
  *
  * FIXME:
  *
  */
 
-const ListingsMap = ({ businessMarkers, currentPage, limit }) => {
+const ListingsMap = ({ businessMarkers, currentPage, limit, showFullMap }) => {
   // const ListingsMap = ({ center, businessMarkers }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -25,7 +24,7 @@ const ListingsMap = ({ businessMarkers, currentPage, limit }) => {
   const [markers, setMarkers] = useState([]);
 
   //   HIDE THIS SOMEWHERE
-  const API_KEY = "pk.ac3170d97cf356772172e8528a0bdbeb";
+  const API_KEY = 'pk.ac3170d97cf356772172e8528a0bdbeb';
 
   useEffect(() => {
     if (!businessMarkers.length) return;
@@ -47,10 +46,10 @@ const ListingsMap = ({ businessMarkers, currentPage, limit }) => {
 
         center: [businessMarkers[0]?.longitude, businessMarkers[0]?.latitude],
         // center: [center?.longitude, center?.latitude],
-        zoom: 14, //default zoom value
+        zoom: 16, //default zoom value
       });
       const navigation = new maplibregl.NavigationControl();
-      map.current?.addControl(navigation);
+      map.current?.addControl(navigation, 'top-left');
     }
     // Clear old markers
     markers.forEach((marker) => marker.remove());
@@ -59,8 +58,8 @@ const ListingsMap = ({ businessMarkers, currentPage, limit }) => {
     // Add new markers with numbers and update the markers state
     const newMarkers = businessMarkers.map((business, index) => {
       // Create a custom marker element
-      const el = document.createElement("div");
-      el.className = "custom-marker";
+      const el = document.createElement('div');
+      el.className = 'custom-marker';
       el.innerHTML = `<span>${index + 1 + (currentPage - 1) * limit}</span>`; // Numbered marker
 
       // Create the maplibre marker with custom element
@@ -77,9 +76,14 @@ const ListingsMap = ({ businessMarkers, currentPage, limit }) => {
     };
   }, [businessMarkers]);
 
-  return (
-    <div ref={mapContainer} className="w-[320px] h-[80%] right-2 fixed"></div>
-  );
+  useEffect(() => {
+    // Call resize when the map's container size changes (on toggling full-screen)
+    if (map.current) {
+      map.current.resize();
+    }
+  }, [showFullMap]); // Trigger on showFullMap change
+
+  return <div ref={mapContainer} className='h-full w-full' />;
 };
 
 export default ListingsMap;

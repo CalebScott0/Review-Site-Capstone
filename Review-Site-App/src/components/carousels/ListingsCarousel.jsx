@@ -1,12 +1,12 @@
-import { useCallback } from "react";
+import { useCallback } from 'react';
 
-import useEmblaCarousel from "embla-carousel-react";
+import useEmblaCarousel from 'embla-carousel-react';
 
-import { useGetPhotosQuery } from "../../redux/services/businessesApi";
+import { useGetPhotosQuery } from '../../redux/services/businessesApi';
 
-import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
+import { FaChevronCircleLeft, FaChevronCircleRight } from 'react-icons/fa';
 
-import { DotLoader } from "react-spinners";
+import { DotLoader } from 'react-spinners';
 
 const ListingsCarousel = ({ businessId }) => {
   const { data, error, isLoading } = useGetPhotosQuery({ businessId });
@@ -37,7 +37,7 @@ const ListingsCarousel = ({ businessId }) => {
 
   if (error) {
     return (
-      <div className="text-rose-500 text-xl text-center h-44 w-44 px-2 flex items-center bg-neutral-300">
+      <div className='flex h-44 w-44 items-center bg-neutral-300 px-2 text-center text-xl text-rose-500'>
         Unable to show pictures
       </div>
     );
@@ -45,7 +45,7 @@ const ListingsCarousel = ({ businessId }) => {
 
   if (isLoading) {
     return (
-      <div className="h-44 w-44 flex justify-center my-10">
+      <div className='my-10 flex h-44 w-44 justify-center'>
         <DotLoader />
       </div>
     );
@@ -53,17 +53,17 @@ const ListingsCarousel = ({ businessId }) => {
 
   if (data) {
     return (
-      <div className="relative w-44">
+      <div className='relative w-44'>
         {/* <div className="relative w-40"> */}
         {/* carousel viewport */}
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex">
+        <div className='overflow-hidden' ref={emblaRef}>
+          <div className='flex'>
             {data.photos.map((photo) => (
-              <div className="relative min-w-full select-none" key={photo.id}>
+              <div className='relative min-w-full select-none' key={photo.id}>
                 <img
                   src={photo.signed_url}
                   alt={photo.label}
-                  className="object-cover w-full h-44"
+                  className='h-44 w-full object-cover'
                   // className="object-cover w-full h-40"
                 />
               </div>
@@ -72,21 +72,21 @@ const ListingsCarousel = ({ businessId }) => {
         </div>
         {/* previous button */}
         <button
-          className="absolute top-1/2 transform -translate-y-1/2 left-1"
+          className='absolute left-1 top-1/2 -translate-y-1/2 transform'
           onClick={scrollPrev}
         >
           <FaChevronCircleLeft
             size={22}
-            className={`bg-neutral-500 bg-opacity-50 rounded-full text-neutral-100/40 ${data.photos.length > 1 ? "hover:text-neutral-100/80 active:scale-95" : ""}`}
+            className={`rounded-full bg-neutral-500 bg-opacity-50 text-neutral-100/40 ${data.photos.length > 1 ? 'hover:text-neutral-100/80 active:scale-95' : ''}`}
           />
         </button>
         <button
-          className="absolute right-1 top-1/2 transform -translate-y-1/2"
+          className='absolute right-1 top-1/2 -translate-y-1/2 transform'
           onClick={scrollNext}
         >
           <FaChevronCircleRight
             size={22}
-            className={`bg-neutral-500 bg-opacity-50 rounded-full text-neutral-100/40 ${data.photos.length > 1 ? "hover:text-neutral-100/80 active:scale-95" : ""}`}
+            className={`rounded-full bg-neutral-500 bg-opacity-50 text-neutral-100/40 ${data.photos.length > 1 ? 'hover:text-neutral-100/80 active:scale-95' : ''}`}
           />
         </button>
       </div>

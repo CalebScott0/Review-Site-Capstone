@@ -1,34 +1,34 @@
-import { api } from "./index";
-import { createSlice } from "@reduxjs/toolkit";
-import Cookies from "universal-cookie";
-import { jwtDecode } from "jwt-decode";
+import { api } from './index';
+import { createSlice } from '@reduxjs/toolkit';
+import Cookies from 'universal-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 // initialize cookies
 export const cookies = new Cookies();
 // cookies key
-const JWT = "jwt_authorization";
+const JWT = 'jwt_authorization';
 
 const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (credentials) => ({
         url: `auth/register`,
-        method: "POST",
+        method: 'POST',
         body: credentials,
       }),
-      invalidatesTags: ["user"],
+      invalidatesTags: ['user'],
     }),
     login: builder.mutation({
       query: (credentials) => ({
         url: `auth/login`,
-        method: "POST",
+        method: 'POST',
         body: credentials,
       }),
-      invalidatesTags: ["user"],
+      invalidatesTags: ['user'],
     }),
     logout: builder.mutation({
       queryFn: () => ({ data: {} }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ['User'],
     }),
   }),
 });
@@ -40,10 +40,10 @@ const storeToken = (state, { payload }) => {
   state.userId = decoded.id;
   state.token = payload.TOKEN;
 
-  localStorage.setItem("USER_ID", decoded.id);
+  localStorage.setItem('USER_ID', decoded.id);
   // set cookies with expiration date
   cookies.set(JWT, payload.TOKEN, {
-    path: "/",
+    path: '/',
     // httpOnly: true,
     expires: new Date(decoded.exp * 1000),
   });
@@ -51,9 +51,9 @@ const storeToken = (state, { payload }) => {
 
 // store token on login / register success
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: {
-    userId: localStorage.getItem("USER_ID"),
+    userId: localStorage.getItem('USER_ID'),
     token: cookies.get(JWT),
   },
   reducers: {},
@@ -67,7 +67,7 @@ const authSlice = createSlice({
       state.userId = null;
       state.token = null;
       cookies.remove(JWT);
-      localStorage.removeItem("USER_ID");
+      localStorage.removeItem('USER_ID');
       location.reload();
     });
   },

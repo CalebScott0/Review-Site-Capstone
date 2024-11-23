@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isOpen: false,
 };
 const deleteReviewModalSlice = createSlice({
-  name: "deleteReviewModal",
+  name: 'deleteReviewModal',
   initialState,
   reducers: {
     onDeleteReviewOpen(state) {

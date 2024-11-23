@@ -1,11 +1,11 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const useNavigation = () => {
   const navigate = useNavigate();
 
   const handleSingleBusinessClick = ({ businessId, businessName }) => {
     if (!businessId || !businessName) return;
-    const joinNameWithDashes = businessName.split(" ").join("-");
+    const joinNameWithDashes = businessName.split(' ').join('-');
     navigate(`/business/${joinNameWithDashes}/${businessId}`);
   };
 

@@ -1,14 +1,14 @@
-import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineSearch } from 'react-icons/ai';
 
-import { useRef, useState } from "react";
+import { useRef, useState } from 'react';
 
 import {
   customStyles,
   noOptionsMessage,
-} from "../../../styles/reactSelectStyles";
+} from '../../../styles/reactSelectStyles';
 
-import CategoryAndBusinessSearch from "./CategoryAndBusinessSearch";
-import LocationSearch from "./LocationSearch";
+import CategoryAndBusinessSearch from './CategoryAndBusinessSearch';
+import LocationSearch from './LocationSearch';
 
 /*
  * TODO:
@@ -28,12 +28,12 @@ const Search = ({
   const [showLocationSearch, setShowLocationSearch] = useState(false);
 
   // input values for server side filter search
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
 
   // state for current city and state for navigation
   const [currentLocation, setCurrentLocation] = useState({
-    city: "",
-    state: "",
+    city: '',
+    state: '',
   });
 
   const handleSearchClick = () => {
@@ -59,14 +59,14 @@ const Search = ({
        */
       // if type category, state for search value = label: category name, value: category id
 
-      if (searchValue.type === "category") {
+      if (searchValue.type === 'category') {
         handleCategoryListingsClick({
           categoryId: searchValue.value,
           categoryName: searchValue.label,
           city: currentLocation.city,
           state: currentLocation.state,
         });
-      } else if (searchValue.type === "multipleBusinesses") {
+      } else if (searchValue.type === 'multipleBusinesses') {
         // const handleBusinessListingsClick = ({ businessName, city, state }) => {
         handleBusinessListingsClick({
           businessName: searchValue.label,
@@ -79,12 +79,12 @@ const Search = ({
 
   return (
     <>
-      <div className="xl:mx-24 mx-12 w-full max-w-[60vw] relative flex md:flex-row flex-col font-semibold text-sm border rounded-md border-r-0 shadow ">
+      <div className='relative mx-12 flex w-full max-w-[60vw] flex-col rounded-md border border-r-0 text-sm font-semibold shadow md:flex-row xl:mx-24'>
         {/* categories/businesses drop down */}
 
         {/* USE ASYNC SELECT with api calls */}
         <div
-          className="flex-1 relative md:border-none border rounded-sm"
+          className='relative flex-1 rounded-sm border md:border-none'
           onClick={() => setShowLocationSearch(true)}
         >
           <CategoryAndBusinessSearch
@@ -98,7 +98,7 @@ const Search = ({
           />
         </div>
         <div
-          className={`flex-1 md:border-none border rounded-sm relative ${showLocationSearch ? "block" : "hidden"} md:block`}
+          className={`relative flex-1 rounded-sm border md:border-none ${showLocationSearch ? 'block' : 'hidden'} md:block`}
         >
           <LocationSearch
             currentLocation={currentLocation}
@@ -110,9 +110,9 @@ const Search = ({
         </div>
         <button
           onClick={handleSearchClick}
-          className=" focus:outline-none focus:ring-2 focus:ring-gray-500/50 focus:ring-offset-2 focus:rounded-md focus:ring-offset-white transition active:scale-95 hover:opacity-80 shadow-sm absolute -right-12 bottom-0 top-0 px-3 bg-amber-500  border-amber-500 border-2 -my-[1px] rounded-r-md max-w-[50px] "
+          className='absolute -right-12 bottom-0 top-0 -my-[1px] max-w-[50px] rounded-r-md border-2 border-amber-500 bg-amber-500 px-3 shadow-sm transition hover:opacity-80 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500/50 focus:ring-offset-2 focus:ring-offset-white active:scale-95'
         >
-          <AiOutlineSearch size={24} color="white" />
+          <AiOutlineSearch size={24} color='white' />
         </button>
       </div>
     </>

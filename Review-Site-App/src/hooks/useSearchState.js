@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const useSearchState = () => {
   // grab category from location state
@@ -7,24 +7,24 @@ const useSearchState = () => {
 
   const [searchParams] = useSearchParams();
 
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState('');
 
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState('');
 
-  const [currentState, setCurrentState] = useState("");
+  const [currentState, setCurrentState] = useState('');
 
-  const [currentCity, setCurrentCity] = useState("");
+  const [currentCity, setCurrentCity] = useState('');
 
   useEffect(() => {
     // categoryId from searchParams
-    setCategoryId(searchParams.get("with_id"));
+    setCategoryId(searchParams.get('with_id'));
     // get category type from search param - for header
-    const formattedCategory = searchParams.get("find_desc");
+    const formattedCategory = searchParams.get('find_desc');
 
     setCategory(formattedCategory);
 
     // get location from search param formatted as "city" + " " + "state".
-    const paramLocation = searchParams.get("find_loc");
+    const paramLocation = searchParams.get('find_loc');
 
     // state will be last two characters of param
     const state = paramLocation?.slice(-2);

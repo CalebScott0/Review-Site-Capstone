@@ -1,7 +1,7 @@
 const CardContent = ({ children, className }) => {
   return (
     <div
-      className={`text-neutral-600 break-words break-all whitespace-normal ${className}`}
+      className={`whitespace-normal break-words break-all text-neutral-600 ${className}`}
     >
       {children}
     </div>

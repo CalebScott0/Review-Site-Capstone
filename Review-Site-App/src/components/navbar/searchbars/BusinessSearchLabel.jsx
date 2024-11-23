@@ -1,4 +1,4 @@
-import { useGetPhotosQuery } from "../../../redux/services/businessesApi";
+import { useGetPhotosQuery } from '../../../redux/services/businessesApi';
 const BusinessSearchLabel = ({ business }) => {
   const { data, error, isLoading } = useGetPhotosQuery({
     businessId: business.id,
@@ -11,15 +11,15 @@ const BusinessSearchLabel = ({ business }) => {
   if (photoUrl) {
     return (
       <div
-        className="tracking-wide flex items-center gap-2"
+        className='flex items-center gap-2 tracking-wide'
         // hide location menu on smaller screens
       >
-        <div className="w-8 h-8 box-content border-neutral-500 border-[0.5px] object-cover">
-          <img className="w-full h-full" alt="data" src={photoUrl} />
+        <div className='box-content h-8 w-8 border-[0.5px] border-neutral-500 object-cover'>
+          <img className='h-full w-full' alt='data' src={photoUrl} />
         </div>
         <div>
           <div>{business.name}</div>
-          <div className="text-neutral-500 font-normal text-sm">{`${business.city}, ${business.state}`}</div>
+          <div className='text-sm font-normal text-neutral-500'>{`${business.city}, ${business.state}`}</div>
         </div>
       </div>
     );

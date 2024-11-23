@@ -1,14 +1,14 @@
-import Navbar from "./components/navbar/Navbar";
-import { Toaster } from "react-hot-toast";
-import { Route, Routes } from "react-router-dom";
-import ListingsPage from "./pages/ListingsPage";
-import HomePage from "./pages/HomePage";
-import SingleBusinessPage from "./pages/SingleBusinessPage";
-import useSearchState from "./hooks/useSearchState";
-import useNavigation from "./hooks/useNavigation";
-import RegisterModal from "./components/modals/RegisterModal";
-import LoginModal from "./components/modals/LoginModal";
-import CreateReviewPage from "./pages/CreateReviewPage";
+import Navbar from './components/navbar/Navbar';
+import { Toaster } from 'react-hot-toast';
+import { Route, Routes } from 'react-router-dom';
+import ListingsPage from './pages/ListingsPage';
+import HomePage from './pages/HomePage';
+import SingleBusinessPage from './pages/SingleBusinessPage';
+import useSearchState from './hooks/useSearchState';
+import useNavigation from './hooks/useNavigation';
+import RegisterModal from './components/modals/RegisterModal';
+import LoginModal from './components/modals/LoginModal';
+import CreateReviewPage from './pages/CreateReviewPage';
 
 function App() {
   // hooks for searchState and navigation to a new category or to single business
@@ -31,9 +31,9 @@ function App() {
       />
       <Routes>
         {/* //MAKE ONE /search route with search parameters like yelp!! */}
-        <Route path="/" element={<HomePage />} />
+        <Route path='/' element={<HomePage />} />
         <Route
-          path="/search"
+          path='/search'
           element={
             <ListingsPage
               currentCity={currentCity}
@@ -46,7 +46,7 @@ function App() {
           }
         />
         <Route
-          path="/business/:business_name/:business_id"
+          path='/business/:business_name/:business_id'
           element={
             <SingleBusinessPage
               handleReviewNavigateClick={handleReviewNavigateClick}
@@ -54,7 +54,7 @@ function App() {
           }
         />
         <Route
-          path="/write-a-review/:business_name/:business_id"
+          path='/write-a-review/:business_name/:business_id'
           element={
             <CreateReviewPage
               handleSingleBusinessClick={handleSingleBusinessClick}

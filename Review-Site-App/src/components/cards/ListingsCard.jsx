@@ -1,10 +1,10 @@
-import Card from "./Card";
-import CardHeader from "./CardHeader";
-import CardContent from "./CardContent";
-import Badge from "../Badge";
-import ReactStars from "react-stars";
-import ListingsCarousel from "../carousels/ListingsCarousel";
-import { FaRegComment } from "react-icons/fa";
+import Card from './Card';
+import CardHeader from './CardHeader';
+import CardContent from './CardContent';
+import Badge from '../Badge';
+import ReactStars from 'react-stars';
+import ListingsCarousel from '../carousels/ListingsCarousel';
+import { FaRegComment } from 'react-icons/fa';
 
 /*
  * TODO:
@@ -23,44 +23,44 @@ const ListingsCard = ({
     <Card
       onClick={onClick}
       // grid first column carousel auto and remaining content 1fr for full remaining space
-      className={`border-b transition-all border border-t-transparent border-r-transparent border-l-transparent hover:border-t-neutral-200 hover:border-r-neutral-200 hover:border-l-neutral-200 hover:border duration-200 hover:shadow-md cursor-pointer sm:grid sm:grid-cols-[auto_1fr] gap-4`}
+      className={`cursor-pointer gap-4 border border-b border-l-transparent border-r-transparent border-t-transparent transition-all duration-200 hover:border hover:border-l-neutral-200 hover:border-r-neutral-200 hover:border-t-neutral-200 hover:shadow-md sm:grid sm:grid-cols-[auto_1fr]`}
     >
-      <div className="flex justify-center items-center">
+      <div className='flex items-center justify-center'>
         {/* carousel of business pictures on listings cards */}
         <ListingsCarousel businessId={business.id} />
       </div>
       <div>
-        <CardHeader className="text-center sm:text-start">
+        <CardHeader className='text-center sm:text-start'>
           {listingsIndex}
-          {". "}
+          {'. '}
           {business.name}
         </CardHeader>
         <CardContent>
-          <div className="sm:flex flex-wrap items-center gap-2 sm:px-2 -mt-2 mb-2 text-center">
-            <div className="flex flex-wrap justify-center items-center gap-2">
+          <div className='-mt-2 mb-2 flex-wrap items-center gap-2 text-center sm:flex sm:px-2'>
+            <div className='flex flex-wrap items-center justify-center gap-2'>
               {/* business average rating information */}
               <ReactStars
-                className="justify-self-center"
+                className='justify-self-center'
                 count={5}
                 edit={false}
                 value={business.average_stars}
-                color2="#ff007f"
+                color2='#ff007f'
                 size={25}
                 // char={<FaRegStar />}
                 half={true}
               />
-              <span className="font-bold text-black">
+              <span className='font-bold text-black'>
                 {business.average_stars}
               </span>
             </div>
-            ({business.review_count}){" "}
-            <span className="sm:-ml-1 ml-0.5">reviews</span>
+            ({business.review_count}){' '}
+            <span className='ml-0.5 sm:-ml-1'>reviews</span>
           </div>
           {/* show distance from target location */}
           <Badge disabled outline round>
             {`${business.distance_from_location} mi.`}
           </Badge>
-          <div className="flex flex-wrap gap-2 max-w-sm mt-2 ml-0.5">
+          <div className='ml-0.5 mt-2 flex max-w-sm flex-wrap gap-2'>
             {/* slice off back for better variety */}
             {/* business categories */}
             {business.categories.slice(-3).map((category) => (
@@ -82,10 +82,10 @@ const ListingsCard = ({
               </Badge>
             ))}
           </div>
-          <div className="pt-2">{business.is_open}</div>
+          <div className='pt-2'>{business.is_open}</div>
           {/* display most recent review */}
-          <FaRegComment className="absolute transform translate-y-[22px] -scale-x-100 " />
-          <q className="line-clamp-2 leading-6 pt-5 pl-6 sm:pr-12 overflow-hidden text-sm">
+          <FaRegComment className='absolute translate-y-[22px] -scale-x-100 transform' />
+          <q className='line-clamp-2 overflow-hidden pl-6 pt-5 text-sm leading-6 sm:pr-12'>
             {business.recent_review.review_text}
           </q>
         </CardContent>
@@ -95,6 +95,6 @@ const ListingsCard = ({
   );
 };
 
-ListingsCard.displayName = "ListingsCard";
+ListingsCard.displayName = 'ListingsCard';
 
 export default ListingsCard;

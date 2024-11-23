@@ -1,12 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { api } from "../services";
-import registerModalReducer from "../slices/registerModalSlice";
-import loginModalReducer from "../slices/loginModalSlice";
-import deleteReviewModalReducer from "../slices/deleteReviewModalSlice";
-import editReviewModalReducer from "../slices/editReviewModalSlice";
-import authReducer from "../services/authSlice";
-import reviewsApi from "../services/reviewsApi";
-import usersApi from "../services/usersApi";
+import { configureStore } from '@reduxjs/toolkit';
+import { api } from '../services';
+import registerModalReducer from '../slices/registerModalSlice';
+import loginModalReducer from '../slices/loginModalSlice';
+import deleteReviewModalReducer from '../slices/deleteReviewModalSlice';
+import editReviewModalReducer from '../slices/editReviewModalSlice';
+import authReducer from '../services/authSlice';
+import reviewsApi from '../services/reviewsApi';
+import usersApi from '../services/usersApi';
 
 export const store = configureStore({
   reducer: {

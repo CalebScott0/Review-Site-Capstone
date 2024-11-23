@@ -1,15 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isOpen: false,
   review: {
-    id: "",
-    text: "",
+    id: '',
+    text: '',
     stars: 0,
   },
 };
 const editReviewModalSlice = createSlice({
-  name: "editReviewModal",
+  name: 'editReviewModal',
   initialState,
   reducers: {
     onEditReviewOpen(state, action) {
@@ -22,7 +22,7 @@ const editReviewModalSlice = createSlice({
     },
     onEditReviewClose(state) {
       state.isOpen = false;
-      state.review = { id: "", text: "", stars: 0 };
+      state.review = { id: '', text: '', stars: 0 };
     },
   },
 });

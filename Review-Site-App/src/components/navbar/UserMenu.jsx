@@ -1,20 +1,20 @@
-import MenuItem from "./MenuItem";
+import MenuItem from './MenuItem';
 
-import Button from "../Button";
+import Button from '../Button';
 
-import { AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineMenu } from 'react-icons/ai';
 
-import Avatar from "../Avatar";
+import Avatar from '../Avatar';
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   useDispatch,
   // useSelector
-} from "react-redux";
-import { onRegisterOpen } from "../../redux/slices/registerModalSlice";
-import { onLoginOpen } from "../../redux/slices/loginModalSlice";
-import { useLogoutMutation } from "../../redux/services/authSlice";
-import { useSelector } from "react-redux";
+} from 'react-redux';
+import { onRegisterOpen } from '../../redux/slices/registerModalSlice';
+import { onLoginOpen } from '../../redux/slices/loginModalSlice';
+import { useLogoutMutation } from '../../redux/services/authSlice';
+import { useSelector } from 'react-redux';
 
 const UserMenu = () => {
   const dispatch = useDispatch();
@@ -39,33 +39,33 @@ const UserMenu = () => {
 
   const menuOptions = [
     {
-      label: "Write a review",
+      label: 'Write a review',
       onClick: () => {
         toggleOpen();
       },
     },
     {
-      label: "Categories",
+      label: 'Categories',
       onClick: () => {
         toggleOpen();
       },
     },
     {
-      label: "For businesses",
+      label: 'For businesses',
       onClick: () => {
         toggleOpen();
       },
     },
 
     {
-      label: "Login",
+      label: 'Login',
       onClick: () => {
         dispatch(onLoginOpen());
         toggleOpen();
       },
     },
     {
-      label: "Sign up",
+      label: 'Sign up',
       onClick: () => {
         dispatch(onRegisterOpen());
         toggleOpen();
@@ -96,18 +96,18 @@ const UserMenu = () => {
 
     const handleEscape = (e) => {
       // if key press is escape, close menu ONLY IF MENU IS OPEN
-      if (e.key === "Escape" && isOpen) toggleOpen();
+      if (e.key === 'Escape' && isOpen) toggleOpen();
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
 
-    document.addEventListener("keydown", handleEscape);
+    document.addEventListener('keydown', handleEscape);
 
     // clean up on unmount
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
 
-      document.removeEventListener("keydown", handleEscape);
+      document.removeEventListener('keydown', handleEscape);
     };
   }, [toggleOpen, isOpen]);
 
@@ -118,15 +118,15 @@ const UserMenu = () => {
   // });
 
   return (
-    <div className="relative">
-      <div className="hidden xl:flex items-center md:gap-2 gap-0">
+    <div className='relative'>
+      <div className='hidden items-center gap-0 md:gap-2 xl:flex'>
         {mainMenuOptions.map((item, idx) => (
           // import { NavLink } from "react-router-dom";
 
           <div
             key={idx}
             onClick={item.onClick}
-            className={`xl:min-w-28  xl:hover:bg-white xl:hover:shadow-sm transition font-semibold px-4 xl:px-1 py-4 text-sm cursor-pointer border-transparent xl:border-b-2 hover:border-black xl:text-center`}
+            className={`cursor-pointer border-transparent px-4 py-4 text-sm font-semibold transition hover:border-black xl:min-w-28 xl:border-b-2 xl:px-1 xl:text-center xl:hover:bg-white xl:hover:shadow-sm`}
           >
             {/* <NavLink> */}
             <span>{item.label}</span>
@@ -134,22 +134,22 @@ const UserMenu = () => {
           </div>
         ))}
         {!userId ? (
-          <div className="flex gap-3 ml-3 ">
+          <div className='ml-3 flex gap-3'>
             <Button
-              label="Login"
+              label='Login'
               outline
               onClick={() => dispatch(onLoginOpen())}
             />
             <Button
-              label="Sign up"
+              label='Sign up'
               onClick={() => dispatch(onRegisterOpen())}
             />
           </div>
         ) : (
-          <div className="min-w-32">
+          <div className='min-w-32'>
             <Button
               outline
-              label="Sign out"
+              label='Sign out'
               onClick={() => {
                 dispatch(logout());
                 toggleOpen();
@@ -166,7 +166,7 @@ const UserMenu = () => {
           // prevent click event from bubbling up to dom - interferes with event listeners
           toggleOpen();
         }}
-        className="active:scale-95 flex cursor-pointer items-center border-neutral-200 border xl:hidden rounded-full p-2 mx-2 transition hover:shadow-md gap-2"
+        className='mx-2 flex cursor-pointer items-center gap-2 rounded-full border border-neutral-200 p-2 transition hover:shadow-md active:scale-95 xl:hidden'
       >
         <AiOutlineMenu />
         <Avatar size={24} userMenu />
@@ -175,7 +175,7 @@ const UserMenu = () => {
       {isOpen && (
         <div
           ref={menuRef}
-          className="absolute z-40 right-0 top-12 w-52 md:w-[25vw] bg-white shadow-md overflow-hidden rounded-lg border"
+          className='absolute right-0 top-12 z-40 w-52 overflow-hidden rounded-lg border bg-white shadow-md md:w-[25vw]'
         >
           {mainMenuOptions.map((item, idx) => (
             <MenuItem label={item.label} handleClick={item.onClick} key={idx} />
@@ -190,7 +190,7 @@ const UserMenu = () => {
               />
             ))
           ) : (
-            <MenuItem label="Sign out" handleClick={() => dispatch(logout())} />
+            <MenuItem label='Sign out' handleClick={() => dispatch(logout())} />
           )}
         </div>
       )}

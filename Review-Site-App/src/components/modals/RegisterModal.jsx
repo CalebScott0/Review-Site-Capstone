@@ -1,18 +1,18 @@
-import { AiFillGithub } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
-import { useCallback, useState } from "react";
-import { useForm } from "react-hook-form";
-import Modal from "./Modal";
-import Heading from "../Heading";
-import Input from "../inputs/Input";
-import toast from "react-hot-toast";
-import Button from "../Button";
-import { useDispatch, useSelector } from "react-redux";
-import { onRegisterClose } from "../../redux/slices/registerModalSlice";
-import { onLoginOpen } from "../../redux/slices/loginModalSlice";
-import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { AiFillGithub } from 'react-icons/ai';
+import { FcGoogle } from 'react-icons/fc';
+import { useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Modal from './Modal';
+import Heading from '../Heading';
+import Input from '../inputs/Input';
+import toast from 'react-hot-toast';
+import Button from '../Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { onRegisterClose } from '../../redux/slices/registerModalSlice';
+import { onLoginOpen } from '../../redux/slices/loginModalSlice';
+import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 
-import { useRegisterMutation } from "../../redux/services/authSlice";
+import { useRegisterMutation } from '../../redux/services/authSlice';
 
 /*
  * TODO:
@@ -40,52 +40,52 @@ const RegisterModal = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
     },
   });
 
-  register("email", {
+  register('email', {
     pattern: {
       // matches only letters after the . and requires at least 2 letters in the top-level domain (part after the .)
       value: /^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/,
-      message: "Please enter a valid email.",
+      message: 'Please enter a valid email.',
     },
     // onChange() {
     //   setError(null);
     // },
   });
 
-  register("firstName", {
+  register('firstName', {
     pattern: {
       value: /^[A-Za-z]+( [A-Za-z]+)*$/,
-      message: "Please enter a valid name.",
+      message: 'Please enter a valid name.',
     },
   });
 
-  register("lastName", {
+  register('lastName', {
     pattern: {
       value: /^[A-Za-z]+( [A-Za-z]+)*$/,
-      message: "Please enter a valid name.",
+      message: 'Please enter a valid name.',
     },
   });
 
-  register("password", {
+  register('password', {
     minLength: {
       value: 8,
-      message: "Password should be at least 8 characters.",
+      message: 'Password should be at least 8 characters.',
     },
     maxLength: {
       value: 20,
-      message: "Password should be shorter than 20 characters.",
+      message: 'Password should be shorter than 20 characters.',
     },
     pattern: {
       value:
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}[\]|:;?.])[A-Za-z\d!@#$%^&*()_+={}[\]|:;?.]{8,20}$/,
       message:
-        "Password must contain at least one uppercase and lowercase letter, number, and special character.",
+        'Password must contain at least one uppercase and lowercase letter, number, and special character.',
     },
   });
 
@@ -95,7 +95,7 @@ const RegisterModal = () => {
     try {
       await registerUser(data).unwrap();
       // close and reset form
-      toast.success("Account created!");
+      toast.success('Account created!');
       dispatch(onRegisterClose());
       reset();
     } catch (error) {
@@ -103,7 +103,7 @@ const RegisterModal = () => {
       if (error.data?.message) {
         setError(error.data.message);
       } else if (error) {
-        toast.error("Something went wrong.");
+        toast.error('Something went wrong.');
       }
     } finally {
       setIsLoading(false);
@@ -111,55 +111,55 @@ const RegisterModal = () => {
   };
 
   const bodyContent = (
-    <div className="flex flex-col gap-4">
+    <div className='flex flex-col gap-4'>
       <Heading
         center
-        title="Welcome to ReviewGuru"
-        subtitle="Create an account below!"
+        title='Welcome to ReviewGuru'
+        subtitle='Create an account below!'
       />
-      <div className="flex gap-4">
+      <div className='flex gap-4'>
         <Input
-          id="firstName"
+          id='firstName'
           capitalize
           disabled={isLoading}
           error={errors.firstName}
           errors={errors}
-          label="First Name"
+          label='First Name'
           register={register}
           required
         />
         <Input
-          id="lastName"
+          id='lastName'
           capitalize
           disabled={isLoading}
           error={errors.lastName}
           errors={errors}
-          label="Last Name"
+          label='Last Name'
           register={register}
           required
         />
       </div>
       <Input
-        id="email"
+        id='email'
         disabled={isLoading}
         error={errors.email}
         errors={errors}
-        label="Email"
+        label='Email'
         required
         register={register}
       />
-      <div className="relative">
+      <div className='relative'>
         <Input
-          id="password"
-          type={!showPassword ? "password" : "text"}
+          id='password'
+          type={!showPassword ? 'password' : 'text'}
           disabled={isLoading}
           error={errors.password}
           errors={errors}
-          label="Password"
+          label='Password'
           required
           register={register}
         />
-        <div className="absolute right-4 top-6 cursor-pointer">
+        <div className='absolute right-4 top-6 cursor-pointer'>
           {!showPassword ? (
             <IoEyeOffOutline size={24} onClick={() => setShowPassword(true)} />
           ) : (
@@ -168,7 +168,7 @@ const RegisterModal = () => {
         </div>
       </div>
       {error && (
-        <div className="mt-2 text-xl -mb-4 font-semibold text-rose-500">
+        <div className='-mb-4 mt-2 text-xl font-semibold text-rose-500'>
           {error}
         </div>
       )}
@@ -176,29 +176,29 @@ const RegisterModal = () => {
   );
 
   const footerContent = (
-    <div className="mt-3 flex flex-col gap-4">
+    <div className='mt-3 flex flex-col gap-4'>
       <hr />
       <Button
         outline
-        label="Continue with Google"
+        label='Continue with Google'
         icon={FcGoogle}
         onClick={() => {}}
       />
       <Button
         outline
-        label="Continue with Github"
+        label='Continue with Github'
         icon={AiFillGithub}
         onClick={() => {}}
       />
-      <div className="mt-4 text-center font-light text-neutral-500 bg-white p-2 rounded-lg">
-        <div className="flex flex-row items-center justify-center gap-2">
+      <div className='mt-4 rounded-lg bg-white p-2 text-center font-light text-neutral-500'>
+        <div className='flex flex-row items-center justify-center gap-2'>
           <div>Already have an account?</div>
           <div
             onClick={() => {
               dispatch(onRegisterClose());
               dispatch(onLoginOpen());
             }}
-            className="cursor-pointer text-neutral-800 hover:underline"
+            className='cursor-pointer text-neutral-800 hover:underline'
           >
             Log in
           </div>
@@ -211,8 +211,8 @@ const RegisterModal = () => {
     <Modal
       disabled={isLoading}
       isOpen={isRegisterModalOpen}
-      title="Register"
-      actionLabel="Continue"
+      title='Register'
+      actionLabel='Continue'
       onClose={() => dispatch(onRegisterClose())}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}

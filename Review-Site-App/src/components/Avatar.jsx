@@ -1,5 +1,5 @@
-import { IoPerson } from "react-icons/io5";
-import chroma from "chroma-js";
+import { IoPerson } from 'react-icons/io5';
+import chroma from 'chroma-js';
 
 const Avatar = ({ userId, size, userMenu }) => {
   // Define the array of colors - 100 distinct colors from chroma
@@ -27,19 +27,19 @@ const Avatar = ({ userId, size, userMenu }) => {
 
   return userMenu ? (
     // for user menu on smaller screen
-    <div className="w-7">
-      {" "}
+    <div className='w-7'>
+      {' '}
       <img
-        className="rounded-full w-full"
-        src="/placeholder.png"
-        alt="Avatar"
+        className='w-full rounded-full'
+        src='/placeholder.png'
+        alt='Avatar'
       />
     </div>
   ) : (
     // for review listings
     <div
       style={{ backgroundColor: getColorForUser(userId) }}
-      className="border border-neutral-600 rounded-full p-2 text-neutral-600 shadow-md"
+      className='rounded-full border border-neutral-600 p-2 text-neutral-600 shadow-md'
     >
       <IoPerson size={size} />
     </div>

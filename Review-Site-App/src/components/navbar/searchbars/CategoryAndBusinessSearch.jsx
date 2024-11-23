@@ -1,8 +1,8 @@
-import { forwardRef } from "react";
-import BusinessSearchLabel from "./BusinessSearchLabel";
-import MultiBusinessLabel from "./MultiBusinessLabel";
-import { toast } from "react-hot-toast";
-import AsyncSelect from "react-select/async";
+import { forwardRef } from 'react';
+import BusinessSearchLabel from './BusinessSearchLabel';
+import MultiBusinessLabel from './MultiBusinessLabel';
+import { toast } from 'react-hot-toast';
+import AsyncSelect from 'react-select/async';
 
 /*
  * TODO:
@@ -27,7 +27,7 @@ const CategoryAndBusinessSearch = forwardRef(
       );
 
       if (res.status !== 200 && res.status !== 400) {
-        toast.error("Unable to fetch search results");
+        toast.error('Unable to fetch search results');
       }
       // error on 404 response, 400 could just mean no search results - which will be handled by
       // no Options Message
@@ -44,7 +44,7 @@ const CategoryAndBusinessSearch = forwardRef(
       // businesses will have a city / state or an indicator of multiple options
       const menuItems = data.map((item) => {
         // check business conditionals first
-        if (item.type === "business") {
+        if (item.type === 'business') {
           if (!renderedBusinesses.has(item.name) && item.duplicate_count > 1) {
             renderedBusinesses.add(item.name);
             /* if there are multiple of the business name in db - render all results message
@@ -53,7 +53,7 @@ const CategoryAndBusinessSearch = forwardRef(
             return {
               label: <MultiBusinessLabel business={item} />,
               value: item.name,
-              type: "multipleBusinesses",
+              type: 'multipleBusinesses',
             };
           } else if (
             !renderedBusinesses.has(item.name) &&
@@ -84,9 +84,9 @@ const CategoryAndBusinessSearch = forwardRef(
     const handleSearchChange = (value) => {
       // value = {value: "", label: ""}
       // change label shown to just name for multi business label
-      if (value.type === "multipleBusinesses") {
+      if (value.type === 'multipleBusinesses') {
         value.label = value.value;
-      } else if (value.type === "business") {
+      } else if (value.type === 'business') {
         // set location on single business select
         setCurrentLocation({
           city: value.label.props?.business.city,
@@ -112,7 +112,7 @@ const CategoryAndBusinessSearch = forwardRef(
         // with type, id, and name, it will become a searchable category
         value.label = businessObj.categoryName;
         value.value = businessObj.categoryId;
-        value.type = "category";
+        value.type = 'category';
 
         // navigate to businessPage
         handleSingleBusinessClick({
@@ -134,7 +134,7 @@ const CategoryAndBusinessSearch = forwardRef(
         //  set on select
         onChange={handleSearchChange}
         //  set on input change
-        placeholder="Things to do..."
+        placeholder='Things to do...'
         ref={ref}
         styles={customStyles}
       />
@@ -142,5 +142,5 @@ const CategoryAndBusinessSearch = forwardRef(
   }
 );
 
-CategoryAndBusinessSearch.displayName = "CategoryAndBusinessSearch";
+CategoryAndBusinessSearch.displayName = 'CategoryAndBusinessSearch';
 export default CategoryAndBusinessSearch;
