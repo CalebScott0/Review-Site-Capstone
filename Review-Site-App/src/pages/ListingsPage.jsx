@@ -111,8 +111,8 @@ const ListingsPage = ({
           </div>
         ) : (
           <div>
-            <div className='flex pb-24 pt-60 lg:pt-48'>
-              <div className={`${showFullMap ? 'w-2/5 flex-1' : ''}`}>
+            <div className='mr-20 flex pb-24 pt-60 lg:pt-48'>
+              <div className={`${showFullMap ? 'w-5/12' : ''}`}>
                 <Heading
                   center
                   title={`Showing Results for ${category} in \n ${currentCity}, ${currentState}`}
@@ -159,7 +159,7 @@ const ListingsPage = ({
               <div className='relative z-10 -mt-9 w-full'>
                 <div
                   className={`fixed right-0 h-[81vh] w-96 ${
-                    showFullMap ? 'w-3/5' : ''
+                    showFullMap ? 'w-7/12' : ''
                   } `}
                 >
                   <ListingsMap

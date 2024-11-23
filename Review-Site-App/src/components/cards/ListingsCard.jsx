@@ -23,7 +23,7 @@ const ListingsCard = ({
     <Card
       onClick={onClick}
       // grid first column carousel auto and remaining content 1fr for full remaining space
-      className={`cursor-pointer gap-4 border border-b border-l-transparent border-r-transparent border-t-transparent transition-all duration-200 hover:border hover:border-l-neutral-200 hover:border-r-neutral-200 hover:border-t-neutral-200 hover:shadow-md sm:grid sm:grid-cols-[auto_1fr]`}
+      className={`cursor-pointer gap-4 border border-b border-l-transparent border-r-transparent border-t-transparent hover:border hover:border-l-neutral-200 hover:border-r-neutral-200 hover:border-t-neutral-200 hover:drop-shadow-md sm:grid sm:grid-cols-[auto_1fr]`}
     >
       <div className='flex items-center justify-center'>
         {/* carousel of business pictures on listings cards */}
