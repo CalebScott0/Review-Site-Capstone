@@ -26,7 +26,6 @@ html {
 
 /* class for map markers - map libre does not have native support for react components */
 .custom-marker {
-  z-index: 0;
   background-color: #f59e0b; /* Tailwind amber-500 */
   color: white;
   width: 40px;
@@ -46,4 +45,21 @@ html {
   background-color: white;
   color: #f59e0b;
   border-color: #f59e0b;
+}
+
+.highlight {
+  background-color: white;
+  color: #f59e0b;
+  border-color: #f59e0b;
+  width: 40px;
+  height: 40px;
+  border-radius: 50% 50% 50% 0%;
+  border: 3px solid;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
 }

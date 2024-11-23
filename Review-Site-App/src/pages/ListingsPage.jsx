@@ -25,7 +25,8 @@ import { MdOutlineZoomInMap, MdOutlineZoomOutMap } from 'react-icons/md';
 
 /*
  * TODO:
- *  - Make map transition smoother
+ *  - Add inset shadow to left side of parent div with an added z index of map
+ *
  *
  * FIXME:
  */
@@ -79,7 +80,7 @@ const ListingsPage = ({
     paginationRange,
   } = usePaginatedFetch(query, queryArgs, dataLabel); //pass query type, query args for endpoint and dataLabel of main item (businesses)
 
-  // function to get listings insxdex for business, accounts for current page
+  // function to get listings index for business, accounts for current page
   const listingsIndex = (idx, currPage) => {
     return idx + 1 + (currPage - 1) * limit;
   };
@@ -158,8 +159,8 @@ const ListingsPage = ({
               {/* interactive map to display current businesses rendered */}
               <div className='relative z-10 -mt-9 w-full'>
                 <div
-                  className={`fixed right-0 h-[81vh] w-96 ${
-                    showFullMap ? 'w-7/12' : ''
+                  className={`fixed right-0 h-[81vh] ${
+                    showFullMap ? 'w-7/12' : 'w-96'
                   } `}
                 >
                   <ListingsMap
