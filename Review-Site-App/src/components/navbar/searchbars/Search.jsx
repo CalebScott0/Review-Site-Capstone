@@ -10,6 +10,12 @@ import {
 import CategoryAndBusinessSearch from "./CategoryAndBusinessSearch";
 import LocationSearch from "./LocationSearch";
 
+/*
+ * TODO:
+ *  - Debounce endpoints to make loading smoother?
+ *  - Change input value to category selected from category badge on listings page / single business if added
+ */
+
 const Search = ({
   handleCategoryListingsClick,
   handleBusinessListingsClick,

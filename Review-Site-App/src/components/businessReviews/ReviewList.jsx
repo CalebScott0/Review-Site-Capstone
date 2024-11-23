@@ -81,7 +81,7 @@ const ReviewList = ({ businessId, setUserHasReview, userId }) => {
               <Card key={review.id} className="max-w-4xl mx-auto border-b mb-4">
                 {/* user avatar (placeholder) and information */}
                 <CardHeader className="flex gap-4">
-                  <Avatar size={40} />
+                  <Avatar size={40} userId={review.author_id} />
                   <div>
                     <span className="text-base text-black">
                       {review.author_first_name} {review.author_last_name[0]}.

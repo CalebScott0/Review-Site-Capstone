@@ -1,6 +1,11 @@
 import { DotLoader } from "react-spinners";
 import { useGetPhotosQuery } from "../../redux/services/businessesApi.js";
 
+/*
+ * TODO:
+ *    - add prev/next buttons to single business carousel
+ */
+
 const SingleBusinessCarousel = ({ businessId }) => {
   // fetch business photos for passed in id
   const { data: photos, error, isLoading } = useGetPhotosQuery({ businessId });

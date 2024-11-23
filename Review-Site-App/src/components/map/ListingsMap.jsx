@@ -4,6 +4,19 @@ import maplibregl from "maplibre-gl";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
+/*
+ * TODO:
+ *  - Add index number of business to marker
+ *  - change "active" marker based on current business in view (look at yelp)
+ *  - onClick (so it works with mobile too) - show popup on marker of business info
+ *     - onClick of this popup - navigate to business page
+ *  - Add option to make map full screen on computers
+ *  - Button to show full screen map on smaller screens
+ *
+ * FIXME:
+ *
+ */
+
 const ListingsMap = ({ businessMarkers, currentPage, limit }) => {
   // const ListingsMap = ({ center, businessMarkers }) => {
   const mapContainer = useRef(null);

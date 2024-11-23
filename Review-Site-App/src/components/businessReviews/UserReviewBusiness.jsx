@@ -127,7 +127,7 @@ const UserReviewBusiness = ({
         </div>
         {/* user avatar (placeholder) and information */}
         <CardHeader className="flex gap-4">
-          <Avatar size={40} />
+          <Avatar size={40} userId={userId} />
           <div>
             <span className="text-base text-black">
               {review.first_name} {review.last_name[0]}.

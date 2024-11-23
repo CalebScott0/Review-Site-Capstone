@@ -4,6 +4,11 @@ import MultiBusinessLabel from "./MultiBusinessLabel";
 import { toast } from "react-hot-toast";
 import AsyncSelect from "react-select/async";
 
+/*
+ * TODO:
+ *   - Add icons to default search options (categories)
+ */
+
 const CategoryAndBusinessSearch = forwardRef(
   (
     {

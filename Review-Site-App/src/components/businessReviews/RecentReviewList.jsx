@@ -10,6 +10,11 @@ import ReactStars from "react-stars";
 import Button from "../Button";
 import { IoCloseOutline } from "react-icons/io5";
 
+/*
+ * TODO:
+ *    - add animation open/close
+ */
+
 const RecentReviewList = ({ error, reviews }) => {
   // default open on larger > screens
   const [isOpen, setIsOpen] = useState(window.innerWidth > 1040);
@@ -43,7 +48,7 @@ const RecentReviewList = ({ error, reviews }) => {
             <Card className=" mx-2 border-b">
               {/* user avatar (placeholder) and information */}
               <CardHeader className="flex gap-2">
-                <Avatar size={32} />
+                <Avatar size={32} userId={review.author_id} />
                 <div>
                   <span className="text-base text-black">
                     {review.author_first_name} {review.author_last_name[0]}.

@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetSingleBusinessQuery } from "../redux/services/businessesApi";
 import ReactStars from "react-stars";
 import SingleBusinessCarousel from "../components/carousels/SingleBusinessCarousel";
@@ -7,11 +7,19 @@ import Button from "../components/Button";
 import { DotLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { onLoginOpen } from "./../redux/slices/loginModalSlice";
+import { onLoginOpen } from "../redux/slices/loginModalSlice";
 import { useEffect, useState } from "react";
 import { PiPencilFill } from "react-icons/pi";
 
-const SingleBusiness = ({ handleReviewNavigateClick }) => {
+/*
+ * TODO:
+ *
+ * FIXME:
+ *  - make text / rest of info at the top of business page more readable!
+ *  - Lazy loading? make page load smoother
+ */
+
+const SingleBusinessPage = ({ handleReviewNavigateClick }) => {
   // grab businessId from location params
   const { business_id } = useParams();
 
@@ -33,8 +41,9 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
 
   // redirect after login if user clicked write a review before authentication & does not have a review on business currentlty
   useEffect(() => {
-    // Ctimeout to debounce the navigation
+    // timeout to debounce the navigation
     const debounceTimeout = setTimeout(() => {
+      // wait until userId exists after login
       if (userId && pendingReview) {
         if (!userHasReview) {
           // Navigate to the review form only if the user doesn't have a review
@@ -135,7 +144,6 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
                 label="Write a review"
                 icon={PiPencilFill}
               ></Button>
-              {/* )} */}
             </div>
           </div>
         </div>
@@ -151,4 +159,4 @@ const SingleBusiness = ({ handleReviewNavigateClick }) => {
   }
 };
 
-export default SingleBusiness;
+export default SingleBusinessPage;

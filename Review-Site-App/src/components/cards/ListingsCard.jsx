@@ -6,6 +6,11 @@ import ReactStars from "react-stars";
 import ListingsCarousel from "../carousels/ListingsCarousel";
 import { FaRegComment } from "react-icons/fa";
 
+/*
+ * TODO:
+ *  - Change input value to category selected from category badge on listings page / single business if added
+ */
+
 const ListingsCard = ({
   business,
   listingsIndex,

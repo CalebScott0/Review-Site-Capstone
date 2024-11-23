@@ -4,6 +4,13 @@ import Logo from "./Logo";
 import Search from "./searchbars/Search";
 import UserMenu from "./UserMenu";
 import { useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+/*
+ * TODO:
+ *  - Add categories dropdown
+ *  - Hide searchbars and categories on review form page and do not show bottom border of nav as well on this page?
+ */
 
 const Navbar = ({
   handleBusinessListingsClick,

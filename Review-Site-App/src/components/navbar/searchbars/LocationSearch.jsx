@@ -2,6 +2,11 @@ import AsyncSelect from "react-select/async";
 import { forwardRef } from "react";
 import { toast } from "react-hot-toast";
 
+/*
+ * TODO:
+ *    - add user current location?
+ */
+
 // forward for parent component to access select element
 const LocationSearch = forwardRef(
   (

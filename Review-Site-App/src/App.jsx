@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import ListingsPage from "./pages/ListingsPage";
 import HomePage from "./pages/HomePage";
-import SingleBusiness from "./pages/SingleBusiness";
+import SingleBusinessPage from "./pages/SingleBusinessPage";
 import useSearchState from "./hooks/useSearchState";
 import useNavigation from "./hooks/useNavigation";
 import RegisterModal from "./components/modals/RegisterModal";
@@ -30,7 +30,7 @@ function App() {
         handleSingleBusinessClick={handleSingleBusinessClick}
       />
       <Routes>
-        {/* //MAKE ONE /search route with serach parameters like yelp!! */}
+        {/* //MAKE ONE /search route with search parameters like yelp!! */}
         <Route path="/" element={<HomePage />} />
         <Route
           path="/search"
@@ -48,7 +48,7 @@ function App() {
         <Route
           path="/business/:business_name/:business_id"
           element={
-            <SingleBusiness
+            <SingleBusinessPage
               handleReviewNavigateClick={handleReviewNavigateClick}
             />
           }

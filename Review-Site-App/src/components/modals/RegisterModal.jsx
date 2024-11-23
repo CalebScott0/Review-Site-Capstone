@@ -14,6 +14,11 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 import { useRegisterMutation } from "../../redux/services/authSlice";
 
+/*
+ * TODO:
+ *   - Add password requirements on top of modal
+ */
+
 const RegisterModal = () => {
   const dispatch = useDispatch();
   // boolean isOpen from modal slice
