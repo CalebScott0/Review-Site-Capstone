@@ -119,6 +119,7 @@ const RegisterModal = () => {
       />
       <div className='flex gap-4'>
         <Input
+          autoFocus
           id='firstName'
           capitalize
           disabled={isLoading}

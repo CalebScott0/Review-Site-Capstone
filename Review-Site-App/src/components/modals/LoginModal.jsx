@@ -92,6 +92,7 @@ const LoginModal = () => {
       />
       <Input
         id='email'
+        autoFocus
         disabled={isLoading}
         error={errors.email}
         errors={errors}

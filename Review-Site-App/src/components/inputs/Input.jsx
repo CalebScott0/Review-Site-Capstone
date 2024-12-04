@@ -9,6 +9,7 @@ const Input = ({
   required, //   errors is an object, can look for id of input in errors object for class conditional
   errors,
   error,
+  autoFocus,
 }) => {
   // only take error if it is a string
   const errorMessage =
@@ -17,6 +18,7 @@ const Input = ({
   return (
     <div className='relative w-full'>
       <input
+        autoFocus={autoFocus}
         autoComplete={autoComplete}
         id={id}
         disabled={disabled}
