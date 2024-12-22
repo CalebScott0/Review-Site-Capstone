@@ -74,7 +74,7 @@ const ListingsMap = ({ businessMarkers, currentPage, limit, showFullMap }) => {
     return () => {
       newMarkers.forEach((marker) => marker.remove());
     };
-  }, [businessMarkers, hoveredBusinessId]);
+  }, [businessMarkers]);
 
   useEffect(() => {
     // Call resize when the map's container size changes (on toggling full-screen)

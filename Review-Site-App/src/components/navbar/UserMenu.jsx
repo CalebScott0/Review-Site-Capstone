@@ -41,19 +41,19 @@ const UserMenu = () => {
     {
       label: 'Write a review',
       onClick: () => {
-        toggleOpen();
+        // toggleOpen();
       },
     },
     {
       label: 'Categories',
       onClick: () => {
-        toggleOpen();
+        // toggleOpen();
       },
     },
     {
       label: 'For businesses',
       onClick: () => {
-        toggleOpen();
+        // toggleOpen();
       },
     },
 
